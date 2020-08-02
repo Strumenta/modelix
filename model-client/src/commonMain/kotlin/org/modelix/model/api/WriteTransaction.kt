@@ -15,13 +15,4 @@
 
 package org.modelix.model.api
 
-actual class PNodeResolveContext(val branch: IBranch) : INodeResolveContext {
-
-    override fun resolve(ref: INodeReference?): INode? {
-        return if (ref is PNodeReference) {
-            PNodeAdapter(ref.id, branch)
-        } else {
-            null
-        }
-    }
-}
+expect class WriteTransaction(_tree: ITree?, branch: IBranch?, idGenerator: IIdGenerator) : Transaction, IWriteTransaction

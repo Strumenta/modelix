@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicLong
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-class DefaultIdGenerator private constructor() : IIdGenerator {
+actual class DefaultIdGenerator private actual constructor() : IIdGenerator {
     protected val ID_SEQUENCE = AtomicLong((abs(Math.random()) * 1000000000.0).roundToInt() * 1000000000L)
     override fun generate(): Long {
         return ID_SEQUENCE.incrementAndGet()

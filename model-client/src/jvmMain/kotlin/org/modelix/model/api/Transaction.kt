@@ -15,7 +15,7 @@
 
 package org.modelix.model.api
 
-abstract class Transaction(override val branch: IBranch?) : ITransaction {
+actual abstract class Transaction actual constructor(override val branch: IBranch?) : ITransaction {
 
     override fun containsNode(nodeId: Long): Boolean {
         return tree!!.containsNode(nodeId)

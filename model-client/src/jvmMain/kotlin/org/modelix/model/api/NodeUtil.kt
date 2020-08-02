@@ -19,7 +19,7 @@ import org.modelix.model.util.toSequence
 import org.modelix.model.util.toStream
 import java.util.stream.Stream
 
-object NodeUtil {
+actual object NodeUtil {
     /*
      * TODO Consider using an extension method here
      * TODO return a sequence and not a Stream

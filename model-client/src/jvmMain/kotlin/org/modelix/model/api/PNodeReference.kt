@@ -15,7 +15,7 @@
 
 package org.modelix.model.api
 
-class PNodeReference(val id: Long) : INodeReference {
+actual class PNodeReference(val id: Long) : INodeReference {
 
     override fun resolveNode(context: INodeResolveContext?): INode? {
         return if (context is PNodeResolveContext) {

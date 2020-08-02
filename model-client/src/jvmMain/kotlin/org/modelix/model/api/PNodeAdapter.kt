@@ -15,7 +15,7 @@
 
 package org.modelix.model.api
 
-class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
+actual class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
 
     private fun unwrap(node: INode?): Long {
         if (node == null) {
