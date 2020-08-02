@@ -15,4 +15,6 @@
 
 package org.modelix.model.api
 
-expect class PNodeAdapter : INode
+expect class PNodeAdapter(nodeId: Long, branch: IBranch?) : INode {
+    val branch: IBranch?
+}

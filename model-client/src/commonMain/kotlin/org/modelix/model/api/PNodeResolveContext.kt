@@ -15,4 +15,6 @@
 
 package org.modelix.model.api
 
-expect class PNodeResolveContext : INodeResolveContext
+expect class PNodeResolveContext : INodeResolveContext {
+    val branch: IBranch
+}
