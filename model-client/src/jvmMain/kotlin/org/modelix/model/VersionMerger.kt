@@ -29,6 +29,7 @@ import org.modelix.model.operations.IAppliedOperation
 import org.modelix.model.operations.IOperation
 import org.modelix.model.persistent.CPVersion
 import org.modelix.model.util.StreamUtils
+import org.modelix.model.utils.Runnable
 import java.util.Optional
 import java.util.stream.Collectors
 import kotlin.collections.ArrayList

@@ -61,7 +61,7 @@ class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
     override val concept: IConcept?
         get() {
             notifyAccess()
-            return branch!!.computeRead(Supplier { branch.transaction!!.getConcept(nodeId) })
+            return branch!!.computeRead(org.modelix.model.utils.Supplier { branch.transaction!!.getConcept(nodeId) })
         }
 
     override val parent: INode?
@@ -144,7 +144,7 @@ class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
     override fun toString(): String {
         var concept: IConcept? = null
         try {
-            concept = branch!!.computeRead(Supplier { branch.transaction!!.getConcept(nodeId) })
+            concept = branch!!.computeRead(org.modelix.model.utils.Supplier { branch.transaction!!.getConcept(nodeId) })
         } catch (ex: Exception) {
         }
         var str = "PNode$nodeId"

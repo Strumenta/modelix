@@ -22,7 +22,10 @@ import org.modelix.model.api.DefaultIdGenerator.Companion.instance
 import org.modelix.model.api.IBranch
 import org.modelix.model.util.ContextValue
 import org.modelix.model.util.pmap.COWArrays
-import java.util.function.Supplier
+import org.modelix.model.utils.Runnable
+import org.modelix.model.utils.Supplier
+
+//import java.util.function.Supplier
 
 class PBranch @JvmOverloads constructor(@field:Volatile private var tree: ITree?, private val idGenerator: IIdGenerator? = instance) : IBranch {
     private val writeLock = Any()

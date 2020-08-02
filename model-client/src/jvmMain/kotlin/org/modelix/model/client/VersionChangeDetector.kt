@@ -20,6 +20,7 @@ import org.apache.log4j.LogManager
 import org.modelix.model.IKeyListener
 import org.modelix.model.IKeyValueStore
 import org.modelix.model.client.SharedExecutors.fixDelay
+import org.modelix.model.utils.Runnable
 import java.util.concurrent.ScheduledFuture
 
 abstract class VersionChangeDetector(private val store: IKeyValueStore, private val key: String) {

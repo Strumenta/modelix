@@ -28,6 +28,7 @@ import org.modelix.model.lazy.IDeserializingKeyValueStore
 import org.modelix.model.lazy.ObjectStoreCache
 import org.modelix.model.persistent.HashUtil
 import org.modelix.model.util.StreamUtils.toStream
+import org.modelix.model.utils.Runnable
 import java.io.File
 import java.io.IOException
 import java.net.URLEncoder

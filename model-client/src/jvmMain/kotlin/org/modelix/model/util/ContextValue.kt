@@ -15,6 +15,7 @@
 
 package org.modelix.model.util
 
+import org.modelix.model.utils.Runnable
 import java.util.function.Supplier
 
 class ContextValue<E> {

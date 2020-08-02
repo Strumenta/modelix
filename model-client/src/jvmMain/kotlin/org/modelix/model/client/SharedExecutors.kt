@@ -17,6 +17,7 @@ package org.modelix.model.client
 
 import org.apache.log4j.Level
 import org.apache.log4j.LogManager
+import org.modelix.model.utils.Runnable
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit

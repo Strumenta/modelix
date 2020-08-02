@@ -15,6 +15,7 @@
 
 package org.modelix.model.api
 
+import org.modelix.model.utils.Runnable
 import java.util.Objects
 
 class CompositeNodeResolveContext(contexts: Iterable<INodeResolveContext?>) : INodeResolveContext {

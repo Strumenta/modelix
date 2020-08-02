@@ -33,6 +33,7 @@ import org.modelix.model.lazy.TreeId
 import org.modelix.model.operations.IAppliedOperation
 import org.modelix.model.operations.IOperation
 import org.modelix.model.operations.OTBranch
+import org.modelix.model.utils.Runnable
 import java.time.LocalDateTime
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.atomic.AtomicBoolean
@@ -85,7 +86,7 @@ class ReplicatedTree(private val client: IModelClient, private val treeId: TreeI
 
     protected fun deleteDetachedNodes() {
         val hasDetachedNodes = localOTBranch.computeRead(
-            Supplier<Boolean> {
+            org.modelix.model.utils.Supplier<Boolean> {
                 localOTBranch.transaction!!
                     .getChildren(ITree.ROOT_ID, ITree.DETACHED_NODES_ROLE)!!.iterator().hasNext()
             }
@@ -122,7 +123,7 @@ class ReplicatedTree(private val client: IModelClient, private val treeId: TreeI
             version = newLocalVersion.value
             divergenceTime = 0
         }
-        SharedExecutors.FIXED.execute(object : Runnable {
+        SharedExecutors.FIXED.execute(object : java.lang.Runnable {
             override fun run() {
                 val doMerge: Supplier<Boolean> = object : Supplier<Boolean> {
                     override fun get(): Boolean {
@@ -159,7 +160,7 @@ class ReplicatedTree(private val client: IModelClient, private val treeId: TreeI
                     }
                 }
 
-                // Avoid locking during the merge as it may require communication with the model server 
+                // Avoid locking during the merge as it may require communication with the model server
                 for (mergeAttempt in 0..2) {
                     if (doMerge.get()) {
                         return
