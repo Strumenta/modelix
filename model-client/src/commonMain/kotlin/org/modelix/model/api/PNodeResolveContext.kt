@@ -15,6 +15,13 @@
 
 package org.modelix.model.api
 
-expect class PNodeResolveContext : INodeResolveContext {
-    val branch: IBranch
+class PNodeResolveContext(val branch: IBranch) : INodeResolveContext {
+
+    override fun resolve(ref: INodeReference?): INode? {
+        return if (ref is PNodeReference) {
+            PNodeAdapter(ref.id, branch)
+        } else {
+            null
+        }
+    }
 }
