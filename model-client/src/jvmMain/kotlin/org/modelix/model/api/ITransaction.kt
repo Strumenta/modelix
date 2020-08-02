@@ -18,7 +18,7 @@ package org.modelix.model.api
 import org.modelix.model.api.IBranch
 import java.util.stream.LongStream
 
-interface ITransaction {
+actual interface ITransaction {
     val branch: IBranch?
     var tree: ITree?
     fun containsNode(nodeId: Long): Boolean

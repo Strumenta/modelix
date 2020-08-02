@@ -15,4 +15,4 @@
 
 package org.modelix.model.api
 
-interface IReadTransaction : ITransaction
+actual interface IReadTransaction : ITransaction

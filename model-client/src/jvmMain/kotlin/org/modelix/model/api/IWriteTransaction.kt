@@ -15,7 +15,7 @@
 
 package org.modelix.model.api
 
-interface IWriteTransaction : ITransaction {
+actual interface IWriteTransaction : ITransaction {
     fun setProperty(nodeId: Long, role: String?, value: String?)
     fun setReferenceTarget(sourceId: Long, role: String?, target: INodeReference?)
     fun moveChild(newParentId: Long, newRole: String?, newIndex: Int, childId: Long)
