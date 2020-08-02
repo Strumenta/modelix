@@ -77,3 +77,7 @@ actual object StreamUtils {
         TODO("Not yet implemented")
     }
 }
+
+actual fun Long.toHexString() : String {
+    return java.lang.Long.toHexString(this)
+}

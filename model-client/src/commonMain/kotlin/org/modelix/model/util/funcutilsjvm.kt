@@ -62,3 +62,5 @@ interface Tuple2<T1,T2> : Tuple {
     val _1: T1
     val _2: T2
 }
+
+expect fun Long.toHexString() : String
