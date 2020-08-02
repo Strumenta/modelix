@@ -53,7 +53,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 
-class RestWebModelClient @JvmOverloads constructor(var baseUrl: String? = null) : IModelClient {
+actual class RestWebModelClient actual constructor(var baseUrl: String?) : IModelClient {
     companion object {
         private val LOG = LogManager.getLogger(RestWebModelClient::class.java)
         const val MODEL_URI_VAR_NAME = "MODEL_URI"

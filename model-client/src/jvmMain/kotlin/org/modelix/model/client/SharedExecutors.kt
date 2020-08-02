@@ -22,7 +22,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-object SharedExecutors {
+actual object SharedExecutors {
     private val LOG = LogManager.getLogger(SharedExecutors::class.java)
     @JvmField
     val FIXED = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1)

@@ -25,7 +25,7 @@ import java.util.Objects
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.stream.Collectors
 
-class AsyncStore(private val store: IKeyValueStore) : IKeyValueStore {
+actual class AsyncStore actual constructor(private val store: IKeyValueStore) : IKeyValueStore {
     private val consumerActive = AtomicBoolean()
     private val pendingWrites: MutableMap<String?, String?> = LinkedHashMap(16, 0.75.toFloat(), false)
     override fun get(key: String?): String? {

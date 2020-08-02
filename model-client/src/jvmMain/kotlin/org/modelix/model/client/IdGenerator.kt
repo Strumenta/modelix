@@ -18,7 +18,7 @@ package org.modelix.model.client
 import org.modelix.model.api.IIdGenerator
 import java.util.concurrent.atomic.AtomicLong
 
-class IdGenerator(clientId: Int) : IIdGenerator {
+actual class IdGenerator actual constructor(clientId: Int) : IIdGenerator {
     protected val idSequence: AtomicLong
     private val clientId: Long
     override fun generate(): Long {

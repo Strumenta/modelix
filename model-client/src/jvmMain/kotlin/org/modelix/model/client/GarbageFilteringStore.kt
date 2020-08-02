@@ -23,7 +23,7 @@ import java.util.Collections
 import java.util.Optional
 import java.util.stream.Collectors
 
-class GarbageFilteringStore(private val store: IKeyValueStore) : IKeyValueStore {
+actual class GarbageFilteringStore actual constructor(private val store: IKeyValueStore) : IKeyValueStore {
     private val pendingEntries: MutableMap<String?, String?> = HashMap()
     override fun get(key: String?): String? {
         return if (pendingEntries.containsKey(key)) pendingEntries[key] else store[key]

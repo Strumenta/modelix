@@ -24,7 +24,7 @@ import org.modelix.model.lazy.CLVersion
 import org.modelix.model.lazy.TreeId
 import java.util.function.Supplier
 
-class ActiveBranch(client: IModelClient, tree: TreeId, branchName: String?, user: Supplier<String>) : IIndirectBranch {
+actual class ActiveBranch(client: IModelClient, tree: TreeId, branchName: String?, user: Supplier<String>) : IIndirectBranch {
     private val client: IModelClient
     private val tree: TreeId
     var branchName: String?

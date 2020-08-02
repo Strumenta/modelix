@@ -15,15 +15,6 @@
 
 package org.modelix.model.client
 
-import org.modelix.model.api.IBranch
-import org.modelix.model.api.IBranchListener
+import org.modelix.model.api.IIdGenerator
 
-actual class SimpleIndirectBranch actual constructor(override val branch: IBranch) : IIndirectBranch {
-    override fun addListener(l: IBranchListener?) {
-        branch.addListener(l)
-    }
-
-    override fun removeListener(l: IBranchListener?) {
-        branch.removeListener(l)
-    }
-}
+expect class IdGenerator(clientId: Int) : IIdGenerator

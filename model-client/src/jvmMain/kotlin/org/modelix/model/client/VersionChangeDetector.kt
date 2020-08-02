@@ -23,7 +23,7 @@ import org.modelix.model.client.SharedExecutors.fixDelay
 import org.modelix.model.util.Runnable
 import java.util.concurrent.ScheduledFuture
 
-abstract class VersionChangeDetector(private val store: IKeyValueStore, private val key: String) {
+actual abstract class VersionChangeDetector actual constructor(private val store: IKeyValueStore, private val key: String) {
     private val keyListener: IKeyListener
     var lastVersionHash: String? = null
         private set
