@@ -4,4 +4,4 @@ expect interface ITransaction
 expect interface IReadTransaction : ITransaction
 expect interface IWriteTransaction : ITransaction
 expect interface ITree
-expect interface INodeReference
+expect interface INodeResolveContext
