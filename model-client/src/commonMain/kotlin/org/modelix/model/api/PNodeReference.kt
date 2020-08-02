@@ -45,4 +45,3 @@ class PNodeReference(val id: Long) : INodeReference {
         return "PNodeReference{id=$id}"
     }
 }
-

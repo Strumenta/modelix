@@ -29,5 +29,4 @@ expect class KeyValueStoreCache(store: IKeyValueStore) : IKeyValueStore {
     override fun putAll(entries: Map<String?, String?>?)
 
     override fun removeListener(key: String?, listener: IKeyListener?)
-
 }

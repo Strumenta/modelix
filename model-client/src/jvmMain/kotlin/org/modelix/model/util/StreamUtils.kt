@@ -78,6 +78,6 @@ actual object StreamUtils {
     }
 }
 
-actual fun Long.toHexString() : String {
+actual fun Long.toHexString(): String {
     return java.lang.Long.toHexString(this)
 }

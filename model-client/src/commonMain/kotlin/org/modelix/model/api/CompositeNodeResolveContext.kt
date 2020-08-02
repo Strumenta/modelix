@@ -15,5 +15,4 @@
 
 package org.modelix.model.api
 
-
 expect class CompositeNodeResolveContext(contexts: Iterable<INodeResolveContext?>) : INodeResolveContext

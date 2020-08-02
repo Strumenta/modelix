@@ -15,6 +15,4 @@
 
 package org.modelix.model.lazy
 
-import org.modelix.model.IKeyValueStore
-
 expect abstract class LazyValue<E>

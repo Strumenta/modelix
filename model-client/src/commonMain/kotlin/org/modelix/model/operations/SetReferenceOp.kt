@@ -19,7 +19,6 @@ import org.modelix.model.api.INodeReference
 import org.modelix.model.api.IWriteTransaction
 import org.modelix.model.util.toHexString
 
-
 class SetReferenceOp(val sourceId: Long, val role: String, val target: INodeReference) : AbstractOperation() {
     override fun apply(transaction: IWriteTransaction?): IAppliedOperation? {
         val oldValue = transaction!!.getReferenceTarget(sourceId, role)

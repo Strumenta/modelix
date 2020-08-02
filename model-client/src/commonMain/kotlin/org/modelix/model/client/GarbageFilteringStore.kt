@@ -17,5 +17,4 @@ package org.modelix.model.client
 
 import org.modelix.model.IKeyValueStore
 
-
 expect class GarbageFilteringStore(store: IKeyValueStore) : IKeyValueStore

@@ -16,6 +16,5 @@
 package org.modelix.model.operations
 
 import org.modelix.model.api.*
-import org.modelix.model.util.StreamUtils.indexOf
 
 expect class OTWriteTransaction(transaction: IWriteTransaction, otBranch: OTBranch, idGenerator: IIdGenerator) : IWriteTransaction

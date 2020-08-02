@@ -15,5 +15,4 @@
 
 package org.modelix.model.api
 
-
 expect object NodeUtil
