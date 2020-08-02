@@ -18,6 +18,7 @@ package org.modelix.model.operations
 import io.vavr.Tuple
 import io.vavr.Tuple2
 import org.modelix.model.api.*
+import org.modelix.model.api.IBranch
 import java.util.*
 import java.util.function.Supplier
 

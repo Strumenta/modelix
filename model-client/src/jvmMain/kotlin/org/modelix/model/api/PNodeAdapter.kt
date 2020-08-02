@@ -15,6 +15,7 @@
 
 package org.modelix.model.api
 
+import org.modelix.model.api.IBranch
 import java.util.function.Supplier
 import java.util.stream.Stream
 
