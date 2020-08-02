@@ -40,6 +40,10 @@ fun Sequence<Long>.toLongStream() : LongStream {
     return b.build()
 }
 
+fun <T> Sequence<T>.skip(n: Long) : Sequence<T> {
+    return this.drop(n.toInt())
+}
+
 object StreamUtils {
 
     fun <T> toStream(iterable: Iterable<T>): Stream<T> {

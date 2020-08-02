@@ -29,6 +29,9 @@ import org.modelix.model.util.pmap.COWArrays.add
 import org.modelix.model.util.pmap.COWArrays.indexOf
 import org.modelix.model.util.pmap.COWArrays.insert
 import org.modelix.model.util.pmap.COWArrays.remove
+import org.modelix.model.util.skip
+import org.modelix.model.util.toLongStream
+import org.modelix.model.util.toSequence
 import java.util.*
 import java.util.function.Consumer
 import java.util.function.Function
@@ -157,13 +160,13 @@ class CLTree : ITree {
         newChildrenArray = if (index == -1) {
             add(newChildrenArray, childData.id)
         } else {
-            val anchor = getChildren(parentId, role)!!.skip(index.toLong()).findFirst()
-            if (anchor.isEmpty) {
+            val anchor = getChildren(parentId, role)!!.skip(index.toLong()).firstOrNull()
+            if (anchor == null) {
                 add(newChildrenArray, childData.id)
             } else {
                 insert(
                     newChildrenArray,
-                    indexOf(newChildrenArray, anchor.asLong),
+                    indexOf(newChildrenArray, anchor?.toLong()),
                     childData.id
                 )
             }
@@ -237,9 +240,9 @@ class CLTree : ITree {
         return nodesMap!![nodeId] != null
     }
 
-    override fun getAllChildren(parentId: Long): LongStream? {
+    override fun getAllChildren(parentId: Long): Sequence<Long>? {
         val children = resolveElement(parentId)!!.getChildren(BulkQuery(store!!))!!.execute()
-        return StreamSupport.stream(children!!.spliterator(), false).mapToLong(CLElement::id)
+        return StreamSupport.stream(children!!.spliterator(), false).mapToLong(CLElement::id).toSequence()
     }
 
     fun getDescendants(root: Long, includeSelf: Boolean): Iterable<CLNode> {
@@ -247,12 +250,12 @@ class CLTree : ITree {
         return parent!!.getDescendants(BulkQuery(store!!), includeSelf)!!.execute()
     }
 
-    override fun getChildren(parentId: Long, role: String?): LongStream? {
+    override fun getChildren(parentId: Long, role: String?): Sequence<Long>? {
         val parent = resolveElement(parentId)
         val children = parent!!.getChildren(BulkQuery(store!!))!!.execute()
         return StreamSupport.stream(children!!.spliterator(), false)
             .filter { it: CLNode -> it.roleInParent == role }
-            .mapToLong(CLNode::id)
+            .mapToLong(CLNode::id).toSequence()
     }
 
     override fun getChildRoles(sourceId: Long): Iterable<String?>? {
@@ -315,7 +318,7 @@ class CLTree : ITree {
             if (oldParent == targetParentId) {
                 val oldRole = getRole(childId)
                 if (oldRole == targetRole) {
-                    val oldIndex = indexOf(getChildren(oldParent, oldRole)!!, childId)
+                    val oldIndex = indexOf(getChildren(oldParent, oldRole)!!.toLongStream(), childId)
                     if (oldIndex == targetIndex) {
                         return this
                     }

@@ -16,6 +16,8 @@
 package org.modelix.model
 
 import org.modelix.model.api.ITree
+import org.modelix.model.util.toLongStream
+import org.modelix.model.util.toSequence
 import java.util.*
 import java.util.stream.LongStream
 
@@ -42,7 +44,7 @@ class TreeTestUtil(private val tree: ITree, private val rand: Random) {
         return if (includeSelf) {
             LongStream.concat(LongStream.of(parent), getDescendants(parent, false))
         } else {
-            tree.getAllChildren(parent)!!.flatMap { it: Long -> getDescendants(it, true) }
+            tree.getAllChildren(parent)!!.flatMap { it: Long -> getDescendants(it, true).toSequence() }.toLongStream()
         }
     }
 

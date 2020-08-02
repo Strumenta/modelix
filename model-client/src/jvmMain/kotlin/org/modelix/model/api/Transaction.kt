@@ -47,10 +47,10 @@ abstract class Transaction(override val branch: IBranch?) : ITransaction {
     }
 
     override fun getChildren(parentId: Long, role: String?): Sequence<Long>? {
-        return tree!!.getChildren(parentId, role)?.toSequence()
+        return tree!!.getChildren(parentId, role)
     }
 
     override fun getAllChildren(parentId: Long): Sequence<Long>? {
-        return tree!!.getAllChildren(parentId)?.toSequence()
+        return tree!!.getAllChildren(parentId)
     }
 }

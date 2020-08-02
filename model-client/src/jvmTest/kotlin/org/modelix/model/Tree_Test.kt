@@ -25,6 +25,7 @@ import org.modelix.model.api.PNodeReference
 import org.modelix.model.lazy.CLTree
 import org.modelix.model.lazy.ObjectStoreCache
 import org.modelix.model.persistent.MapBaseStore
+import org.modelix.model.util.toStream
 import java.util.*
 
 class Tree_Test {
@@ -143,8 +144,8 @@ class Tree_Test {
                 if (expectedDeletes.contains(key._1() as Long)) {
                     continue
                 }
-                val expected = value.stream().mapToLong { it: Long? -> it!! }.toArray()
-                val actual = tree!!.getChildren(key._1() as Long, key._2())!!.toArray()
+                val expected : LongArray = value.stream().mapToLong { it: Long? -> it!! }.toArray()
+                val actual : LongArray = tree!!.getChildren(key._1() as Long, key._2())!!.toList().toLongArray()
                 Assert.assertArrayEquals(expected, actual)
             }
             for ((key, value) in expectedRoles) {
