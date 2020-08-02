@@ -15,8 +15,6 @@
 
 package org.modelix.model.api
 
-import org.modelix.model.util.toSequence
-
 class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
 
     private fun unwrap(node: INode?): Long {

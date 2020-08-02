@@ -15,8 +15,6 @@
 
 package org.modelix.model.api
 
-import org.modelix.model.api.IBranch
-
 class WriteTransaction(_tree: ITree?, branch: IBranch?, idGenerator: IIdGenerator) : Transaction(branch), IWriteTransaction {
     override var tree: ITree? = _tree
         set(value) {

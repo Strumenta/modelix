@@ -15,8 +15,6 @@
 
 package org.modelix.model.api
 
-import org.modelix.model.api.IBranch
-
 interface ITransaction {
     val branch: IBranch?
     var tree: ITree?

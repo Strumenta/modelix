@@ -15,11 +15,6 @@
 
 package org.modelix.model.api
 
-import io.vavr.collection.Seq
-import org.modelix.model.api.IBranch
-import org.modelix.model.util.toSequence
-import java.util.stream.LongStream
-
 abstract class Transaction(override val branch: IBranch?) : ITransaction {
 
     override fun containsNode(nodeId: Long): Boolean {

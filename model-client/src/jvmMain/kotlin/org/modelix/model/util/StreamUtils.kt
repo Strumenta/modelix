@@ -15,7 +15,6 @@
 
 package org.modelix.model.util
 
-import io.vavr.collection.Seq
 import java.util.stream.Collectors
 import java.util.stream.LongStream
 import java.util.stream.Stream
@@ -34,13 +33,13 @@ fun <T> Sequence<T>.toStream(): Stream<T> {
     return this.toList().stream()
 }
 
-fun Sequence<Long>.toLongStream() : LongStream {
+fun Sequence<Long>.toLongStream(): LongStream {
     var b = LongStream.builder()
     this.forEach { b = b.add(it) }
     return b.build()
 }
 
-fun <T> Sequence<T>.skip(n: Long) : Sequence<T> {
+fun <T> Sequence<T>.skip(n: Long): Sequence<T> {
     return this.drop(n.toInt())
 }
 

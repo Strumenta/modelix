@@ -28,7 +28,7 @@ object NodeUtil {
         return if (includeSelf) {
             Stream.concat(Stream.of(node), getDescendants(node, false))
         } else {
-            val seq : Sequence<INode?> = node.allChildren.flatMap { it: INode -> getDescendants(it, true).toSequence() }
+            val seq: Sequence<INode?> = node.allChildren.flatMap { it: INode -> getDescendants(it, true).toSequence() }
             return seq.toStream()
         }
     }

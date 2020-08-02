@@ -15,6 +15,4 @@
 
 package org.modelix.model.api
 
-import org.modelix.model.api.IBranch
-
 class ReadTransaction(override var tree: ITree?, branch: IBranch?) : Transaction(branch), IReadTransaction
