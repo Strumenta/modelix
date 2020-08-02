@@ -48,12 +48,12 @@ class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
     override val allChildren: Sequence<INode>
         get() {
             notifyAccess()
-            return branch!!.transaction!!.getAllChildren(nodeId)!!.mapToObj { id: Long -> wrap(id)!! }.toSequence()
+            return branch!!.transaction!!.getAllChildren(nodeId)!!.map { id: Long -> wrap(id)!! }
         }
 
     override fun getChildren(role: String?): Sequence<INode?>? {
         notifyAccess()
-        return branch!!.transaction!!.getChildren(nodeId, role)!!.mapToObj { id: Long -> wrap(id) }.toSequence()
+        return branch!!.transaction!!.getChildren(nodeId, role)!!.map { id: Long -> wrap(id) }
     }
 
     override val concept: IConcept?

@@ -20,13 +20,24 @@ import java.util.stream.Collectors
 import java.util.stream.LongStream
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
+import kotlin.streams.toList
 
 fun <T> Stream<T>.toSequence(): Sequence<T> {
     return this.collect(Collectors.toList()).asSequence()
 }
 
+fun LongStream.toSequence(): Sequence<Long> {
+    return this.toList().asSequence()
+}
+
 fun <T> Sequence<T>.toStream(): Stream<T> {
     return this.toList().stream()
+}
+
+fun Sequence<Long>.toLongStream() : LongStream {
+    var b = LongStream.builder()
+    this.forEach { b = b.add(it) }
+    return b.build()
 }
 
 object StreamUtils {

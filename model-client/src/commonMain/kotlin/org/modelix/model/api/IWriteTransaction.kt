@@ -15,18 +15,11 @@
 
 package org.modelix.model.api
 
-import org.modelix.model.api.IBranch
-import java.util.stream.LongStream
-
-actual interface ITransaction {
-    val branch: IBranch?
-    var tree: ITree?
-    fun containsNode(nodeId: Long): Boolean
-    fun getConcept(nodeId: Long): IConcept?
-    fun getParent(nodeId: Long): Long
-    fun getRole(nodeId: Long): String?
-    fun getProperty(nodeId: Long, role: String?): String?
-    fun getReferenceTarget(sourceId: Long, role: String?): INodeReference?
-    fun getChildren(parentId: Long, role: String?): LongStream?
-    fun getAllChildren(parentId: Long): LongStream?
+interface IWriteTransaction : ITransaction {
+    fun setProperty(nodeId: Long, role: String?, value: String?)
+    fun setReferenceTarget(sourceId: Long, role: String?, target: INodeReference?)
+    fun moveChild(newParentId: Long, newRole: String?, newIndex: Int, childId: Long)
+    fun addNewChild(parentId: Long, role: String?, index: Int, concept: IConcept?): Long
+    fun addNewChild(parentId: Long, role: String?, index: Int, childId: Long, concept: IConcept?)
+    fun deleteNode(nodeId: Long)
 }

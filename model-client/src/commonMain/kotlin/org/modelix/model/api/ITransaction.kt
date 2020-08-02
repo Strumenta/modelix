@@ -15,4 +15,17 @@
 
 package org.modelix.model.api
 
-actual interface IReadTransaction : ITransaction
+import org.modelix.model.api.IBranch
+
+interface ITransaction {
+    val branch: IBranch?
+    var tree: ITree?
+    fun containsNode(nodeId: Long): Boolean
+    fun getConcept(nodeId: Long): IConcept?
+    fun getParent(nodeId: Long): Long
+    fun getRole(nodeId: Long): String?
+    fun getProperty(nodeId: Long, role: String?): String?
+    fun getReferenceTarget(sourceId: Long, role: String?): INodeReference?
+    fun getChildren(parentId: Long, role: String?): Sequence<Long>?
+    fun getAllChildren(parentId: Long): Sequence<Long>?
+}

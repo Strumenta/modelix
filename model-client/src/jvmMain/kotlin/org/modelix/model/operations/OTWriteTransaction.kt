@@ -15,10 +15,13 @@
 
 package org.modelix.model.operations
 
+import io.vavr.collection.Seq
 import org.apache.log4j.LogManager
 import org.modelix.model.api.*
 
 import org.modelix.model.util.StreamUtils.indexOf
+import org.modelix.model.util.toLongStream
+import org.modelix.model.util.toStream
 import java.util.stream.LongStream
 
 class OTWriteTransaction(private val transaction: IWriteTransaction, private val otBranch: OTBranch, protected var idGenerator: IIdGenerator) : IWriteTransaction {
@@ -34,7 +37,7 @@ class OTWriteTransaction(private val transaction: IWriteTransaction, private val
         var newIndex = newIndex
         val oldparent = getParent(childId)
         val oldRole = getRole(childId)
-        val oldIndex = indexOf(getChildren(oldparent, oldRole)!!, childId)
+        val oldIndex = indexOf(getChildren(oldparent, oldRole)!!.toLongStream(), childId)
         if (newIndex == -1) {
             newIndex = getChildren(newParentId, newRole)!!.count().toInt()
         }
@@ -60,7 +63,7 @@ class OTWriteTransaction(private val transaction: IWriteTransaction, private val
     override fun deleteNode(nodeId: Long) {
         val parent = getParent(nodeId)
         val role = getRole(nodeId)
-        val index = indexOf(getChildren(parent, role)!!, nodeId)
+        val index = indexOf(getChildren(parent, role)!!.toLongStream(), nodeId)
         apply(DeleteNodeOp(parent, role!!, index, nodeId))
     }
 
@@ -74,14 +77,14 @@ class OTWriteTransaction(private val transaction: IWriteTransaction, private val
         return transaction.containsNode(nodeId)
     }
 
-    override fun getAllChildren(parentId: Long): LongStream? {
+    override fun getAllChildren(parentId: Long): Sequence<Long>? {
         return transaction.getAllChildren(parentId)
     }
 
     override val branch: IBranch
         get() = otBranch
 
-    override fun getChildren(parentId: Long, role: String?): LongStream? {
+    override fun getChildren(parentId: Long, role: String?): Sequence<Long>? {
         return transaction.getChildren(parentId, role)
     }
 

@@ -15,7 +15,9 @@
 
 package org.modelix.model.api
 
+import io.vavr.collection.Seq
 import org.modelix.model.api.IBranch
+import org.modelix.model.util.toSequence
 import java.util.stream.LongStream
 
 abstract class Transaction(override val branch: IBranch?) : ITransaction {
@@ -44,11 +46,11 @@ abstract class Transaction(override val branch: IBranch?) : ITransaction {
         return tree!!.getReferenceTarget(sourceId, role)
     }
 
-    override fun getChildren(parentId: Long, role: String?): LongStream? {
-        return tree!!.getChildren(parentId, role)
+    override fun getChildren(parentId: Long, role: String?): Sequence<Long>? {
+        return tree!!.getChildren(parentId, role)?.toSequence()
     }
 
-    override fun getAllChildren(parentId: Long): LongStream? {
-        return tree!!.getAllChildren(parentId)
+    override fun getAllChildren(parentId: Long): Sequence<Long>? {
+        return tree!!.getAllChildren(parentId)?.toSequence()
     }
 }
