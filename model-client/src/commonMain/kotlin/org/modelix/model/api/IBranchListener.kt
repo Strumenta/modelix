@@ -15,6 +15,6 @@
 
 package org.modelix.model.api
 
-actual interface IBranchListener {
+interface IBranchListener {
     fun treeChanged(oldTree: ITree?, newTree: ITree?)
 }
