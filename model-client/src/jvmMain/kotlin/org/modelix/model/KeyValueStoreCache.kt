@@ -25,11 +25,11 @@ import java.util.Collections
 import java.util.concurrent.locks.ReentrantLock
 import java.util.stream.Collectors
 
-class KeyValueStoreCache(private val store: IKeyValueStore) : IKeyValueStore {
+actual class KeyValueStoreCache actual constructor(private val store: IKeyValueStore) : IKeyValueStore {
     private val cache = Collections.synchronizedMap(LRUMap<String?, String?>(300000))
     private val pendingPrefetches: MutableSet<String?> = HashSet()
     private val activeRequests: MutableList<GetRequest> = ArrayList()
-    override fun prefetch(rootKey: String?) {
+    actual override fun prefetch(rootKey: String?) {
         val processedKeys: MutableSet<String?> = HashSet()
         processedKeys.add(rootKey)
         var newKeys: MutableList<String?> = Arrays.asList(rootKey).toMutableList()
@@ -56,11 +56,11 @@ class KeyValueStoreCache(private val store: IKeyValueStore) : IKeyValueStore {
         }
     }
 
-    override fun get(key: String?): String? {
+    actual override fun get(key: String?): String? {
         return getAll(setOf(key))!![key]
     }
 
-    override fun getAll(keys_: Iterable<String?>?): Map<String?, String?>? {
+    actual override fun getAll(keys_: Iterable<String?>?): Map<String?, String?>? {
         val remainingKeys = toStream(keys_!!).collect(Collectors.toList())
         val result: MutableMap<String?, String?> = LinkedHashMap(16, 0.75.toFloat(), false)
         synchronized(cache) {
@@ -114,21 +114,21 @@ class KeyValueStoreCache(private val store: IKeyValueStore) : IKeyValueStore {
         return result
     }
 
-    override fun listen(key: String?, listener: IKeyListener?) {
+    actual override fun listen(key: String?, listener: IKeyListener?) {
         store.listen(key, listener)
     }
 
-    override fun put(key: String?, value: String?) {
+    actual override fun put(key: String?, value: String?) {
         cache[key] = value
         store.put(key, value)
     }
 
-    override fun putAll(entries: Map<String?, String?>?) {
+    actual override fun putAll(entries: Map<String?, String?>?) {
         entries!!.forEach { (key: String?, value: String?) -> cache[key] = value }
         store.putAll(entries)
     }
 
-    override fun removeListener(key: String?, listener: IKeyListener?) {
+    actual override fun removeListener(key: String?, listener: IKeyListener?) {
         store.removeListener(key, listener)
     }
 
