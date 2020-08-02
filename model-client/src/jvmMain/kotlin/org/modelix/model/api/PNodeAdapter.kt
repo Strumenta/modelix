@@ -15,10 +15,7 @@
 
 package org.modelix.model.api
 
-import org.modelix.model.api.IBranch
 import org.modelix.model.util.toSequence
-import java.util.function.Supplier
-import java.util.stream.Stream
 
 class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
 
@@ -62,7 +59,7 @@ class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
     override val concept: IConcept?
         get() {
             notifyAccess()
-            return branch!!.computeRead(org.modelix.model.utils.Supplier { branch.transaction!!.getConcept(nodeId) })
+            return branch!!.computeRead(org.modelix.model.util.Supplier { branch.transaction!!.getConcept(nodeId) })
         }
 
     override val parent: INode?
@@ -145,7 +142,7 @@ class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
     override fun toString(): String {
         var concept: IConcept? = null
         try {
-            concept = branch!!.computeRead(org.modelix.model.utils.Supplier { branch.transaction!!.getConcept(nodeId) })
+            concept = branch!!.computeRead(org.modelix.model.util.Supplier { branch.transaction!!.getConcept(nodeId) })
         } catch (ex: Exception) {
         }
         var str = "PNode$nodeId"

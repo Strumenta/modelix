@@ -19,9 +19,8 @@ import io.vavr.Tuple
 import io.vavr.Tuple2
 import org.modelix.model.api.*
 import org.modelix.model.api.IBranch
-import org.modelix.model.utils.Runnable
+import org.modelix.model.util.Runnable
 import java.util.*
-import java.util.function.Supplier
 
 class OTBranch(private val branch: IBranch, private val idGenerator: IIdGenerator) : IBranch {
     private var operations: MutableList<IAppliedOperation> = ArrayList()
@@ -41,7 +40,7 @@ class OTBranch(private val branch: IBranch, private val idGenerator: IIdGenerato
 
     val operationsAndTree: Tuple2<List<IAppliedOperation>, ITree>
         get() {
-            synchronized(operationsLock) { return Tuple.of(newOperations, computeRead<ITree>(org.modelix.model.utils.Supplier<ITree> { transaction.tree!! })) }
+            synchronized(operationsLock) { return Tuple.of(newOperations, computeRead<ITree>(org.modelix.model.util.Supplier<ITree> { transaction.tree!! })) }
         }
 
     override fun addListener(l: IBranchListener?) {
@@ -60,12 +59,12 @@ class OTBranch(private val branch: IBranch, private val idGenerator: IIdGenerato
         return branch.canWrite()
     }
 
-    override fun <T> computeRead(computable: org.modelix.model.utils.Supplier<T>?): T {
+    override fun <T> computeRead(computable: org.modelix.model.util.Supplier<T>?): T {
         checkNotEDT()
         return branch.computeRead(computable)
     }
 
-    override fun <T> computeWrite(computable: org.modelix.model.utils.Supplier<T>?): T {
+    override fun <T> computeWrite(computable: org.modelix.model.util.Supplier<T>?): T {
         checkNotEDT()
         return branch.computeWrite(computable)
     }
@@ -79,7 +78,7 @@ class OTBranch(private val branch: IBranch, private val idGenerator: IIdGenerato
     override val writeTransaction: IWriteTransaction
         get() = wrap(branch.writeTransaction)
 
-    override fun runRead(runnable: org.modelix.model.utils.Runnable?) {
+    override fun runRead(runnable: Runnable?) {
         checkNotEDT()
         branch.runRead(runnable)
     }

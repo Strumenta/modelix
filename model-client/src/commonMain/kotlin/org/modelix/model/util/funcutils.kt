@@ -1,4 +1,4 @@
-package org.modelix.model.utils
+package org.modelix.model.util
 
 interface Runnable {
     fun run()

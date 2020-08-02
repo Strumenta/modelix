@@ -15,14 +15,13 @@
 
 package org.modelix.model.util
 
-import org.modelix.model.utils.Runnable
 import java.util.function.Supplier
 
-class ContextValue<E> {
+actual class ContextValue<E> {
     private var defaultValue: E? = null
     private val value = ThreadLocal<MutableList<E>>()
 
-    constructor() {}
+    actual constructor() {}
     constructor(defaultValue: E) {
         this.defaultValue = defaultValue
     }

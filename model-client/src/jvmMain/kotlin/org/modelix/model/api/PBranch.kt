@@ -19,11 +19,10 @@ import org.apache.commons.lang3.mutable.MutableObject
 import org.apache.log4j.Level
 import org.apache.log4j.LogManager
 import org.modelix.model.api.DefaultIdGenerator.Companion.instance
-import org.modelix.model.api.IBranch
 import org.modelix.model.util.ContextValue
 import org.modelix.model.util.pmap.COWArrays
-import org.modelix.model.utils.Runnable
-import org.modelix.model.utils.Supplier
+import org.modelix.model.util.Runnable
+import org.modelix.model.util.Supplier
 
 //import java.util.function.Supplier
 

@@ -15,8 +15,8 @@
 
 package org.modelix.model.api
 
-import org.modelix.model.utils.Runnable
-import org.modelix.model.utils.Supplier
+import org.modelix.model.util.Runnable
+import org.modelix.model.util.Supplier
 
 interface IBranch {
     fun runRead(runnable: Runnable?)

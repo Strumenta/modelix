@@ -75,7 +75,7 @@ class ActiveBranch(client: IModelClient, tree: TreeId, branchName: String?, user
         replicatedTree = ReplicatedTree(client, tree, branchName!!, user)
         replicatedTree!!.branch.addListener(forwardingListener)
         val b = replicatedTree!!.branch
-        val newTree = b.computeRead(org.modelix.model.utils.Supplier { b.transaction!!.tree })
+        val newTree = b.computeRead(org.modelix.model.util.Supplier { b.transaction!!.tree })
         notifyListeners(newTree)
     }
 
@@ -108,7 +108,7 @@ class ActiveBranch(client: IModelClient, tree: TreeId, branchName: String?, user
         this.branchName = branchName
         this.user = user
         replicatedTree = ReplicatedTree(client, tree, branchName!!, user)
-        lastKnownTree = replicatedTree!!.branch.computeRead(org.modelix.model.utils.Supplier { replicatedTree!!.branch.transaction!!.tree })
+        lastKnownTree = replicatedTree!!.branch.computeRead(org.modelix.model.util.Supplier { replicatedTree!!.branch.transaction!!.tree })
         replicatedTree!!.branch.addListener(forwardingListener)
     }
 }
