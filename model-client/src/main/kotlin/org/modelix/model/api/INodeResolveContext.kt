@@ -21,7 +21,6 @@ interface INodeResolveContext {
     fun resolve(ref: INodeReference?): INode?
 
     companion object {
-        @JvmField
         val CONTEXT_VALUE = ContextValue<INodeResolveContext>()
     }
 }

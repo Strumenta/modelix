@@ -18,6 +18,10 @@ package org.modelix.model.api
 import java.util.stream.Stream
 
 object NodeUtil {
+    /*
+     * TODO Consider using an extension method here
+     * TODO return a sequence and not a Stream
+     */
     fun getDescendants(node: INode, includeSelf: Boolean): Stream<INode?> {
         return if (includeSelf) {
             Stream.concat(Stream.of(node), getDescendants(node, false))

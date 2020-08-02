@@ -18,7 +18,7 @@ package org.modelix.model.api
 import java.util.Objects
 
 class CompositeNodeResolveContext(contexts: Iterable<INodeResolveContext?>) : INodeResolveContext {
-    private val contexts: List<INodeResolveContext?>
+    private val contexts: List<INodeResolveContext?> = contexts.toList()
 
     constructor(vararg contexts: INodeResolveContext?) : this(contexts.toList()) {}
 
@@ -35,9 +35,5 @@ class CompositeNodeResolveContext(contexts: Iterable<INodeResolveContext?>) : IN
                 INodeResolveContext.CONTEXT_VALUE.runWith(CompositeNodeResolveContext(context, activeContext), runnable!!)
             }
         }
-    }
-
-    init {
-        this.contexts = contexts.toList()
     }
 }

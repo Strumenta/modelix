@@ -110,7 +110,7 @@ class PBranch @JvmOverloads constructor(@field:Volatile private var tree: ITree?
         listeners = COWArrays.remove(listeners, l)
     }
 
-    protected fun notifyTreeChange(oldTree: ITree?, newTree: ITree?) {
+    private fun notifyTreeChange(oldTree: ITree?, newTree: ITree?) {
         if (oldTree === newTree) {
             return
         }

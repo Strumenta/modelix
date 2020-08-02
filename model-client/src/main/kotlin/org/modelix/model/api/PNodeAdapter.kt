@@ -20,7 +20,7 @@ import java.util.stream.Stream
 
 class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
 
-    protected fun unwrap(node: INode?): Long {
+    private fun unwrap(node: INode?): Long {
         if (node == null) {
             return 0
         }
@@ -130,9 +130,7 @@ class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
         if (if (branch != null) branch != that.branch else that.branch != null) {
             return false
         }
-        return if (nodeId != that.nodeId) {
-            false
-        } else true
+        return nodeId == that.nodeId
     }
 
     override fun hashCode(): Int {
@@ -155,12 +153,9 @@ class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
         return str
     }
 
-    // companion object {
-    @JvmOverloads
     fun wrap(id: Long, branch: IBranch? = this.branch): INode? {
         return if (id == 0L) null else PNodeAdapter(id, branch)
     }
-    // }
 
     init {
         notifyAccess()

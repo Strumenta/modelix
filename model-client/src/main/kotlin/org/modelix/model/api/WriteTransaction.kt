@@ -20,6 +20,7 @@ class WriteTransaction(_tree: ITree?, branch: IBranch?, idGenerator: IIdGenerato
         set(value) {
             checkNotClosed()
             tree = value
+            field = value
         }
     private var closed = false
     protected var idGenerator: IIdGenerator
@@ -30,15 +31,6 @@ class WriteTransaction(_tree: ITree?, branch: IBranch?, idGenerator: IIdGenerato
     protected fun checkNotClosed() {
         check(!closed) { "Transaction is already closed" }
     }
-
-//    override fun getTree(): ITree? {
-//        return tree
-//    }
-//
-//    override fun setTree(newTree: ITree?) {
-//        checkNotClosed()
-//        tree = newTree
-//    }
 
     override fun setProperty(nodeId: Long, role: String?, value: String?) {
         checkNotClosed()
