@@ -17,7 +17,7 @@ package org.modelix.model.lazy
 
 import java.util.function.Function
 
-abstract class LazyLoaded<E>(protected var hash: String?, protected var store: IDeserializingKeyValueStore?) {
+actual abstract class LazyLoaded<E> actual constructor(protected var hash: String?, protected var store: IDeserializingKeyValueStore?) {
     protected fun init() {
         if (hash == null) {
             return

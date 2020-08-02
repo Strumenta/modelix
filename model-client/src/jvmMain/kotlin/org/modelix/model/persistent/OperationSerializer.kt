@@ -26,7 +26,7 @@ import org.modelix.model.persistent.SerializationUtil.unescape
 import java.lang.IllegalArgumentException
 import java.util.*
 
-class OperationSerializer private constructor() {
+actual class OperationSerializer private actual constructor() {
     companion object {
         val INSTANCE = OperationSerializer()
         private const val SEPARATOR = ";"

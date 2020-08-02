@@ -21,7 +21,7 @@ import java.util.function.Function
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
-class CLNode(tree: CLTree?, data: CPNode?) : CLElement(tree!!, data!!) {
+actual class CLNode actual constructor(tree: CLTree?, data: CPNode?) : CLElement(tree!!, data!!) {
     constructor(tree: CLTree?, id: Long, concept: String?, parentId: Long, roleInParent: String?, childrenIds: LongArray?, propertyRoles: Array<String?>?, propertyValues: Array<String?>?, referenceRoles: Array<String?>?, referenceTargets: Array<CPElementRef?>?) :
         this(
             tree,

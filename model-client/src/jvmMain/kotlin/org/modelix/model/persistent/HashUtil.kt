@@ -21,7 +21,7 @@ import java.security.NoSuchAlgorithmException
 import java.util.*
 import java.util.regex.Pattern
 
-object HashUtil {
+actual object HashUtil {
     private val HASH_PATTERN = Pattern.compile("[a-zA-Z0-9\\-_]{43}")
     private val UTF8 = StandardCharsets.UTF_8
     fun sha256(input: ByteArray?): String {

@@ -17,7 +17,7 @@ package org.modelix.model.persistent
 
 import org.modelix.model.persistent.SerializationUtil.longToHex
 
-class CPHamtLeaf(
+actual class CPHamtLeaf actual constructor(
     val key: Long,
     /**
      * SHA to CPElement

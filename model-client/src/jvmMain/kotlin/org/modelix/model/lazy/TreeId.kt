@@ -17,7 +17,7 @@ package org.modelix.model.lazy
 
 import java.util.*
 
-class TreeId(val id: String) {
+actual class TreeId actual constructor(val id: String) {
 
     @get:Deprecated("")
     val masterBranchKey: String

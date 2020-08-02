@@ -21,7 +21,7 @@ import org.modelix.model.persistent.CPVersion
 import java.util.Arrays
 import java.util.function.Function
 
-class CLVersion {
+actual class CLVersion {
     private var store: IDeserializingKeyValueStore
     var data: CPVersion? = null
         private set

@@ -18,7 +18,7 @@ package org.modelix.model.persistent
 import org.modelix.model.persistent.SerializationUtil.intToHex
 import java.util.*
 
-class CPHamtInternal(
+actual class CPHamtInternal actual constructor(
     var bitmap: Int,
     /**
      * SHA to CPHamtNode

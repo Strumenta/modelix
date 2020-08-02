@@ -23,7 +23,7 @@ import org.modelix.model.util.pmap.LongKeyPMap
 import java.util.function.BiPredicate
 import java.util.function.Function
 
-class CLHamtInternal : CLHamtNode<CPHamtInternal?> {
+actual class CLHamtInternal : CLHamtNode<CPHamtInternal?> {
     private val data_: CPHamtInternal
 
     constructor(store: IDeserializingKeyValueStore) : this(0, arrayOfNulls<String>(0), store) {}

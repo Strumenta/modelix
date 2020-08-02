@@ -19,7 +19,7 @@ import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-object SerializationUtil {
+actual object SerializationUtil {
     @JvmStatic
     fun escape(value: String?): String {
         return if (value == null) {

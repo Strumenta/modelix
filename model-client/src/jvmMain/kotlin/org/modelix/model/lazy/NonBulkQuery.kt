@@ -20,7 +20,7 @@ import java.util.function.Consumer
 import java.util.function.Function
 import java.util.stream.Collectors
 
-class NonBulkQuery(private val store: IDeserializingKeyValueStore) : IBulkQuery {
+actual class NonBulkQuery actual constructor(private val store: IDeserializingKeyValueStore) : IBulkQuery {
     override fun <I, O> map(input_: Iterable<I>?, f: org.modelix.model.util.Function<I, IBulkQuery.Value<O>?>?): IBulkQuery.Value<List<O>?>? {
         val list = toStream(input_!!).map { f!!.apply(it) }.map { it!!.execute() }.collect(Collectors.toList())
         return Value(list)

@@ -21,7 +21,7 @@ import org.modelix.model.persistent.CPHamtNode
 import org.modelix.model.persistent.HashUtil
 import java.util.function.BiPredicate
 
-class CLHamtLeaf : CLHamtNode<CPHamtLeaf?> {
+actual class CLHamtLeaf : CLHamtNode<CPHamtLeaf?> {
     private val data: CPHamtLeaf
 
     constructor(data: CPHamtLeaf, store: IDeserializingKeyValueStore?) : super(store!!) {

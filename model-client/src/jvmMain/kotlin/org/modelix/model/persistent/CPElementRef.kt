@@ -15,7 +15,7 @@
 
 package org.modelix.model.persistent
 
-abstract class CPElementRef /*package*/
+actual abstract class CPElementRef /*package*/
 internal constructor() {
     abstract val isGlobal: Boolean
     abstract val isLocal: Boolean

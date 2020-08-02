@@ -22,7 +22,7 @@ import org.modelix.model.persistent.CPHamtNode
 import java.util.function.BiPredicate
 import java.util.function.Function
 
-abstract class CLHamtNode<E : CPHamtNode?>(protected var store: IDeserializingKeyValueStore) {
+actual abstract class CLHamtNode<E : CPHamtNode?> actual constructor(protected var store: IDeserializingKeyValueStore) {
     protected fun createEmptyNode(): CLHamtNode<*> {
         return create(CPHamtInternal(0, arrayOfNulls(0)), store)!!
     }

@@ -19,7 +19,7 @@ import org.modelix.model.api.ITree
 import org.modelix.model.persistent.CPElement
 import org.modelix.model.persistent.CPNode
 
-abstract class CLElement(protected val tree_: CLTree, protected val data_: CPElement) {
+actual abstract class CLElement actual constructor(protected val tree_: CLTree, protected val data_: CPElement) {
     open fun getData(): CPElement? {
         return data_
     }

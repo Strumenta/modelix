@@ -19,7 +19,7 @@ import gnu.trove.map.hash.THashMap
 import org.modelix.model.IKeyListener
 import org.modelix.model.IKeyValueStore
 
-class MapBaseStore : IKeyValueStore {
+actual class MapBaseStore : IKeyValueStore {
     private val map: MutableMap<String?, String?> = THashMap()
     override fun get(key: String?): String? {
         return map[key]

@@ -31,7 +31,7 @@ import java.util.function.Function
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
-class CPVersion(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>?, operationsHash: String?, numberOfOperations: Int) {
+actual class CPVersion actual constructor(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>?, operationsHash: String?, numberOfOperations: Int) {
     val id: Long
     val time: String?
     val author: String?

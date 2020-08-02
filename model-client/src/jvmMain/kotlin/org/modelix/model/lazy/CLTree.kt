@@ -39,7 +39,7 @@ import java.util.stream.Collectors
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
-class CLTree : ITree {
+actual class CLTree : ITree {
     protected var store: IDeserializingKeyValueStore? = null
     protected var data: CPTree? = null
 

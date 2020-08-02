@@ -15,7 +15,7 @@
 
 package org.modelix.model.lazy
 
-class CLElementRef(val id: Long) {
+actual class CLElementRef actual constructor(val id: Long) {
 
     override fun equals(o: Any?): Boolean {
         if (this === o) {

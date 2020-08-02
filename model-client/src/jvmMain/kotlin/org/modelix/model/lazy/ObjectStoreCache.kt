@@ -23,7 +23,7 @@ import java.util.function.BiFunction
 import java.util.function.Function
 import java.util.stream.Collectors
 
-class ObjectStoreCache(override val keyValueStore: IKeyValueStore) : IDeserializingKeyValueStore {
+actual class ObjectStoreCache actual constructor(override val keyValueStore: IKeyValueStore) : IDeserializingKeyValueStore {
     private val cache = Collections.synchronizedMap(LRUMap<String?, Any>(100000))
 
     override fun <T> getAll(hashes_: Iterable<String?>?, deserializer: org.modelix.model.util.BiFunction<String?, String?, T>?): Iterable<T>? {

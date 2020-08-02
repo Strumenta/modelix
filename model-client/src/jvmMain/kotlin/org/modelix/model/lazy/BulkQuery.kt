@@ -30,7 +30,7 @@ import kotlin.collections.HashMap
 /**
  * Not thread safe
  */
-class BulkQuery(private val store: IDeserializingKeyValueStore) : IBulkQuery {
+actual class BulkQuery actual constructor(private val store: IDeserializingKeyValueStore) : IBulkQuery {
     private var queue: MutableList<Tuple3<String, org.modelix.model.util.Function<String?, *>, Consumer<Any?>>> = ArrayList()
     private var processing = false
     protected fun executeBulkQuery(keys: Iterable<String>, deserializers: Map<String, org.modelix.model.util.Function<String?, *>>): Map<String, Any> {

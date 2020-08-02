@@ -15,7 +15,7 @@
 
 package org.modelix.model.persistent
 
-class CPTree(
+actual class CPTree actual constructor(
     val id: String,
     val rootId: Long,
     /**
