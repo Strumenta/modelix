@@ -15,4 +15,50 @@
 
 package org.modelix.model.operations
 
-expect class SetPropertyOp(nodeId: Long, role: String, value: String) : AbstractOperation
+import org.modelix.model.api.IWriteTransaction
+import org.modelix.model.util.toHexString
+
+class SetPropertyOp(val nodeId: Long, val role: String, val value: String) : AbstractOperation() {
+    override fun apply(transaction: IWriteTransaction?): IAppliedOperation? {
+        val oldValue = transaction!!.getProperty(nodeId, role)
+        transaction.setProperty(nodeId, role, value)
+        return Applied(oldValue!!)
+    }
+
+    override fun transform(previous: IOperation?): IOperation? {
+        return if (previous is SetPropertyOp) {
+            this
+        } else if (previous is SetReferenceOp) {
+            this
+        } else if (previous is AddNewChildOp) {
+            this
+        } else if (previous is DeleteNodeOp) {
+            if (nodeId == previous.childId) {
+                NoOp()
+            } else {
+                this
+            }
+        } else if (previous is MoveNodeOp) {
+            this
+        } else {
+            throw RuntimeException("Unknown type: $previous")
+        }
+    }
+
+    override fun toString(): String {
+        return "SetPropertyOp ${nodeId.toHexString()}.$role = $value"
+    }
+
+    inner class Applied(private val oldValue: String) : AbstractOperation.Applied(), IAppliedOperation {
+        override val originalOp: IOperation
+            get() = this@SetPropertyOp
+
+        override fun invert(): IOperation? {
+            return SetPropertyOp(nodeId, role, oldValue)
+        }
+
+        override fun toString(): String {
+            return super.toString() + ", oldValue: " + oldValue
+        }
+    }
+}

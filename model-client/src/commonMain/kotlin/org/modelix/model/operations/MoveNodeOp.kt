@@ -16,5 +16,67 @@
 package org.modelix.model.operations
 
 import org.modelix.model.api.IWriteTransaction
+import org.modelix.model.util.toHexString
 
-expect class MoveNodeOp(childId: Long, sourceParentId: Long, sourceRole: String, sourceIndex: Int, targetParentId: Long, targetRole: String, targetIndex: Int) : AbstractOperation, IModifiesChildrenOp
+class MoveNodeOp(val childId: Long, val sourceParentId: Long, val sourceRole: String, val sourceIndex: Int, val targetParentId: Long, val targetRole: String, val targetIndex: Int) : AbstractOperation(), IModifiesChildrenOp {
+    fun withIndex(newSourceIndex: Int, newTargetIndex: Int): MoveNodeOp {
+        return if (newSourceIndex == sourceIndex && newTargetIndex == targetIndex) this else MoveNodeOp(childId, sourceParentId, sourceRole, newSourceIndex, targetParentId, targetRole, newTargetIndex)
+    }
+
+    override fun apply(transaction: IWriteTransaction?): IAppliedOperation? {
+        transaction!!.moveChild(targetParentId, targetRole, targetIndex, childId)
+        return Applied()
+    }
+
+    override fun transform(previous: IOperation?): IOperation? {
+        return if (previous is AddNewChildOp) {
+            val o = previous
+            withIndex(o.adjustIndex(sourceParentId, sourceRole, sourceIndex), o.adjustIndex(targetParentId, targetRole, targetIndex))
+        } else if (previous is DeleteNodeOp) {
+            val o = previous
+            if (o.parentId == sourceParentId && o.role == sourceRole && o.index == sourceIndex) {
+                if (o.childId != childId) {
+                    throw RuntimeException(sourceParentId.toString() + "." + sourceRole + "[" + sourceIndex + "] expected to be " + childId + ", but was " + o.childId)
+                }
+                NoOp()
+            } else {
+                withIndex(o.adjustIndex(sourceParentId, sourceRole, sourceIndex), o.adjustIndex(targetParentId, targetRole, targetIndex))
+            }
+        } else if (previous is MoveNodeOp) {
+            val o = previous
+            withIndex(o.adjustIndex(sourceParentId, sourceRole, sourceIndex), o.adjustIndex(targetParentId, targetRole, targetIndex))
+        } else if (previous is SetPropertyOp) {
+            this
+        } else if (previous is SetReferenceOp) {
+            this
+        } else if (previous is NoOp) {
+            this
+        } else {
+            throw RuntimeException("Unknown type: $previous")
+        }
+    }
+
+    override fun adjustIndex(otherParentId: Long, otherRole: String?, otherIndex: Int): Int {
+        var adjustedIndex = otherIndex
+        if (otherParentId == sourceParentId && otherRole == sourceRole && sourceIndex < otherIndex) {
+            adjustedIndex--
+        }
+        if (otherParentId == targetParentId && otherRole == targetRole && targetIndex <= otherIndex) {
+            adjustedIndex++
+        }
+        return adjustedIndex
+    }
+
+    override fun toString(): String {
+        return "MoveNodeOp ${childId.toHexString()}, ${sourceParentId.toHexString()}.$sourceRole[$sourceIndex]->${targetParentId.toHexString()}.$targetRole[$targetIndex]"
+    }
+
+    inner class Applied : AbstractOperation.Applied(), IAppliedOperation {
+        override val originalOp: IOperation
+            get() = this@MoveNodeOp
+
+        override fun invert(): IOperation? {
+            return MoveNodeOp(childId, targetParentId, targetRole, targetIndex, sourceParentId, sourceRole, sourceIndex)
+        }
+    }
+}
