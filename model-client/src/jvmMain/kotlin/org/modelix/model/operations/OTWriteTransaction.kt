@@ -20,7 +20,7 @@ import org.modelix.model.api.*
 import org.modelix.model.util.StreamUtils.indexOf
 import org.modelix.model.util.toLongStream
 
-class OTWriteTransaction(private val transaction: IWriteTransaction, private val otBranch: OTBranch, protected var idGenerator: IIdGenerator) : IWriteTransaction {
+actual class OTWriteTransaction actual constructor(private val transaction: IWriteTransaction, private val otBranch: OTBranch, protected var idGenerator: IIdGenerator) : IWriteTransaction {
     protected fun apply(op: IOperation) {
         if (LOG.isDebugEnabled) {
             LOG.debug("apply: $op")

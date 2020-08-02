@@ -15,12 +15,11 @@
 
 package org.modelix.model.operations
 
-import io.vavr.Tuple
-import io.vavr.Tuple2
 import org.modelix.model.api.*
 import org.modelix.model.api.IBranch
 import org.modelix.model.util.Runnable
-import java.util.*
+import org.modelix.model.util.Tuple
+import org.modelix.model.util.Tuple2
 
 class OTBranch(private val branch: IBranch, private val idGenerator: IIdGenerator) : IBranch {
     private var operations: MutableList<IAppliedOperation> = ArrayList()

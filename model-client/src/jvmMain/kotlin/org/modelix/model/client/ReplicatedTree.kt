@@ -106,7 +106,7 @@ actual class ReplicatedTree(private val client: IModelClient, private val treeId
 
     protected fun createAndMergeLocalVersion() {
         checkDisposed()
-        var opsAndTree: Tuple2<List<IAppliedOperation>, ITree>
+        var opsAndTree: org.modelix.model.util.Tuple2<List<IAppliedOperation>, ITree>
         var localBase: CLVersion?
         val remoteBase = MutableObject<CLVersion?>()
         val newLocalVersion = MutableObject<CLVersion>()
@@ -119,7 +119,7 @@ actual class ReplicatedTree(private val client: IModelClient, private val treeId
             if (ops.size == 0) {
                 return
             }
-            newLocalVersion.setValue(createVersion(opsAndTree._2() as CLTree, ops, localBase!!.hash))
+            newLocalVersion.setValue(createVersion(opsAndTree._2 as CLTree, ops, localBase!!.hash))
             version = newLocalVersion.value
             divergenceTime = 0
         }

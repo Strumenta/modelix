@@ -44,3 +44,21 @@ interface BiFunction<T, U, R> {
 fun <T, U, R> BiFunction(handler: (T, U) -> R): BiFunction<T, U, R> = object : BiFunction<T, U, R> {
     override fun apply(t: T, u: U): R = handler(t, u)
 }
+
+interface Tuple {
+    companion object {
+        fun <T1,T2> of(t1: T1, t2: T2) : Tuple2<T1,T2> {
+            return object : Tuple2<T1, T2> {
+                override val _1: T1
+                    get() = t1
+                override val _2: T2
+                    get() = t2
+
+            }
+        }
+    }
+}
+interface Tuple2<T1,T2> : Tuple {
+    val _1: T1
+    val _2: T2
+}

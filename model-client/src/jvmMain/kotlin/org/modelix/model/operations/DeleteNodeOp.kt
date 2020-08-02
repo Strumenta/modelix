@@ -19,7 +19,7 @@ import org.modelix.model.api.IConcept
 import org.modelix.model.api.IWriteTransaction
 import java.text.MessageFormat
 
-class DeleteNodeOp(val parentId: Long, val role: String, val index: Int, val childId: Long) : AbstractOperation(), IModifiesChildrenOp {
+actual class DeleteNodeOp actual constructor(val parentId: Long, val role: String, val index: Int, val childId: Long) : AbstractOperation(), IModifiesChildrenOp {
     fun withIndex(newIndex: Int): DeleteNodeOp {
         return if (newIndex == index) this else DeleteNodeOp(parentId, role, newIndex, childId)
     }

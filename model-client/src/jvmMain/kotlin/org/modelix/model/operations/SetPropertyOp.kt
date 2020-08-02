@@ -18,7 +18,7 @@ package org.modelix.model.operations
 import org.modelix.model.api.IWriteTransaction
 import java.text.MessageFormat
 
-class SetPropertyOp(val nodeId: Long, val role: String, val value: String) : AbstractOperation() {
+actual class SetPropertyOp actual constructor(val nodeId: Long, val role: String, val value: String) : AbstractOperation() {
     override fun apply(transaction: IWriteTransaction?): IAppliedOperation? {
         val oldValue = transaction!!.getProperty(nodeId, role)
         transaction.setProperty(nodeId, role, value)

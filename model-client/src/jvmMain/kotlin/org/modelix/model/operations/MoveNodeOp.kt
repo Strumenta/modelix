@@ -18,7 +18,7 @@ package org.modelix.model.operations
 import org.modelix.model.api.IWriteTransaction
 import java.text.MessageFormat
 
-class MoveNodeOp(val childId: Long, val sourceParentId: Long, val sourceRole: String, val sourceIndex: Int, val targetParentId: Long, val targetRole: String, val targetIndex: Int) : AbstractOperation(), IModifiesChildrenOp {
+actual class MoveNodeOp actual constructor(val childId: Long, val sourceParentId: Long, val sourceRole: String, val sourceIndex: Int, val targetParentId: Long, val targetRole: String, val targetIndex: Int) : AbstractOperation(), IModifiesChildrenOp {
     fun withIndex(newSourceIndex: Int, newTargetIndex: Int): MoveNodeOp {
         return if (newSourceIndex == sourceIndex && newTargetIndex == targetIndex) this else MoveNodeOp(childId, sourceParentId, sourceRole, newSourceIndex, targetParentId, targetRole, newTargetIndex)
     }

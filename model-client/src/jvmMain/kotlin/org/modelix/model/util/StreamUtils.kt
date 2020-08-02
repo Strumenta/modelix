@@ -43,7 +43,7 @@ fun <T> Sequence<T>.skip(n: Long): Sequence<T> {
     return this.drop(n.toInt())
 }
 
-object StreamUtils {
+actual object StreamUtils {
 
     fun <T> toStream(iterable: Iterable<T>): Stream<T> {
         return StreamSupport.stream(iterable.spliterator(), false)
@@ -71,5 +71,9 @@ object StreamUtils {
 
     fun <T> removeLast(list: MutableList<T>): T? {
         return if (list.isEmpty()) null else list.removeAt(list.size - 1)
+    }
+
+    actual fun indexOf(stream: Sequence<Long>, value: Long): Int {
+        TODO("Not yet implemented")
     }
 }
