@@ -23,7 +23,7 @@ import org.modelix.model.util.pmap.COWArrays.set
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
-abstract class SmallPMap<K, V> : CustomPMap<K, V> {
+actual abstract class SmallPMap<K, V> : CustomPMap<K, V> {
     abstract override fun get(key: K): V
     abstract override fun put(key: K, value: V): SmallPMap<K, V>?
     abstract override fun remove(key: K): SmallPMap<K, V>?

@@ -17,7 +17,7 @@ package org.modelix.model.util.pmap
 
 import java.util.Arrays
 
-object COWArrays {
+actual object COWArrays {
     fun <T> insert(array: Array<T>, index: Int, element: T): Array<T> {
         val newArray = java.lang.reflect.Array.newInstance(array.javaClass.componentType, array.size + 1) as Array<T>
         System.arraycopy(array, 0, newArray, 0, index)

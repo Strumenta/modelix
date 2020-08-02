@@ -21,7 +21,7 @@ import org.modelix.model.util.pmap.COWArrays.removeAt
 import org.modelix.model.util.pmap.COWArrays.set
 import java.util.function.BiPredicate
 
-class LongKeyPMap<V> protected constructor(root: INode<V?>?) {
+actual class LongKeyPMap<V> protected actual constructor(root: INode<V?>?) {
     private val root: INode<V?>
 
     constructor() : this(null) {}
@@ -46,7 +46,7 @@ class LongKeyPMap<V> protected constructor(root: INode<V?>?) {
         root.visitChanges(oldMap.root, visitor!!)
     }
 
-    interface INode<V> {
+    actual interface INode<V> {
         fun put(key: Long, value: V?, shift: Int): INode<*>?
         fun remove(key: Long, shift: Int): INode<*>?
         operator fun get(key: Long, shift: Int): V
