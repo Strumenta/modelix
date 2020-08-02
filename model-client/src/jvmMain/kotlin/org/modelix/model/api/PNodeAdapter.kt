@@ -16,6 +16,7 @@
 package org.modelix.model.api
 
 import org.modelix.model.api.IBranch
+import org.modelix.model.util.toSequence
 import java.util.function.Supplier
 import java.util.stream.Stream
 
@@ -47,15 +48,15 @@ class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
         return wrap(branch!!.writeTransaction!!.addNewChild(nodeId, role, index, concept))
     }
 
-    override val allChildren: Stream<INode>
+    override val allChildren: Sequence<INode>
         get() {
             notifyAccess()
-            return branch!!.transaction!!.getAllChildren(nodeId)!!.mapToObj { id: Long -> wrap(id) }
+            return branch!!.transaction!!.getAllChildren(nodeId)!!.mapToObj { id: Long -> wrap(id)!! }.toSequence()
         }
 
-    override fun getChildren(role: String?): Stream<INode?>? {
+    override fun getChildren(role: String?): Sequence<INode?>? {
         notifyAccess()
-        return branch!!.transaction!!.getChildren(nodeId, role)!!.mapToObj { id: Long -> wrap(id) }
+        return branch!!.transaction!!.getChildren(nodeId, role)!!.mapToObj { id: Long -> wrap(id) }.toSequence()
     }
 
     override val concept: IConcept?

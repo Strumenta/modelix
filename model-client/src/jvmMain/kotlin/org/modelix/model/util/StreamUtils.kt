@@ -15,12 +15,22 @@
 
 package org.modelix.model.util
 
+import io.vavr.collection.Seq
 import java.util.stream.Collectors
 import java.util.stream.LongStream
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
+fun <T> Stream<T>.toSequence(): Sequence<T> {
+    return this.collect(Collectors.toList()).asSequence()
+}
+
+fun <T> Sequence<T>.toStream(): Stream<T> {
+    return this.toList().stream()
+}
+
 object StreamUtils {
+
     fun <T> toStream(iterable: Iterable<T>): Stream<T> {
         return StreamSupport.stream(iterable.spliterator(), false)
     }

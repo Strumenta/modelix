@@ -17,7 +17,7 @@ package org.modelix.model.api
 
 import java.util.stream.LongStream
 
-interface ITree {
+actual interface ITree {
     fun visitChanges(oldVersion: ITree?, visitor: ITreeChangeVisitor?)
     fun containsNode(nodeId: Long): Boolean
     fun getProperty(nodeId: Long, role: String?): String?

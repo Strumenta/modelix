@@ -15,6 +15,8 @@
 
 package org.modelix.model.api
 
+import org.modelix.model.util.toSequence
+import org.modelix.model.util.toStream
 import java.util.stream.Stream
 
 object NodeUtil {
@@ -26,7 +28,8 @@ object NodeUtil {
         return if (includeSelf) {
             Stream.concat(Stream.of(node), getDescendants(node, false))
         } else {
-            node.allChildren.flatMap { it: INode -> getDescendants(it, true) }
+            val seq : Sequence<INode?> = node.allChildren.flatMap { it: INode -> getDescendants(it, true).toSequence() }
+            return seq.toStream()
         }
     }
 
