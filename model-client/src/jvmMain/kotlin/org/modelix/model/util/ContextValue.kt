@@ -15,8 +15,6 @@
 
 package org.modelix.model.util
 
-import java.util.function.Supplier
-
 actual class ContextValue<E> {
     private var defaultValue: E? = null
     private val value = ThreadLocal<MutableList<E>>()
