@@ -44,7 +44,7 @@ class CLTree : ITree {
     protected var store: IDeserializingKeyValueStore? = null
     protected var data: CPTree? = null
 
-    constructor(hash: String?, store: IDeserializingKeyValueStore) : this(store.get<CPTree>(hash, Function<String?, CPTree> { serialized: String? -> CPTree.deserialize(serialized!!) }), null, store) {}
+    constructor(hash: String?, store: IDeserializingKeyValueStore) : this(store.get<CPTree>(hash, org.modelix.model.util.Function<String?, CPTree> { serialized: String? -> CPTree.deserialize(serialized!!) }), null, store) {}
     constructor(store: IDeserializingKeyValueStore) : this(null as CPTree?, null, store) {}
     constructor(id: TreeId?, store: IDeserializingKeyValueStore) : this(null, id, store) {}
     private constructor(data: CPTree?, treeId: TreeId?, store: IDeserializingKeyValueStore) {
@@ -82,7 +82,7 @@ class CLTree : ITree {
         get() = sha256(data!!.serialize())
 
     val nodesMap: CLHamtNode<*>?
-        get() = create(store!!.get(data!!.idToHash, Function { s: String? -> CPHamtNode.deserialize(s!!) }), store)
+        get() = create(store!!.get(data!!.idToHash, org.modelix.model.util.Function { s: String? -> CPHamtNode.deserialize(s!!) }), store)
 
     val id: String
         get() = data!!.id
@@ -389,7 +389,7 @@ class CLTree : ITree {
         if (element is CPNode) {
             for (childId in element.getChildrenIds()) {
                 val childHash = idToHash!![childId]
-                val child = store!!.get(childHash, Function { obj: String? -> CPElement.deserialize(obj) })
+                val child = store!!.get(childHash, org.modelix.model.util.Function { obj: String? -> CPElement.deserialize(obj) })
                 newIdToHash = deleteElements(child, newIdToHash)
             }
         }
@@ -428,7 +428,7 @@ class CLTree : ITree {
 
     fun resolveElements(ids: Iterable<Long?>?, bulkQuery: IBulkQuery): IBulkQuery.Value<List<CLNode?>?>? {
         val a = nodesMap!!.getAll(ids as Iterable<Long>, bulkQuery)
-        return a!!.mapBulk(Function { hashes: List<String?>? -> createElements(hashes, bulkQuery) })
+        return a!!.mapBulk(org.modelix.model.util.Function { hashes: List<String?>? -> createElements(hashes, bulkQuery) })
     }
 
     fun createElement(hash: String?, query: IBulkQuery): IBulkQuery.Value<CLNode?>? {
@@ -436,13 +436,13 @@ class CLTree : ITree {
             query.constant(null)
         } else query.get(
             hash,
-            Function { s: String? ->
+            org.modelix.model.util.Function { s: String? ->
                 if (s == null) {
                     throw RuntimeException("Element doesn't exist: $hash")
                 }
                 CPNode.deserialize(s)
             }
-        )!!.map(Function { n: CPNode -> CLElement.create(this@CLTree, n) })
+        )!!.map(org.modelix.model.util.Function { n: CPNode -> CLElement.create(this@CLTree, n) })
     }
 
     fun createElement(hash: String?): CLNode? {
@@ -452,16 +452,16 @@ class CLTree : ITree {
     fun createElements(hashes: List<String?>?, bulkQuery: IBulkQuery): IBulkQuery.Value<List<CLNode?>?>? {
         return bulkQuery.map(
             hashes,
-            Function { hash: String? ->
+            org.modelix.model.util.Function { hash: String? ->
                 bulkQuery.get(
                     hash,
-                    Function { s: String? ->
+                    org.modelix.model.util.Function { s: String? ->
                         if (s == null) {
                             throw RuntimeException("Element doesn't exist: $hash")
                         }
                         CPNode.deserialize(s)
                     }
-                )!!.map(Function<CPNode, CLNode?> { n: CPNode? -> CLElement.create(this@CLTree, n) })
+                )!!.map(org.modelix.model.util.Function<CPNode, CLNode?> { n: CPNode? -> CLElement.create(this@CLTree, n) })
             }
         )
     }

@@ -61,7 +61,7 @@ class CLHamtInternal : CLHamtNode<CPHamtInternal?> {
         val childIndex = (key ushr shift and LEVEL_MASK.toLong()).toInt()
         // getChild(logicalIndex: Int, bulkQuery: IBulkQuery): IBulkQuery.Value<CLHamtNode<*>?> {
         return getChild(childIndex, bulkQuery!!).mapBulk<String?>(
-            Function { child: CLHamtNode<*>? ->
+            org.modelix.model.util.Function { child: CLHamtNode<*>? ->
                 if (child == null) {
                     bulkQuery!!.constant<String?>(null)
                 } else {
@@ -80,7 +80,7 @@ class CLHamtInternal : CLHamtNode<CPHamtInternal?> {
     }
 
     protected fun getChild(childHash: String?, bulkQuery: IBulkQuery): IBulkQuery.Value<CLHamtNode<*>?> {
-        return bulkQuery.get(childHash, CPHamtNode.DESERIALIZER)!!.map(Function { childData: CPHamtNode -> create(childData, store) })!!
+        return bulkQuery.get(childHash, CPHamtNode.DESERIALIZER)!!.map(org.modelix.model.util.Function { childData: CPHamtNode -> create(childData, store) })!!
     }
 
     protected fun getChild(logicalIndex: Int): CLHamtNode<*>? {

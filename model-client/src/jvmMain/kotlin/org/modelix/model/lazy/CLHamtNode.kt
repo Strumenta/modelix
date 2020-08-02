@@ -35,7 +35,7 @@ abstract class CLHamtNode<E : CPHamtNode?>(protected var store: IDeserializingKe
     }
 
     fun getAll(keys: Iterable<Long>?, bulkQuery: IBulkQuery): IBulkQuery.Value<List<String?>?>? {
-        val f: Function<Long, IBulkQuery.Value<String?>?>? = Function { key: Long -> get(key, 0, bulkQuery) }
+        val f: org.modelix.model.util.Function<Long, IBulkQuery.Value<String?>?>? = org.modelix.model.util.Function { key: Long -> get(key, 0, bulkQuery) }
         return bulkQuery.map(keys, f)
     }
 

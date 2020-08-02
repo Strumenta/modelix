@@ -23,7 +23,7 @@ abstract class LazyLoaded<E>(protected var hash: String?, protected var store: I
             return
         }
         try {
-            val deserialized = store!![hash, Function { serialized: String? -> deserialize(serialized) }]
+            val deserialized = store!![hash, org.modelix.model.util.Function { serialized: String? -> deserialize(serialized) }]
             init(deserialized)
         } finally {
             store = null

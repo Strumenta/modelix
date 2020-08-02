@@ -26,7 +26,7 @@ import java.util.stream.Collectors
 class ObjectStoreCache(override val keyValueStore: IKeyValueStore) : IDeserializingKeyValueStore {
     private val cache = Collections.synchronizedMap(LRUMap<String?, Any>(100000))
 
-    override fun <T> getAll(hashes_: Iterable<String?>?, deserializer: BiFunction<String?, String?, T>?): Iterable<T>? {
+    override fun <T> getAll(hashes_: Iterable<String?>?, deserializer: org.modelix.model.util.BiFunction<String?, String?, T>?): Iterable<T>? {
         val hashes = toStream(hashes_!!).collect(Collectors.toList())
         val result: MutableMap<String?, T?> = HashMap()
         val nonCachedHashes: MutableList<String?> = ArrayList(hashes.size)
@@ -52,7 +52,7 @@ class ObjectStoreCache(override val keyValueStore: IKeyValueStore) : IDeserializ
         return Iterable<T> { hashes.stream().map { key: String? -> result[key] }.iterator() as Iterator<T> }
     }
 
-    override fun <T> get(hash: String?, deserializer: Function<String?, T>?): T? {
+    override fun <T> get(hash: String?, deserializer: org.modelix.model.util.Function<String?, T>?): T? {
         if (hash == null) {
             return null
         }

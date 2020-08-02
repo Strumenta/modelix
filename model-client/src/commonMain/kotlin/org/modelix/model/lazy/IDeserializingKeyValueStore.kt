@@ -15,17 +15,14 @@
 
 package org.modelix.model.lazy
 
-import java.util.function.Consumer
-import java.util.function.Function
+import org.modelix.model.IKeyValueStore
+import org.modelix.model.util.BiFunction
+import org.modelix.model.util.Function
 
-interface IBulkQuery {
-    fun <I, O> map(input_: Iterable<I>?, f: Function<I, Value<O>?>?): Value<List<O>?>?
-    fun <T> constant(value: T): Value<T>?
-    operator fun <T> get(hash: String?, deserializer: Function<String?, T>?): Value<T>?
-    interface Value<T> {
-        fun execute(): T
-        fun <R> mapBulk(handler: Function<T, Value<R>?>?): Value<R>?
-        fun <R> map(handler: Function<T, R>?): Value<R>?
-        fun onSuccess(handler: Consumer<T?>?)
-    }
+interface IDeserializingKeyValueStore {
+    val keyValueStore: IKeyValueStore?
+    operator fun <T> get(hash: String?, deserializer: Function<String?, T>?): T?
+    fun <T> getAll(hash: Iterable<String?>?, deserializer: BiFunction<String?, String?, T>?): Iterable<T>?
+    fun put(hash: String?, deserialized: Any?, serialized: String?)
+    fun prefetch(hash: String?)
 }

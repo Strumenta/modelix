@@ -38,14 +38,14 @@ class CLNode(tree: CLTree?, data: CPNode?) : CLElement(tree!!, data!!) {
 
     fun getChildren(bulkQuery: IBulkQuery?): IBulkQuery.Value<Iterable<CLNode>?>? {
         return (getTree() as CLTree).resolveElements(getData()!!.getChildrenIds().toList(), bulkQuery!!)!!
-            .map(Function<List<CLNode?>?, Iterable<CLNode>?> { elements: List<CLNode?>? -> elements as Iterable<CLNode> })
+            .map(org.modelix.model.util.Function<List<CLNode?>?, Iterable<CLNode>?> { elements: List<CLNode?>? -> elements as Iterable<CLNode> })
     }
 
     fun getDescendants(bulkQuery: IBulkQuery, includeSelf: Boolean): IBulkQuery.Value<Iterable<CLNode>>? {
         return if (includeSelf) {
             getDescendants(bulkQuery, false)!!
                 .map(
-                    Function { descendants: Iterable<CLNode> ->
+                    org.modelix.model.util.Function { descendants: Iterable<CLNode> ->
                         Iterable<CLNode> {
                             Stream.concat(
                                 Stream.of(this),
@@ -56,10 +56,10 @@ class CLNode(tree: CLTree?, data: CPNode?) : CLElement(tree!!, data!!) {
                 )
         } else {
             getChildren(bulkQuery)!!.mapBulk(
-                Function { children: Iterable<CLNode>? ->
+                org.modelix.model.util.Function { children: Iterable<CLNode>? ->
                     val d = bulkQuery
-                        .map(children, Function { child: CLNode -> child.getDescendants(bulkQuery, true) })!!
-                        .map(Function { it: List<Iterable<CLNode>>? -> Iterable<CLNode> { it!!.stream().flatMap { n: Iterable<CLNode> -> StreamSupport.stream(n.spliterator(), false) }.iterator() } })
+                        .map(children, org.modelix.model.util.Function { child: CLNode -> child.getDescendants(bulkQuery, true) })!!
+                        .map(org.modelix.model.util.Function { it: List<Iterable<CLNode>>? -> Iterable<CLNode> { it!!.stream().flatMap { n: Iterable<CLNode> -> StreamSupport.stream(n.spliterator(), false) }.iterator() } })
                     d
                 }
             )

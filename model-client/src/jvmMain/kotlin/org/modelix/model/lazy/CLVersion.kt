@@ -38,7 +38,7 @@ class CLVersion {
         IDeserializingKeyValueStore_extensions.put(store, data, data!!.serialize())
     }
 
-    constructor(hash: String?, store: IDeserializingKeyValueStore) : this(store.get<CPVersion>(hash, Function { input: String? -> CPVersion.deserialize(input!!) }), store) {}
+    constructor(hash: String?, store: IDeserializingKeyValueStore) : this(store.get<CPVersion>(hash, org.modelix.model.util.Function { input: String? -> CPVersion.deserialize(input!!) }), store) {}
     constructor(data: CPVersion?, store: IDeserializingKeyValueStore) {
         if (data == null) {
             throw NullPointerException("data is null")
@@ -73,14 +73,14 @@ class CLVersion {
             if (data!!.previousVersion == null) {
                 return null
             }
-            val previousVersion = store.get(data!!.previousVersion, Function { input: String? -> CPVersion.deserialize(input!!) })
+            val previousVersion = store.get(data!!.previousVersion, org.modelix.model.util.Function { input: String? -> CPVersion.deserialize(input!!) })
                 ?: return null
             return CLVersion(previousVersion, store)
         }
 
     val operations: Iterable<IOperation?>
         get() {
-            val ops = if (data!!.operationsHash == null) data!!.operations else store.get(data!!.operationsHash, Function { input: String? -> CPOperationsList.deserialize(input!!) })!!.operations
+            val ops = if (data!!.operationsHash == null) data!!.operations else store.get(data!!.operationsHash, org.modelix.model.util.Function { input: String? -> CPOperationsList.deserialize(input!!) })!!.operations
             return Iterable { Arrays.stream(ops).iterator() }
         }
 
@@ -94,7 +94,7 @@ class CLVersion {
     companion object {
         @JvmStatic
         fun loadFromHash(hash: String?, store: IDeserializingKeyValueStore): CLVersion? {
-            val data = store.get(hash, Function { input: String? -> CPVersion.deserialize(input!!) })
+            val data = store.get(hash, org.modelix.model.util.Function { input: String? -> CPVersion.deserialize(input!!) })
             return data?.let { CLVersion(it, store) }
         }
     }
