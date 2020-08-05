@@ -18,4 +18,6 @@ package org.modelix.model.persistent
 expect object SerializationUtil {
     fun intToHex(value: Int): String
     fun longToHex(value: Long): String
+    fun longFromHex(hex: String?): Long
+    fun intFromHex(hex: String?): Int
 }

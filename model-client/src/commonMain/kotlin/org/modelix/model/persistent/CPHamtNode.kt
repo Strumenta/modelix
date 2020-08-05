@@ -15,6 +15,33 @@
 
 package org.modelix.model.persistent
 
-expect abstract class CPHamtNode() {
+import kotlin.jvm.JvmStatic
+
+abstract class CPHamtNode {
     abstract fun serialize(): String?
+
+    companion object {
+        val DESERIALIZER = org.modelix.model.util.Function { s: String? -> deserialize(s!!) }
+        @JvmStatic
+        fun deserialize(input: String): CPHamtNode {
+            val parts = input.split("/").dropLastWhile { it.isEmpty() }.toTypedArray()
+            return when {
+                "L" == parts[0] -> {
+                    CPHamtLeaf(SerializationUtil.longFromHex(parts[1]), parts[2])
+                }
+                "I" == parts[0] -> {
+                    CPHamtInternal(
+                            SerializationUtil.intFromHex(parts[1]),
+
+                            parts[2].split(",").toTypedArray()
+                                    .filter { it: String? -> it != null && it.isNotEmpty() }
+                                    .toTypedArray()
+                    )
+                }
+                else -> {
+                    throw RuntimeException("Unknown type: " + parts[0] + ", input: " + input)
+                }
+            }
+        }
+    }
 }

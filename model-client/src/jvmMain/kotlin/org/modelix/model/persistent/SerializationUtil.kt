@@ -43,7 +43,7 @@ actual object SerializationUtil {
     }
 
     @JvmStatic
-    fun longFromHex(hex: String?): Long {
+    actual fun longFromHex(hex: String?): Long {
         return java.lang.Long.parseUnsignedLong(hex, 16)
     }
 
@@ -52,7 +52,7 @@ actual object SerializationUtil {
     }
 
     @JvmStatic
-    fun intFromHex(hex: String?): Int {
+    actual fun intFromHex(hex: String?): Int {
         return Integer.parseUnsignedInt(hex, 16)
     }
 
