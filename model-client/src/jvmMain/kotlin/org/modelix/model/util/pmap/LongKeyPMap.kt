@@ -16,10 +16,10 @@
 package org.modelix.model.util.pmap
 
 import org.apache.commons.lang3.mutable.MutableObject
+import org.modelix.model.util.BiPredicate
 import org.modelix.model.util.pmap.COWArrays.insert
 import org.modelix.model.util.pmap.COWArrays.removeAt
 import org.modelix.model.util.pmap.COWArrays.set
-import java.util.function.BiPredicate
 
 actual class LongKeyPMap<V> protected actual constructor(root: INode<V?>?) {
     private val root: INode<V?>

@@ -18,10 +18,9 @@ package org.modelix.model.lazy
 import org.modelix.model.persistent.CPHamtInternal
 import org.modelix.model.persistent.CPHamtNode
 import org.modelix.model.persistent.HashUtil
+import org.modelix.model.util.BiPredicate
 import org.modelix.model.util.pmap.COWArrays
 import org.modelix.model.util.pmap.LongKeyPMap
-import java.util.function.BiPredicate
-import java.util.function.Function
 
 actual class CLHamtInternal : CLHamtNode<CPHamtInternal?> {
     private val data_: CPHamtInternal

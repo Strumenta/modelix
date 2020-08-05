@@ -19,7 +19,7 @@ import org.apache.commons.lang3.mutable.MutableObject
 import org.modelix.model.persistent.CPHamtLeaf
 import org.modelix.model.persistent.CPHamtNode
 import org.modelix.model.persistent.HashUtil
-import java.util.function.BiPredicate
+import org.modelix.model.util.BiPredicate
 
 actual class CLHamtLeaf : CLHamtNode<CPHamtLeaf?> {
     private val data: CPHamtLeaf

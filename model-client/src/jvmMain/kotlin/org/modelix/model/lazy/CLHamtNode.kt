@@ -19,8 +19,7 @@ import org.modelix.model.persistent.CPElement
 import org.modelix.model.persistent.CPHamtInternal
 import org.modelix.model.persistent.CPHamtLeaf
 import org.modelix.model.persistent.CPHamtNode
-import java.util.function.BiPredicate
-import java.util.function.Function
+import org.modelix.model.util.BiPredicate
 
 actual abstract class CLHamtNode<E : CPHamtNode?> actual constructor(protected var store: IDeserializingKeyValueStore) {
     protected fun createEmptyNode(): CLHamtNode<*> {

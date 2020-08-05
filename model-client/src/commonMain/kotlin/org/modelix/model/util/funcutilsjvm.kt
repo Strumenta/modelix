@@ -7,6 +7,16 @@ interface Supplier<T> {
     fun get(): T
 }
 
+interface BiPredicate<T, U> {
+    fun test(t: T, u: U): Boolean
+}
+
+fun <T, U> BiPredicate(handler: (T, U) -> Boolean): BiPredicate<T, U> = object : BiPredicate<T, U> {
+    override fun test(t: T, u: U): Boolean {
+        return handler(t, u)
+    }
+}
+
 fun Runnable(handler: () -> Unit): Runnable = object : Runnable {
     override fun run() {
         handler()
