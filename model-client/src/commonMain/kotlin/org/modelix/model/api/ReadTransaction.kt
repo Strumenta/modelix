@@ -15,4 +15,5 @@
 
 package org.modelix.model.api
 
-expect class ReadTransaction(tree: ITree?, branch: IBranch?) : Transaction, IReadTransaction
+class ReadTransaction(override var tree: ITree?, branch: IBranch?) : Transaction(branch), IReadTransaction
+
