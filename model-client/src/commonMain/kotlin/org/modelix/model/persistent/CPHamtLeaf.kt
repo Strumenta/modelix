@@ -15,10 +15,15 @@
 
 package org.modelix.model.persistent
 
-expect class CPHamtLeaf(
-    key: Long,
-    /**
-     * SHA to CPElement
-     */
-    value: String
-) : CPHamtNode
+class CPHamtLeaf(
+        val key: Long,
+        /**
+         * SHA to CPElement
+         */
+        val value: String
+) : CPHamtNode() {
+
+    override fun serialize(): String {
+        return "L/" + SerializationUtil.longToHex(key) + "/" + value
+    }
+}

@@ -38,7 +38,7 @@ actual object SerializationUtil {
     }
 
     @JvmStatic
-    fun longToHex(value: Long): String {
+    actual fun longToHex(value: Long): String {
         return java.lang.Long.toHexString(value)
     }
 
