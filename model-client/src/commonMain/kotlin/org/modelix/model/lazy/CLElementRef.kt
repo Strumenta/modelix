@@ -15,4 +15,22 @@
 
 package org.modelix.model.lazy
 
-expect class CLElementRef(id: Long)
+class CLElementRef(val id: Long) {
+
+    override fun equals(o: Any?): Boolean {
+        if (this === o) {
+            return true
+        }
+        if (o == null || o !is CLElementRef) {
+            return false
+        }
+        val that = o
+        return id == that.id
+    }
+
+    override fun hashCode(): Int {
+        var result = 0
+        result = 31 * result + (id xor (id shr 32)).toInt()
+        return result
+    }
+}
