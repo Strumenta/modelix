@@ -15,4 +15,36 @@
 
 package org.modelix.model.lazy
 
-expect class NonBulkQuery(store: IDeserializingKeyValueStore) : IBulkQuery
+class NonBulkQuery(private val store: IDeserializingKeyValueStore) : IBulkQuery {
+    override fun <I, O> map(input_: Iterable<I>?, f: org.modelix.model.util.Function<I, IBulkQuery.Value<O>?>?): IBulkQuery.Value<List<O>?>? {
+        val list = input_!!.map { f!!.apply(it) }.map { it!!.execute() }.toList()
+        return Value(list)
+    }
+
+    override fun <T> constant(value: T): IBulkQuery.Value<T> {
+        return Value(value)
+    }
+
+    override fun <T> get(hash: String?, deserializer: org.modelix.model.util.Function<String?, T>?): IBulkQuery.Value<T>? {
+        return constant(store.get(hash, deserializer)!!)
+    }
+
+    class Value<T>(private val value: T) : IBulkQuery.Value<T> {
+        override fun execute(): T {
+            return value
+        }
+
+        override fun <R> mapBulk(handler: org.modelix.model.util.Function<T, IBulkQuery.Value<R>?>?): IBulkQuery.Value<R>? {
+            return handler!!.apply(value)
+        }
+
+        override fun <R> map(handler: org.modelix.model.util.Function<T, R>?): IBulkQuery.Value<R>? {
+            return Value(handler!!.apply(value))
+        }
+
+        override fun onSuccess(handler: org.modelix.model.util.Consumer<T?>?) {
+            handler!!.accept(value)
+        }
+    }
+}
+
