@@ -34,7 +34,7 @@ actual class ContextValue<E> {
             return stack
         }
 
-    fun runWith(newValue: E, r: Runnable) {
+    actual fun runWith(newValue: E, r: Runnable) {
         try {
             stack.add(newValue)
             r.run()
@@ -54,7 +54,7 @@ actual class ContextValue<E> {
         }
     }
 
-    fun getValue(): E? {
+    actual fun getValue(): E? {
         val stack: List<E> = stack
         return if (stack.isEmpty()) defaultValue else stack[stack.size - 1]
     }

@@ -15,4 +15,25 @@
 
 package org.modelix.model.api
 
-expect class CompositeNodeResolveContext(contexts: Iterable<INodeResolveContext?>) : INodeResolveContext
+import org.modelix.model.util.Runnable
+
+class CompositeNodeResolveContext(contexts: Iterable<INodeResolveContext?>) : INodeResolveContext {
+    private val contexts: List<INodeResolveContext?> = contexts.toList()
+
+    constructor(vararg contexts: INodeResolveContext?) : this(contexts.toList()) {}
+
+    override fun resolve(ref: INodeReference?): INode? {
+        return contexts.map { it?.resolve(ref) }.filterNotNull().firstOrNull()
+    }
+
+    companion object {
+        fun withAdditionalContext(context: INodeResolveContext?, runnable: Runnable?) {
+            val activeContext = INodeResolveContext.CONTEXT_VALUE.getValue()
+            if (activeContext == null) {
+                INodeResolveContext.CONTEXT_VALUE.runWith(context!!, runnable!!)
+            } else {
+                INodeResolveContext.CONTEXT_VALUE.runWith(CompositeNodeResolveContext(context, activeContext), runnable!!)
+            }
+        }
+    }
+}
