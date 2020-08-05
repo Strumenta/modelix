@@ -38,4 +38,3 @@ object NodeUtil {
         } else getAncestor(_this.parent, concept, true)
     }
 }
-

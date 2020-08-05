@@ -329,20 +329,20 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
                 val target = client.target(url)
                 sse[i] = Sse(SseEventSource.target(target).reconnectingEvery(1, TimeUnit.SECONDS).build())
                 sse[i]!!.sse.register(
-                        { event ->
-                            val value = event.readData()
-                            synchronized(notificationLock) {
-                                if (!((value == lastValue))) {
-                                    lastValue = value
-                                    keyListener!!.changed(key, value)
-                                }
-                            }
-                        },
-                        { ex ->
-                            if (LOG.isEnabledFor(Level.ERROR)) {
-                                LOG.error("", ex)
+                    { event ->
+                        val value = event.readData()
+                        synchronized(notificationLock) {
+                            if (!((value == lastValue))) {
+                                lastValue = value
+                                keyListener!!.changed(key, value)
                             }
                         }
+                    },
+                    { ex ->
+                        if (LOG.isEnabledFor(Level.ERROR)) {
+                            LOG.error("", ex)
+                        }
+                    }
                 )
                 if (disposed) {
                     return

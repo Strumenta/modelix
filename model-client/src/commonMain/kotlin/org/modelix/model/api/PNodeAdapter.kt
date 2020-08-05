@@ -84,7 +84,7 @@ class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
             return targetRef.resolveNode(PNodeResolveContext(branch))
         }
         val context = INodeResolveContext.CONTEXT_VALUE.getValue()
-                ?: throw RuntimeException(INodeResolveContext::class.simpleName + " not available")
+            ?: throw RuntimeException(INodeResolveContext::class.simpleName + " not available")
         return targetRef?.resolveNode(context)
     }
 
@@ -158,4 +158,3 @@ class PNodeAdapter(val nodeId: Long, val branch: IBranch?) : INode {
         notifyAccess()
     }
 }
-

@@ -2,7 +2,7 @@ package org.modelix.model.util
 
 import kotlin.reflect.KClass
 
-fun Level.toLog4jLevel() : org.apache.log4j.Level {
+fun Level.toLog4jLevel(): org.apache.log4j.Level {
     return when (this) {
         Level.ERROR -> org.apache.log4j.Level.ERROR
         Level.DEBUG -> org.apache.log4j.Level.DEBUG
@@ -12,7 +12,7 @@ fun Level.toLog4jLevel() : org.apache.log4j.Level {
 }
 
 actual object LogManager {
-    actual fun getLogger(clazz: KClass<*>) : Logger {
+    actual fun getLogger(clazz: KClass<*>): Logger {
         return object : Logger {
             private val log4jInstance = org.apache.log4j.Logger.getLogger(clazz.java)
 
@@ -37,5 +37,4 @@ actual object LogManager {
             }
         }
     }
-
 }
