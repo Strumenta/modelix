@@ -15,4 +15,27 @@
 
 package org.modelix.model.api
 
-expect object NodeUtil
+object NodeUtil {
+    /*
+     * TODO Consider using an extension method here
+     * TODO return a sequence and not a Stream
+     */
+    fun getDescendants(node: INode, includeSelf: Boolean): Sequence<INode?> {
+        return if (includeSelf) {
+            return sequenceOf(node) + getDescendants(node, false)
+        } else {
+            val seq: Sequence<INode?> = node.allChildren.flatMap { it: INode -> getDescendants(it, true) }
+            return seq
+        }
+    }
+
+    fun getAncestor(_this: INode?, concept: IConcept?, includeSelf: Boolean): INode? {
+        if (_this == null) {
+            return null
+        }
+        return if (includeSelf && _this.concept!!.isSubconceptOf(concept)) {
+            _this
+        } else getAncestor(_this.parent, concept, true)
+    }
+}
+
