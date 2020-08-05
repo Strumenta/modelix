@@ -41,7 +41,6 @@ actual abstract class CLElement actual constructor(protected val tree_: CLTree, 
         get() = CLElementRef(id)
 
     companion object {
-        @JvmStatic
         fun create(tree: CLTree?, data: CPElement?): CLNode? {
             return if (data == null) {
                 null

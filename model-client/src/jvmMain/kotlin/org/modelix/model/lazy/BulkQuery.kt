@@ -18,10 +18,8 @@ package org.modelix.model.lazy
 import io.vavr.Tuple
 import io.vavr.Tuple3
 import org.apache.commons.lang3.mutable.MutableInt
-import java.util.Arrays
-import java.util.function.BiFunction
+import java.util.*
 import java.util.function.Consumer
-import java.util.function.Function
 import java.util.stream.Collectors
 import java.util.stream.StreamSupport
 import kotlin.collections.ArrayList
