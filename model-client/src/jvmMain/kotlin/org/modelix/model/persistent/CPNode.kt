@@ -167,7 +167,7 @@ actual class CPNode protected constructor(id1: Long, val concept: String?, paren
         }
     }
 
-    companion object {
+    actual companion object {
         private val LOG = LogManager.getLogger(CPNode::class)
         private val EMPTY_LONG_ARRAY = LongArray(0)
         val DESERIALIZER = Function { s: String -> deserialize(s) }
@@ -195,7 +195,7 @@ actual class CPNode protected constructor(id1: Long, val concept: String?, paren
         }
 
         @JvmStatic
-        fun deserialize(input: String): CPNode {
+        actual fun deserialize(input: String): CPNode {
             return try {
                 val parts = input.split("/").dropLastWhile { it.isEmpty() }.toTypedArray()
                 val properties = Arrays.stream(parts[5].split(",").toTypedArray())

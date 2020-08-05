@@ -15,4 +15,8 @@
 
 package org.modelix.model.persistent
 
-expect class CPNode
+expect class CPNode : CPElement {
+    companion object {
+        fun deserialize(input: String): CPNode
+    }
+}

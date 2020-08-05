@@ -15,9 +15,15 @@
 
 package org.modelix.model.persistent
 
-expect abstract class CPElement(id: Long, parentId: Long, roleInParent: String?) {
-    val id: Long
-    val parentId: Long
-    val roleInParent: String?
+abstract class CPElement(val id: Long, val parentId: Long, val roleInParent: String?) {
+
     abstract fun serialize(): String?
+    val hash: String
+        get() = HashUtil.sha256(serialize()!!)
+
+    companion object {
+        open fun deserialize(input: String?): CPElement {
+            return CPNode.deserialize(input!!)
+        }
+    }
 }
