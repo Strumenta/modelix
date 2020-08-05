@@ -47,4 +47,3 @@ class NonBulkQuery(private val store: IDeserializingKeyValueStore) : IBulkQuery 
         }
     }
 }
-

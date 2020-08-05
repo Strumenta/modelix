@@ -18,11 +18,11 @@ package org.modelix.model.persistent
 import org.modelix.model.persistent.SerializationUtil.intToHex
 
 class CPHamtInternal(
-        var bitmap: Int,
-        /**
-         * SHA to CPHamtNode
-         */
-        val children: Array<String?>
+    var bitmap: Int,
+    /**
+     * SHA to CPHamtNode
+     */
+    val children: Array<String?>
 ) : CPHamtNode() {
 
     override fun serialize(): String {

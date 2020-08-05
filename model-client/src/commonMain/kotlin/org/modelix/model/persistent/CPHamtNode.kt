@@ -31,11 +31,11 @@ abstract class CPHamtNode {
                 }
                 "I" == parts[0] -> {
                     CPHamtInternal(
-                            SerializationUtil.intFromHex(parts[1]),
+                        SerializationUtil.intFromHex(parts[1]),
 
-                            parts[2].split(",").toTypedArray()
-                                    .filter { it: String? -> it != null && it.isNotEmpty() }
-                                    .toTypedArray()
+                        parts[2].split(",").toTypedArray()
+                            .filter { it: String? -> it != null && it.isNotEmpty() }
+                            .toTypedArray()
                     )
                 }
                 else -> {

@@ -33,12 +33,11 @@ class CPOperationsList(val operations: Array<IOperation?>) {
     companion object {
         fun deserialize(input: String): CPOperationsList {
             return CPOperationsList(
-                    input.split(",")
-                            .filter { cs: String? -> isNotNullEmpty(cs) }
-                            .map { serialized: String? -> OperationSerializer.INSTANCE.deserialize(serialized!!) }.toTypedArray()
+                input.split(",")
+                    .filter { cs: String? -> isNotNullEmpty(cs) }
+                    .map { serialized: String? -> OperationSerializer.INSTANCE.deserialize(serialized!!) }.toTypedArray()
             )
         }
-
     }
 }
 

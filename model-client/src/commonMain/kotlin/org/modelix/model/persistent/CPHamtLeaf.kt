@@ -16,11 +16,11 @@
 package org.modelix.model.persistent
 
 class CPHamtLeaf(
-        val key: Long,
-        /**
-         * SHA to CPElement
-         */
-        val value: String
+    val key: Long,
+    /**
+     * SHA to CPElement
+     */
+    val value: String
 ) : CPHamtNode() {
 
     override fun serialize(): String {

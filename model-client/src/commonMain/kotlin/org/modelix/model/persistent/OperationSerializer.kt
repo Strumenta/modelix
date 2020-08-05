@@ -19,7 +19,7 @@ import org.modelix.model.operations.IOperation
 
 expect class OperationSerializer private constructor() {
     companion object {
-        val INSTANCE : OperationSerializer
+        val INSTANCE: OperationSerializer
     }
     fun serialize(op: IOperation): String
     fun deserialize(serialized: String): IOperation
