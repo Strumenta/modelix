@@ -15,4 +15,6 @@
 
 package org.modelix.model.persistent
 
-expect object SerializationUtil
+expect object SerializationUtil {
+    fun intToHex(value: Int): String
+}

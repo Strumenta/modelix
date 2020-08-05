@@ -22,7 +22,7 @@ import java.util.function.Function
 import java.util.stream.Collectors
 
 actual abstract class CPHamtNode {
-    abstract fun serialize(): String?
+    actual abstract fun serialize(): String?
 
     companion object {
         val DESERIALIZER = org.modelix.model.util.Function { s: String? -> deserialize(s!!) }

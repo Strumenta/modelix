@@ -47,8 +47,7 @@ actual object SerializationUtil {
         return java.lang.Long.parseUnsignedLong(hex, 16)
     }
 
-    @JvmStatic
-    fun intToHex(value: Int): String {
+    actual fun intToHex(value: Int): String {
         return Integer.toHexString(value)
     }
 
@@ -62,7 +61,7 @@ actual object SerializationUtil {
         if (str == null) {
             return ""
         }
-        if (str.length == 0) {
+        if (str.isEmpty()) {
             throw RuntimeException("Empty string not allowed")
         }
         return str
@@ -70,6 +69,6 @@ actual object SerializationUtil {
 
     @JvmStatic
     fun emptyStringAsNull(str: String?): String? {
-        return if (str == null || str.length == 0) null else str
+        return if (str == null || str.isEmpty()) null else str
     }
 }

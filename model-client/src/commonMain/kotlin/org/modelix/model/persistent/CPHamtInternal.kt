@@ -15,10 +15,18 @@
 
 package org.modelix.model.persistent
 
-expect class CPHamtInternal(
-    bitmap: Int,
-    /**
-     * SHA to CPHamtNode
-     */
-    children: Array<String?>
-) : CPHamtNode
+import org.modelix.model.persistent.SerializationUtil.intToHex
+
+class CPHamtInternal(
+        var bitmap: Int,
+        /**
+         * SHA to CPHamtNode
+         */
+        val children: Array<String?>
+) : CPHamtNode() {
+
+    override fun serialize(): String {
+        val cr = if (children.isEmpty()) "" else children.reduce { a: String?, b: String? -> "$a,$b" }
+        return "I/${intToHex(bitmap)}/$cr"
+    }
+}

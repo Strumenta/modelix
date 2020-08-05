@@ -15,4 +15,6 @@
 
 package org.modelix.model.persistent
 
-expect abstract class CPHamtNode
+expect abstract class CPHamtNode() {
+    abstract fun serialize(): String?
+}
