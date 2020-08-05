@@ -15,4 +15,6 @@
 
 package org.modelix.model.persistent
 
-expect object HashUtil
+expect object HashUtil {
+    fun sha256(input: String): String
+}

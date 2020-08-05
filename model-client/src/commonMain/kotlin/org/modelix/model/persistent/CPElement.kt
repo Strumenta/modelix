@@ -15,4 +15,6 @@
 
 package org.modelix.model.persistent
 
-expect abstract class CPElement(id: Long, parentId: Long, roleInParent: String?)
+expect abstract class CPElement(id: Long, parentId: Long, roleInParent: String?) {
+    abstract fun serialize(): String?
+}

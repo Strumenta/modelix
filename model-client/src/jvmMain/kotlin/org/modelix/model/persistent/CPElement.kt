@@ -19,7 +19,7 @@ import org.modelix.model.persistent.HashUtil.sha256
 
 actual abstract class CPElement actual constructor(val id: Long, val parentId: Long, val roleInParent: String?) {
 
-    abstract fun serialize(): String?
+    actual abstract fun serialize(): String?
     val hash: String
         get() = sha256(serialize()!!)
 

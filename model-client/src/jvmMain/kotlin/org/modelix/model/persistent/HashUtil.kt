@@ -35,8 +35,7 @@ actual object HashUtil {
         }
     }
 
-    @JvmStatic
-    fun sha256(input: String): String {
+    actual fun sha256(input: String): String {
         return sha256(input.toByteArray(UTF8))
     }
 
