@@ -18,15 +18,15 @@ package org.modelix.model.persistent
 import org.apache.commons.lang3.StringUtils
 import org.modelix.model.operations.IOperation
 import org.modelix.model.persistent.HashUtil.sha256
-import java.util.stream.Collectors
-import java.util.stream.Stream
 
 actual class CPOperationsList actual constructor(val operations: Array<IOperation?>) {
     fun serialize(): String {
-        return Stream.of(*operations)
-            .map { op: IOperation? -> OperationSerializer.INSTANCE.serialize(op!!) }
-            .reduce { a: String, b: String -> "$a,$b" }
-            .orElse("")
+        val a = operations.map { op: IOperation? -> OperationSerializer.INSTANCE.serialize(op!!) }
+        return if (a.isEmpty()) {
+            ""
+        } else {
+            a.reduce { a: String, b: String -> "$a,$b" }
+        }
     }
 
     val hash: String
@@ -35,10 +35,9 @@ actual class CPOperationsList actual constructor(val operations: Array<IOperatio
     companion object {
         fun deserialize(input: String): CPOperationsList {
             return CPOperationsList(
-                Stream.of(*input.split(",").toTypedArray())
+                    input.split(",")
                     .filter { cs: String? -> StringUtils.isNotEmpty(cs) }
-                    .map { serialized: String? -> OperationSerializer.INSTANCE.deserialize(serialized!!) }
-                    .collect(Collectors.toList()).toTypedArray()
+                    .map { serialized: String? -> OperationSerializer.INSTANCE.deserialize(serialized!!) }.toTypedArray()
             )
         }
     }
