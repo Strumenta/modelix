@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit
 
 actual object SharedExecutors {
     private val LOG = LogManager.getLogger(SharedExecutors::class)
-    @JvmField
     val FIXED = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1)
     val SCHEDULED = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1)
     fun shutdownAll() {
@@ -32,7 +31,6 @@ actual object SharedExecutors {
         FIXED.shutdown()
     }
 
-    @JvmStatic
     fun fixDelay(milliSeconds: Int, r: Runnable): ScheduledFuture<*> {
         return SCHEDULED.scheduleWithFixedDelay(
             {

@@ -20,7 +20,6 @@ import org.modelix.model.IKeyValueStore
 import org.modelix.model.util.Level
 import org.modelix.model.util.LogManager
 import org.modelix.model.util.StreamUtils.toStream
-import java.lang.Runnable
 import java.util.Objects
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.stream.Collectors
