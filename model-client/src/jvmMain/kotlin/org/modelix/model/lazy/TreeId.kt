@@ -25,7 +25,7 @@ actual class TreeId actual constructor(val id: String) {
 
     fun getBranchKey(branchName: String?): String {
         var branchName = branchName
-        if (branchName == null || branchName.length == 0) {
+        if (branchName == null || branchName.isEmpty()) {
             branchName = "master"
         }
         return "branch_" + id + "_" + branchName
@@ -35,18 +35,15 @@ actual class TreeId actual constructor(val id: String) {
         if (this === o) {
             return true
         }
-        if (o == null || this.javaClass != o.javaClass) {
+        if (o == null || o !is TreeId) {
             return false
         }
-        val that = o as TreeId
-        return if (if (id != null) id as Any != that.id else that.id != null) {
-            false
-        } else true
+        return id as Any == o.id
     }
 
     override fun hashCode(): Int {
         var result = 0
-        result = 31 * result + (id?.hashCode() ?: 0)
+        result = 31 * result + (id.hashCode() ?: 0)
         return result
     }
 
@@ -55,7 +52,7 @@ actual class TreeId actual constructor(val id: String) {
     }
 
     companion object {
-        @JvmStatic
+
         fun random(): TreeId {
             return TreeId(UUID.randomUUID().toString())
         }
