@@ -17,4 +17,6 @@ package org.modelix.model.lazy
 
 import org.modelix.model.api.ITree
 
-expect class CLTree : ITree
+expect class CLTree : ITree {
+    fun resolveElement(id: Long): CLNode?
+}

@@ -417,7 +417,7 @@ actual class CLTree : ITree {
         throw RuntimeException("Unsupported reference type: $ref")
     }
 
-    fun resolveElement(id: Long): CLNode? {
+    actual fun resolveElement(id: Long): CLNode? {
         if (id == 0L) {
             return null
         }
