@@ -24,8 +24,6 @@ import org.modelix.model.util.Runnable
 import org.modelix.model.util.Supplier
 import org.modelix.model.util.pmap.COWArrays
 
-// import java.util.function.Supplier
-
 actual class PBranch constructor(@field:Volatile private var tree: ITree?, private val idGenerator: IIdGenerator? = instance) : IBranch {
     private val writeLock = Any()
     private val contextTransactions = ContextValue<Transaction?>()

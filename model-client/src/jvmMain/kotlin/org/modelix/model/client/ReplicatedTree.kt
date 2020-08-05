@@ -15,7 +15,6 @@
 
 package org.modelix.model.client
 
-import io.vavr.Tuple2
 import org.apache.commons.lang3.mutable.MutableObject
 import org.apache.log4j.Level
 import org.apache.log4j.LogManager
@@ -34,10 +33,10 @@ import org.modelix.model.operations.IAppliedOperation
 import org.modelix.model.operations.IOperation
 import org.modelix.model.operations.OTBranch
 import org.modelix.model.util.Runnable
+import org.modelix.model.util.Supplier
 import java.time.LocalDateTime
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.function.Supplier
 
 actual class ReplicatedTree(private val client: IModelClient, private val treeId: TreeId, private val branchName: String, private val user: Supplier<String>) {
     private val localBranch: IBranch
