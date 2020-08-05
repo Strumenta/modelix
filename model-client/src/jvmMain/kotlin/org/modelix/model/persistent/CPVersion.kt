@@ -16,8 +16,6 @@
 package org.modelix.model.persistent
 
 import org.apache.commons.lang3.StringUtils
-import org.apache.log4j.Level
-import org.apache.log4j.LogManager
 import org.modelix.model.operations.IOperation
 import org.modelix.model.persistent.HashUtil.isSha256
 import org.modelix.model.persistent.HashUtil.sha256
@@ -27,6 +25,8 @@ import org.modelix.model.persistent.SerializationUtil.longFromHex
 import org.modelix.model.persistent.SerializationUtil.longToHex
 import org.modelix.model.persistent.SerializationUtil.nullAsEmptyString
 import org.modelix.model.persistent.SerializationUtil.unescape
+import org.modelix.model.util.Level
+import org.modelix.model.util.LogManager
 import java.util.function.Function
 import java.util.stream.Collectors
 import java.util.stream.Stream
@@ -66,7 +66,7 @@ actual class CPVersion actual constructor(id: Long, time: String?, author: Strin
         get() = sha256(serialize())
 
     companion object {
-        private val LOG = LogManager.getLogger(CPVersion::class.java)
+        private val LOG = LogManager.getLogger(CPVersion::class)
         fun deserialize(input: String): CPVersion {
             val parts = input.split("/").dropLastWhile { it.isEmpty() }.toTypedArray()
             var opsHash: String? = null

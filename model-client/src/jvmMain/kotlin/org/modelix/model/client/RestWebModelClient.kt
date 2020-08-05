@@ -16,8 +16,6 @@
 package org.modelix.model.client
 
 import org.apache.commons.io.FileUtils
-import org.apache.log4j.Level
-import org.apache.log4j.LogManager
 import org.json.JSONArray
 import org.json.JSONObject
 import org.modelix.model.IKeyListener
@@ -27,6 +25,8 @@ import org.modelix.model.client.SharedExecutors.fixDelay
 import org.modelix.model.lazy.IDeserializingKeyValueStore
 import org.modelix.model.lazy.ObjectStoreCache
 import org.modelix.model.persistent.HashUtil
+import org.modelix.model.util.Level
+import org.modelix.model.util.LogManager
 import org.modelix.model.util.Runnable
 import org.modelix.model.util.StreamUtils.toStream
 import java.io.File
@@ -55,7 +55,7 @@ import kotlin.collections.LinkedHashMap
 
 actual class RestWebModelClient actual constructor(var baseUrl: String?) : IModelClient {
     companion object {
-        private val LOG = LogManager.getLogger(RestWebModelClient::class.java)
+        private val LOG = LogManager.getLogger(RestWebModelClient::class)
         const val MODEL_URI_VAR_NAME = "MODEL_URI"
         private var defaultToken: String? = null
         val modelUrlFromEnv: String?

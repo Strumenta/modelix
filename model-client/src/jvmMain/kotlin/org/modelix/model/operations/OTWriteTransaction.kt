@@ -15,8 +15,8 @@
 
 package org.modelix.model.operations
 
-import org.apache.log4j.LogManager
 import org.modelix.model.api.*
+import org.modelix.model.util.LogManager
 import org.modelix.model.util.StreamUtils.indexOf
 import org.modelix.model.util.toLongStream
 
@@ -115,6 +115,6 @@ actual class OTWriteTransaction actual constructor(private val transaction: IWri
     }
 
     companion object {
-        private val LOG = LogManager.getLogger(OTWriteTransaction::class.java)
+        private val LOG = LogManager.getLogger(OTWriteTransaction::class)
     }
 }

@@ -15,11 +15,11 @@
 
 package org.modelix.model.client
 
-import org.apache.log4j.Level
-import org.apache.log4j.LogManager
 import org.modelix.model.IKeyListener
 import org.modelix.model.IKeyValueStore
 import org.modelix.model.client.SharedExecutors.fixDelay
+import org.modelix.model.util.Level
+import org.modelix.model.util.LogManager
 import org.modelix.model.util.Runnable
 import java.util.concurrent.ScheduledFuture
 
@@ -49,7 +49,7 @@ actual abstract class VersionChangeDetector actual constructor(private val store
     }
 
     companion object {
-        private val LOG = LogManager.getLogger(VersionChangeDetector::class.java)
+        private val LOG = LogManager.getLogger(VersionChangeDetector::class)
     }
 
     init {

@@ -16,8 +16,6 @@
 package org.modelix.model.client
 
 import org.apache.commons.lang3.mutable.MutableObject
-import org.apache.log4j.Level
-import org.apache.log4j.LogManager
 import org.modelix.model.VersionMerger
 import org.modelix.model.api.IBranch
 import org.modelix.model.api.IBranchListener
@@ -32,6 +30,8 @@ import org.modelix.model.lazy.TreeId
 import org.modelix.model.operations.IAppliedOperation
 import org.modelix.model.operations.IOperation
 import org.modelix.model.operations.OTBranch
+import org.modelix.model.util.Level
+import org.modelix.model.util.LogManager
 import org.modelix.model.util.Runnable
 import org.modelix.model.util.Supplier
 import java.time.LocalDateTime
@@ -220,7 +220,7 @@ actual class ReplicatedTree(private val client: IModelClient, private val treeId
     }
 
     companion object {
-        private val LOG = LogManager.getLogger(ReplicatedTree::class.java)
+        private val LOG = LogManager.getLogger(ReplicatedTree::class)
         private fun getHash(v: CLVersion?): String? {
             return v?.hash
         }

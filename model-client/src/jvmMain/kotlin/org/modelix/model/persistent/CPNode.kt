@@ -16,12 +16,12 @@
 package org.modelix.model.persistent
 
 import org.apache.commons.lang3.StringUtils
-import org.apache.log4j.LogManager
 import org.modelix.model.persistent.CPElementRef.Companion.fromString
 import org.modelix.model.persistent.SerializationUtil.escape
 import org.modelix.model.persistent.SerializationUtil.longFromHex
 import org.modelix.model.persistent.SerializationUtil.longToHex
 import org.modelix.model.persistent.SerializationUtil.unescape
+import org.modelix.model.util.LogManager
 import org.modelix.model.util.pmap.COWArrays.copy
 import org.modelix.model.util.pmap.COWArrays.insert
 import org.modelix.model.util.pmap.COWArrays.removeAt
@@ -168,7 +168,7 @@ actual class CPNode protected constructor(id1: Long, val concept: String?, paren
     }
 
     companion object {
-        private val LOG = LogManager.getLogger(CPNode::class.java)
+        private val LOG = LogManager.getLogger(CPNode::class)
         private val EMPTY_LONG_ARRAY = LongArray(0)
         val DESERIALIZER = Function { s: String -> deserialize(s) }
         @JvmStatic

@@ -15,13 +15,13 @@
 
 package org.modelix.model.client
 
-import org.apache.log4j.Level
-import org.apache.log4j.LogManager
 import org.modelix.model.api.IBranch
 import org.modelix.model.api.IBranchListener
 import org.modelix.model.api.ITree
 import org.modelix.model.lazy.CLVersion
 import org.modelix.model.lazy.TreeId
+import org.modelix.model.util.Level
+import org.modelix.model.util.LogManager
 import org.modelix.model.util.Supplier
 
 actual class ActiveBranch(client: IModelClient, tree: TreeId, branchName: String?, user: Supplier<String>) : IIndirectBranch {
@@ -94,7 +94,7 @@ actual class ActiveBranch(client: IModelClient, tree: TreeId, branchName: String
     }
 
     companion object {
-        private val LOG = LogManager.getLogger(ActiveBranch::class.java)
+        private val LOG = LogManager.getLogger(ActiveBranch::class)
         const val DEFAULT_BRANCH_NAME = "master"
     }
 

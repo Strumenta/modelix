@@ -16,12 +16,8 @@
 package org.modelix.model.api
 
 import org.apache.commons.lang3.mutable.MutableObject
-import org.apache.log4j.Level
-import org.apache.log4j.LogManager
 import org.modelix.model.api.DefaultIdGenerator.Companion.instance
-import org.modelix.model.util.ContextValue
-import org.modelix.model.util.Runnable
-import org.modelix.model.util.Supplier
+import org.modelix.model.util.*
 import org.modelix.model.util.pmap.COWArrays
 
 actual class PBranch constructor(@field:Volatile private var tree: ITree?, private val idGenerator: IIdGenerator? = instance) : IBranch {
@@ -127,6 +123,6 @@ actual class PBranch constructor(@field:Volatile private var tree: ITree?, priva
     }
 
     companion object {
-        private val LOG = LogManager.getLogger(PBranch::class.java)
+        private val LOG = LogManager.getLogger(PBranch::class)
     }
 }

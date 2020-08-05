@@ -16,8 +16,8 @@
 package org.modelix.model
 
 import org.apache.commons.collections4.map.LRUMap
-import org.apache.log4j.LogManager
 import org.modelix.model.persistent.HashUtil
+import org.modelix.model.util.LogManager
 import org.modelix.model.util.StreamUtils.intersection
 import org.modelix.model.util.StreamUtils.toStream
 import java.util.Arrays
@@ -180,6 +180,6 @@ actual class KeyValueStoreCache actual constructor(private val store: IKeyValueS
     }
 
     companion object {
-        private val LOG = LogManager.getLogger(KeyValueStoreCache::class.java)
+        private val LOG = LogManager.getLogger(KeyValueStoreCache::class)
     }
 }

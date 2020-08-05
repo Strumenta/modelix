@@ -15,10 +15,10 @@
 
 package org.modelix.model.client
 
-import org.apache.log4j.Level
-import org.apache.log4j.LogManager
 import org.modelix.model.IKeyListener
 import org.modelix.model.IKeyValueStore
+import org.modelix.model.util.Level
+import org.modelix.model.util.LogManager
 import org.modelix.model.util.StreamUtils.toStream
 import java.lang.Runnable
 import java.util.Objects
@@ -118,6 +118,6 @@ actual class AsyncStore actual constructor(private val store: IKeyValueStore) : 
     fun dispose() {}
 
     companion object {
-        private val LOG = LogManager.getLogger(AsyncStore::class.java)
+        private val LOG = LogManager.getLogger(AsyncStore::class)
     }
 }

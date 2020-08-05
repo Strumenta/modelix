@@ -15,15 +15,15 @@
 
 package org.modelix.model.client
 
-import org.apache.log4j.Level
-import org.apache.log4j.LogManager
+import org.modelix.model.util.Level
+import org.modelix.model.util.LogManager
 import org.modelix.model.util.Runnable
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 actual object SharedExecutors {
-    private val LOG = LogManager.getLogger(SharedExecutors::class.java)
+    private val LOG = LogManager.getLogger(SharedExecutors::class)
     @JvmField
     val FIXED = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1)
     val SCHEDULED = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1)
