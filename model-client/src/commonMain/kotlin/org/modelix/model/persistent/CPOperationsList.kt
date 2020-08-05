@@ -17,4 +17,31 @@ package org.modelix.model.persistent
 
 import org.modelix.model.operations.IOperation
 
-expect class CPOperationsList(operations: Array<IOperation?>)
+class CPOperationsList(val operations: Array<IOperation?>) {
+    fun serialize(): String {
+        val a = operations.map { op: IOperation? -> OperationSerializer.INSTANCE.serialize(op!!) }
+        return if (a.isEmpty()) {
+            ""
+        } else {
+            a.reduce { a: String, b: String -> "$a,$b" }
+        }
+    }
+
+    val hash: String
+        get() = HashUtil.sha256(serialize())
+
+    companion object {
+        fun deserialize(input: String): CPOperationsList {
+            return CPOperationsList(
+                    input.split(",")
+                            .filter { cs: String? -> isNotNullEmpty(cs) }
+                            .map { serialized: String? -> OperationSerializer.INSTANCE.deserialize(serialized!!) }.toTypedArray()
+            )
+        }
+
+    }
+}
+
+fun isNotNullEmpty(cs: String?): Boolean {
+    return !cs.isNullOrEmpty()
+}

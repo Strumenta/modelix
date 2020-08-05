@@ -27,8 +27,8 @@ import java.lang.IllegalArgumentException
 import java.util.*
 
 actual class OperationSerializer private actual constructor() {
-    companion object {
-        val INSTANCE = OperationSerializer()
+    actual companion object {
+        actual val INSTANCE = OperationSerializer()
         private const val SEPARATOR = ";"
         fun serializeConcept(concept: IConcept?): String {
 //    return SerializationUtil.escape(((SAbstractConceptAdapter) ((SConceptAdapter) concept).getAdapted()).serialize());
@@ -150,13 +150,13 @@ actual class OperationSerializer private actual constructor() {
         deserializers[type.simpleName] = serializer
     }
 
-    fun serialize(op: IOperation): String {
+    actual fun serialize(op: IOperation): String {
         val serializer: Serializer<*> = serializers[op.javaClass]
             ?: throw RuntimeException("Unknown operation type: " + op.javaClass.simpleName)
         return op.javaClass.simpleName + SEPARATOR + serializer.genericSerialize(op)
     }
 
-    fun deserialize(serialized: String): IOperation {
+    actual fun deserialize(serialized: String): IOperation {
         val parts = serialized.split(Regex(SEPARATOR), 2).toTypedArray()
         val deserializer = deserializers[parts[0]]
             ?: throw RuntimeException("Unknown operation type: " + parts[0])

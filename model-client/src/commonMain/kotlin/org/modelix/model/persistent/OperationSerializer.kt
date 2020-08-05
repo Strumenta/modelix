@@ -15,4 +15,12 @@
 
 package org.modelix.model.persistent
 
-expect class OperationSerializer private constructor()
+import org.modelix.model.operations.IOperation
+
+expect class OperationSerializer private constructor() {
+    companion object {
+        val INSTANCE : OperationSerializer
+    }
+    fun serialize(op: IOperation): String
+    fun deserialize(serialized: String): IOperation
+}
