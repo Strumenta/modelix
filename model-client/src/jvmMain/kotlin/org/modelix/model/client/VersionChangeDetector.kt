@@ -61,7 +61,7 @@ actual abstract class VersionChangeDetector actual constructor(private val store
                 versionChanged(versionHash)
             }
         }
-        SharedExecutors.FIXED.execute { store.listen(key, keyListener) }
+        SharedExecutors.FIXED.execute(Runnable { store.listen(key, keyListener) })
         pollingTask = fixDelay(
             3000,
             object : Runnable {

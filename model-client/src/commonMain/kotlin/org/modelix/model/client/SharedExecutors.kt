@@ -15,4 +15,9 @@
 
 package org.modelix.model.client
 
-expect object SharedExecutors
+import org.modelix.model.util.Executor
+import org.modelix.model.util.ExecutorService
+
+expect object SharedExecutors {
+    val FIXED: ExecutorService
+}

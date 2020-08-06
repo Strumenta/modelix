@@ -15,16 +15,24 @@
 
 package org.modelix.model.client
 
-import org.modelix.model.util.Level
-import org.modelix.model.util.LogManager
-import org.modelix.model.util.Runnable
+import org.modelix.model.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 actual object SharedExecutors {
     private val LOG = LogManager.getLogger(SharedExecutors::class)
-    val FIXED = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1)
+    actual val FIXED = object : ExecutorService {
+        val wrapped = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+        override fun shutdown() {
+            wrapped.shutdown()
+        }
+
+        override fun execute(command: Runnable) {
+            wrapped.execute { command.run() }
+        }
+    }
+
     val SCHEDULED = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1)
     fun shutdownAll() {
         SCHEDULED.shutdown()

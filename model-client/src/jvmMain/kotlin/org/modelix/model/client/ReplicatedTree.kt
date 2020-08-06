@@ -122,7 +122,7 @@ actual class ReplicatedTree actual constructor(private val client: IModelClient,
             version = newLocalVersion.value
             divergenceTime = 0
         }
-        SharedExecutors.FIXED.execute(object : java.lang.Runnable {
+        SharedExecutors.FIXED.execute(object : Runnable {
             override fun run() {
                 val doMerge: Supplier<Boolean> = object : Supplier<Boolean> {
                     override fun get(): Boolean {
@@ -243,7 +243,7 @@ actual class ReplicatedTree actual constructor(private val client: IModelClient,
         }
 
         // prefetch to avoid HTTP request in command listener 
-        SharedExecutors.FIXED.execute { initialTree.value.getChildren(ITree.ROOT_ID, ITree.DETACHED_NODES_ROLE) }
+        SharedExecutors.FIXED.execute( Runnable { initialTree.value.getChildren(ITree.ROOT_ID, ITree.DETACHED_NODES_ROLE) })
         version = initialVersion
         remoteVersion = initialVersion
         localBranch = PBranch(initialTree.value)
@@ -322,12 +322,11 @@ actual class ReplicatedTree actual constructor(private val client: IModelClient,
                 if (isEditing.get()) {
                     return
                 }
-                SharedExecutors.FIXED.execute {
-                    if (isEditing.get()) {
-                        return@execute
+                SharedExecutors.FIXED.execute( Runnable {
+                    if (!isEditing.get()) {
+                        createAndMergeLocalVersion()
                     }
-                    createAndMergeLocalVersion()
-                }
+                })
             }
         })
         convergenceWatchdog = fixDelay(
