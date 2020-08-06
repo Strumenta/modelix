@@ -56,7 +56,7 @@ actual object COWArrays {
         return newArray
     }
 
-    fun <T> remove(array: Array<T>, value: T): Array<T> {
+    actual fun <T> remove(array: Array<T>, value: T): Array<T> {
         val index = indexOf(array, value)
         return if (index != -1) removeAt(array, index) else array
     }
@@ -119,7 +119,7 @@ actual object COWArrays {
         return Arrays.copyOf(array, array.size)
     }
 
-    fun <T> addIfAbsent(array: Array<T>, value: T): Array<T> {
+    actual fun <T> addIfAbsent(array: Array<T>, value: T): Array<T> {
         return if (indexOf(array, value) == -1) add(array, value) else array
     }
 

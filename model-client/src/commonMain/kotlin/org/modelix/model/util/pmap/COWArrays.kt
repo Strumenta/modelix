@@ -15,4 +15,7 @@
 
 package org.modelix.model.util.pmap
 
-expect object COWArrays
+expect object COWArrays {
+    fun <T> addIfAbsent(array: Array<T>, value: T): Array<T>
+    fun <T> remove(array: Array<T>, value: T): Array<T>
+}
