@@ -76,31 +76,31 @@ class AsyncStore(private val store: IKeyValueStore) : IKeyValueStore {
     protected fun processQueue() {
         if (consumerActive.compareAndSet(false, true)) {
             SharedExecutors.FIXED.execute(
-                    Runnable {
-                        try {
-                            while (!pendingWrites.isEmpty()) {
-                                try {
-                                    val entries: MutableMap<String?, String?> = LinkedHashMap(16, 0.75.toFloat())
-                                    synchronized(pendingWrites) { entries.putAll(pendingWrites) }
-                                    store.putAll(entries)
-                                    synchronized(pendingWrites) {
-                                        for (entry: Map.Entry<String?, String?> in entries.entries) {
-                                            if (pendingWrites[entry.key] == entry.value) {
-                                                pendingWrites.remove(entry.key)
-                                            }
+                Runnable {
+                    try {
+                        while (!pendingWrites.isEmpty()) {
+                            try {
+                                val entries: MutableMap<String?, String?> = LinkedHashMap(16, 0.75.toFloat())
+                                synchronized(pendingWrites) { entries.putAll(pendingWrites) }
+                                store.putAll(entries)
+                                synchronized(pendingWrites) {
+                                    for (entry: Map.Entry<String?, String?> in entries.entries) {
+                                        if (pendingWrites[entry.key] == entry.value) {
+                                            pendingWrites.remove(entry.key)
                                         }
                                     }
-                                } catch (ex: Exception) {
-                                    if (LOG.isEnabledFor(Level.ERROR)) {
-                                        LOG.error("", ex)
-                                    }
-                                    sleep(1000)
                                 }
+                            } catch (ex: Exception) {
+                                if (LOG.isEnabledFor(Level.ERROR)) {
+                                    LOG.error("", ex)
+                                }
+                                sleep(1000)
                             }
-                        } finally {
-                            consumerActive.set(false)
                         }
+                    } finally {
+                        consumerActive.set(false)
                     }
+                }
             )
         }
     }
@@ -111,4 +111,3 @@ class AsyncStore(private val store: IKeyValueStore) : IKeyValueStore {
         private val LOG = LogManager.getLogger(AsyncStore::class)
     }
 }
-

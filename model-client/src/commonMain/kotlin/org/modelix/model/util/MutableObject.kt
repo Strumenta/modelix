@@ -5,7 +5,7 @@ package org.modelix.model.util
  *
  * @param <T> the type to set and get
  */
-class MutableObject<T>  {
+class MutableObject<T> {
     /** The mutable value.  */
     private var value: T? = null
 
@@ -40,7 +40,7 @@ class MutableObject<T>  {
     fun setValue(value: T) {
         this.value = value
     }
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      *
      *
@@ -50,7 +50,7 @@ class MutableObject<T>  {
      *
      *
      * @param obj  the object to compare with, `null` returns `false`
-     * @return  `true` if the objects are the same;
+     * @return `true` if the objects are the same;
      * `true` if the objects have equivalent `value` fields;
      * `false` otherwise.
      */
@@ -75,7 +75,7 @@ class MutableObject<T>  {
     override fun hashCode(): Int {
         return if (value == null) 0 else value.hashCode()
     }
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     /**
      * Returns the String value of this mutable.
      *

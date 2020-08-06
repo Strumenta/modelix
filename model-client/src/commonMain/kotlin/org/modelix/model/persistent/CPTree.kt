@@ -15,15 +15,13 @@
 
 package org.modelix.model.persistent
 
-import kotlin.jvm.JvmStatic
-
 class CPTree(
-        val id: String,
-        val rootId: Long,
-        /**
-         * SHA to CPHamtNode
-         */
-        var idToHash: String
+    val id: String,
+    val rootId: Long,
+    /**
+     * SHA to CPHamtNode
+     */
+    var idToHash: String
 ) {
 
     fun serialize(): String {

@@ -34,4 +34,3 @@ class IdGenerator(clientId: Int) : IIdGenerator {
         idSequence = AtomicLong(this.clientId shl 32)
     }
 }
-

@@ -3,10 +3,10 @@ package org.modelix.model.util
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 
-actual class AtomicLong actual constructor(value: Long){
+actual class AtomicLong actual constructor(value: Long) {
     private val wrapped = AtomicLong(value)
 
-    actual fun incrementAndGet() : Long = wrapped.incrementAndGet()
+    actual fun incrementAndGet(): Long = wrapped.incrementAndGet()
 }
 
 actual class AtomicBoolean actual constructor(value: Boolean) {
@@ -15,17 +15,16 @@ actual class AtomicBoolean actual constructor(value: Boolean) {
     actual constructor() : this(false)
 
     actual fun compareAndSet(expectedValue: Boolean, newValue: Boolean): Boolean =
-            wrapped.compareAndSet(expectedValue, newValue)
+        wrapped.compareAndSet(expectedValue, newValue)
 
     actual fun set(newValue: Boolean) {
         wrapped.set(newValue)
     }
 
     actual fun get(): Boolean = wrapped.get()
-
 }
 
-actual fun random() : Double = Math.random()
+actual fun random(): Double = Math.random()
 
 actual fun sleep(ms: Long) {
     try {

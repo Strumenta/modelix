@@ -1,17 +1,17 @@
 package org.modelix.model.util
 
 expect class AtomicLong(value: Long) {
-    fun incrementAndGet() : Long
+    fun incrementAndGet(): Long
 }
 
 expect class AtomicBoolean(value: Boolean) {
     constructor()
     fun compareAndSet(expectedValue: Boolean, newValue: Boolean): Boolean
     fun set(newValue: Boolean)
-    fun get() : Boolean
+    fun get(): Boolean
 }
 
-expect fun random() : Double
+expect fun random(): Double
 
 expect fun sleep(ms: Long)
 
@@ -73,7 +73,9 @@ interface ScheduledExecutorService : ExecutorService {
      * @throws NullPointerException if command or unit is null
      * @throws IllegalArgumentException if delay less than or equal to zero
      */
-    fun scheduleWithFixedDelay(command: Runnable?,
-                               initialDelay: Long,
-                               delay: Long): ScheduledFuture<*>
+    fun scheduleWithFixedDelay(
+        command: Runnable?,
+        initialDelay: Long,
+        delay: Long
+    ): ScheduledFuture<*>
 }

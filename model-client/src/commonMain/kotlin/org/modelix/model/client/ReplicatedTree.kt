@@ -73,20 +73,20 @@ class ReplicatedTree(private val client: IModelClient, private val treeId: TreeI
 
     protected fun deleteDetachedNodes() {
         val hasDetachedNodes = localOTBranch.computeRead(
-                org.modelix.model.util.Supplier<Boolean> {
-                    localOTBranch.transaction!!
-                            .getChildren(ITree.ROOT_ID, ITree.DETACHED_NODES_ROLE)!!.iterator().hasNext()
-                }
+            org.modelix.model.util.Supplier<Boolean> {
+                localOTBranch.transaction!!
+                    .getChildren(ITree.ROOT_ID, ITree.DETACHED_NODES_ROLE)!!.iterator().hasNext()
+            }
         )
         // avoid unnecessary write
         if (hasDetachedNodes) {
             localOTBranch.runWrite(
-                    Runnable {
+                Runnable {
 
-                        // clear detached nodes
-                        val t: IWriteTransaction = localOTBranch.writeTransaction!!
-                        t.getChildren(ITree.ROOT_ID, ITree.DETACHED_NODES_ROLE)!!.forEach { nodeId: Long -> t.deleteNode(nodeId) }
-                    }
+                    // clear detached nodes
+                    val t: IWriteTransaction = localOTBranch.writeTransaction!!
+                    t.getChildren(ITree.ROOT_ID, ITree.DETACHED_NODES_ROLE)!!.forEach { nodeId: Long -> t.deleteNode(nodeId) }
+                }
             )
         }
     }
@@ -120,7 +120,7 @@ class ReplicatedTree(private val client: IModelClient, private val treeId: TreeI
                             mergedVersion = merger.mergeChange(remoteBase.getValue()!!, newLocalVersion.getValue()!!)
                             if (LOG.isDebugEnabled) {
                                 LOG.debug(
-                                        "Merged local ${newLocalVersion.getValue()!!.hash} with remote ${remoteBase.getValue()!!.hash} -> ${mergedVersion.hash}"
+                                    "Merged local ${newLocalVersion.getValue()!!.hash} with remote ${remoteBase.getValue()!!.hash} -> ${mergedVersion.hash}"
                                 )
                             }
                         } catch (ex: Exception) {
@@ -171,13 +171,13 @@ class ReplicatedTree(private val client: IModelClient, private val treeId: TreeI
                 this.version = version
                 divergenceTime = 0
                 localBranch.runWrite(
-                        Runnable {
-                            val newTree = version.tree
-                            val currentTree = localBranch.transaction!!.tree as CLTree?
-                            if (getHash(newTree) != getHash(currentTree)) {
-                                localBranch.writeTransaction!!.tree = newTree
-                            }
+                    Runnable {
+                        val newTree = version.tree
+                        val currentTree = localBranch.transaction!!.tree as CLTree?
+                        if (getHash(newTree) != getHash(currentTree)) {
+                            localBranch.writeTransaction!!.tree = newTree
                         }
+                    }
                 )
             }
         }
@@ -226,7 +226,7 @@ class ReplicatedTree(private val client: IModelClient, private val treeId: TreeI
         }
 
         // prefetch to avoid HTTP request in command listener
-        SharedExecutors.FIXED.execute( Runnable { initialTree.getValue()!!.getChildren(ITree.ROOT_ID, ITree.DETACHED_NODES_ROLE) })
+        SharedExecutors.FIXED.execute(Runnable { initialTree.getValue()!!.getChildren(ITree.ROOT_ID, ITree.DETACHED_NODES_ROLE) })
         version = initialVersion
         remoteVersion = initialVersion
         localBranch = PBranch(initialTree.getValue()!!)
@@ -256,7 +256,7 @@ class ReplicatedTree(private val client: IModelClient, private val treeId: TreeI
                             mergedVersion = merger.mergeChange(localBase.getValue()!!, newRemoteVersion)
                             if (LOG.isDebugEnabled) {
                                 LOG.debug(
-                                        "Merged remote ${newRemoteVersion.hash} with local ${localBase.getValue()!!.hash} -> ${mergedVersion.hash}"
+                                    "Merged remote ${newRemoteVersion.hash} with local ${localBase.getValue()!!.hash} -> ${mergedVersion.hash}"
                                 )
                             }
                         } catch (ex: Exception) {
@@ -300,30 +300,31 @@ class ReplicatedTree(private val client: IModelClient, private val treeId: TreeI
                 if (isEditing.get()) {
                     return
                 }
-                SharedExecutors.FIXED.execute( Runnable {
-                    if (!isEditing.get()) {
-                        createAndMergeLocalVersion()
+                SharedExecutors.FIXED.execute(
+                    Runnable {
+                        if (!isEditing.get()) {
+                            createAndMergeLocalVersion()
+                        }
                     }
-                })
+                )
             }
         })
         convergenceWatchdog = SharedExecutors.fixDelay(
-                1000,
-                object : Runnable {
-                    override fun run() {
-                        val localHash = if (version == null) null else version!!.hash
-                        val remoteHash = if (remoteVersion == null) null else remoteVersion!!.hash
-                        if (localHash == remoteHash) {
-                            divergenceTime = 0
-                        } else {
-                            divergenceTime++
-                        }
-                        if (divergenceTime > 5) {
-                            synchronized(mergeLock) { divergenceTime = 0 }
-                        }
+            1000,
+            object : Runnable {
+                override fun run() {
+                    val localHash = if (version == null) null else version!!.hash
+                    val remoteHash = if (remoteVersion == null) null else remoteVersion!!.hash
+                    if (localHash == remoteHash) {
+                        divergenceTime = 0
+                    } else {
+                        divergenceTime++
+                    }
+                    if (divergenceTime > 5) {
+                        synchronized(mergeLock) { divergenceTime = 0 }
                     }
                 }
+            }
         )
     }
 }
-

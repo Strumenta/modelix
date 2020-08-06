@@ -125,4 +125,3 @@ class PBranch(@field:Volatile private var tree: ITree?, private val idGenerator:
         private val LOG = LogManager.getLogger(PBranch::class)
     }
 }
-

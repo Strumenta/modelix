@@ -90,4 +90,3 @@ class GarbageFilteringStore(private val store: IKeyValueStore) : IKeyValueStore 
         store.removeListener(key, listener)
     }
 }
-

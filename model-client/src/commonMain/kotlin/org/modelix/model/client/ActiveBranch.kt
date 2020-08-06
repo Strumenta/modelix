@@ -113,4 +113,3 @@ class ActiveBranch(client: IModelClient, tree: TreeId, branchName: String?, user
         replicatedTree!!.branch.addListener(forwardingListener)
     }
 }
-
