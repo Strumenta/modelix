@@ -27,7 +27,7 @@ actual abstract class VersionChangeDetector actual constructor(private val store
     private val keyListener: IKeyListener
     var lastVersionHash: String? = null
         private set
-    private val pollingTask: ScheduledFuture<*>
+    private val pollingTask: org.modelix.model.util.ScheduledFuture<*>
     private fun versionChanged(newVersion: String?) {
         if (newVersion == lastVersionHash) {
             return

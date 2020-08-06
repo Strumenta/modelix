@@ -17,6 +17,7 @@ package org.modelix.model.client
 
 import org.modelix.model.util.*
 import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
@@ -33,14 +34,14 @@ actual object SharedExecutors {
         }
     }
 
-    val SCHEDULED = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1)
+    val SCHEDULED : org.modelix.model.util.ScheduledExecutorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1).toModelix()
     fun shutdownAll() {
         SCHEDULED.shutdown()
         FIXED.shutdown()
     }
 
-    fun fixDelay(milliSeconds: Int, r: Runnable): ScheduledFuture<*> {
-        return SCHEDULED.scheduleWithFixedDelay(
+    fun fixDelay(milliSeconds: Int, r: Runnable): org.modelix.model.util.ScheduledFuture<*> {
+        return SCHEDULED.scheduleWithFixedDelay( Runnable
             {
                 try {
                     r.run()
@@ -50,7 +51,40 @@ actual object SharedExecutors {
                     }
                 }
             },
-            milliSeconds.toLong(), milliSeconds.toLong(), TimeUnit.MILLISECONDS
+            milliSeconds.toLong(), milliSeconds.toLong()
         )
     }
+}
+
+private fun ScheduledExecutorService.toModelix(): org.modelix.model.util.ScheduledExecutorService {
+    val wrapped = this;
+    return object : org.modelix.model.util.ScheduledExecutorService {
+        override fun scheduleWithFixedDelay(command: Runnable?, initialDelay: Long, delay: Long): org.modelix.model.util.ScheduledFuture<*> {
+            return wrapped.scheduleWithFixedDelay(command?.toJvm(), initialDelay, delay, TimeUnit.MILLISECONDS).toModelix();
+        }
+
+        override fun shutdown() {
+            wrapped.shutdown()
+        }
+
+        override fun execute(command: Runnable) {
+            wrapped.execute(command.toJvm())
+        }
+
+    }
+}
+
+private fun <V> ScheduledFuture<V>.toModelix(): org.modelix.model.util.ScheduledFuture<V> {
+    val wrapped = this;
+    return object : org.modelix.model.util.ScheduledFuture<V> {
+        override fun cancel(mayInterruptIfRunning: Boolean): Boolean {
+            return wrapped.cancel(mayInterruptIfRunning)
+        }
+
+    }
+}
+
+private fun Runnable.toJvm(): java.lang.Runnable {
+    val wrapped = this;
+    return java.lang.Runnable { wrapped.run(); }
 }

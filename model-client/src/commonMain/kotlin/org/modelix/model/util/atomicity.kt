@@ -33,3 +33,47 @@ interface ExecutorService : Executor {
      */
     fun shutdown()
 }
+
+interface ScheduledFuture<V> {
+    fun cancel(mayInterruptIfRunning: Boolean): Boolean
+}
+
+interface ScheduledExecutorService : ExecutorService {
+
+    /**
+     * Submits a periodic action that becomes enabled first after the
+     * given initial delay, and subsequently with the given delay
+     * between the termination of one execution and the commencement of
+     * the next.
+     *
+     *
+     * The sequence of task executions continues indefinitely until
+     * one of the following exceptional completions occur:
+     *
+     *  * The task is [explicitly cancelled][Future.cancel]
+     * via the returned future.
+     *  * The executor terminates, also resulting in task cancellation.
+     *  * An execution of the task throws an exception.  In this case
+     * calling [get][Future.get] on the returned future will throw
+     * [ExecutionException], holding the exception as its cause.
+     *
+     * Subsequent executions are suppressed.  Subsequent calls to
+     * [isDone()][Future.isDone] on the returned future will
+     * return `true`.
+     *
+     * @param command the task to execute
+     * @param initialDelay the time to delay first execution
+     * @param delay the delay in milliseconds between the termination of one
+     * execution and the commencement of the next
+     * the series of repeated tasks.  The future's [         ][Future.get] method will never return normally,
+     * and will throw an exception upon task cancellation or
+     * abnormal termination of a task execution.
+     * @throws RejectedExecutionException if the task cannot be
+     * scheduled for execution
+     * @throws NullPointerException if command or unit is null
+     * @throws IllegalArgumentException if delay less than or equal to zero
+     */
+    fun scheduleWithFixedDelay(command: Runnable?,
+                               initialDelay: Long,
+                               delay: Long): ScheduledFuture<*>
+}

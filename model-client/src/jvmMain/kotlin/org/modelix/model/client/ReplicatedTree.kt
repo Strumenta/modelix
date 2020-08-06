@@ -31,8 +31,6 @@ import org.modelix.model.operations.IAppliedOperation
 import org.modelix.model.operations.IOperation
 import org.modelix.model.operations.OTBranch
 import org.modelix.model.util.*
-import java.time.LocalDateTime
-import java.util.concurrent.ScheduledFuture
 
 actual class ReplicatedTree actual constructor(private val client: IModelClient, private val treeId: TreeId, private val branchName: String, private val user: Supplier<String>) {
     private val localBranch: IBranch
@@ -198,7 +196,7 @@ actual class ReplicatedTree actual constructor(private val client: IModelClient,
 
     fun createVersion(tree: CLTree, operations: Array<IOperation?>?, previousVersion: String?): CLVersion {
         checkDisposed()
-        val time = LocalDateTime.now().toString()
+        val time = nowString()
         return CLVersion(client.idGenerator!!.generate(), time, user.get(), tree.hash, previousVersion, operations!!, client.storeCache!!)
     }
 

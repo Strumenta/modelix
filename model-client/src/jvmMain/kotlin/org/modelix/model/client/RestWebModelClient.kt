@@ -119,7 +119,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
             return field
         }
         private set
-    private val watchDogTask: ScheduledFuture<*>
+    private val watchDogTask: org.modelix.model.util.ScheduledFuture<*>
     private var authToken = defaultToken
 
     fun dispose() {
