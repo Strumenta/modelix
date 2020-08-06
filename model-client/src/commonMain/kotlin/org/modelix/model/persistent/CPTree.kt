@@ -15,11 +15,25 @@
 
 package org.modelix.model.persistent
 
-expect class CPTree(
-    id: String,
-    rootId: Long,
-    /**
-     * SHA to CPHamtNode
-     */
-    idToHash: String
-)
+import kotlin.jvm.JvmStatic
+
+class CPTree(
+        val id: String,
+        val rootId: Long,
+        /**
+         * SHA to CPHamtNode
+         */
+        var idToHash: String
+) {
+
+    fun serialize(): String {
+        return "$id/$rootId/$idToHash"
+    }
+
+    companion object {
+        fun deserialize(input: String): CPTree {
+            val parts = input.split("/").dropLastWhile { it.isEmpty() }.toTypedArray()
+            return CPTree(parts[0], parts[1].toLong(), parts[2])
+        }
+    }
+}
