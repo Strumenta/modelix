@@ -17,7 +17,9 @@ package org.modelix.model.client
 
 import org.modelix.model.util.Executor
 import org.modelix.model.util.ExecutorService
+import org.modelix.model.util.Runnable
 
 expect object SharedExecutors {
     val FIXED: ExecutorService
+    fun fixDelay(milliSeconds: Int, r: Runnable): org.modelix.model.util.ScheduledFuture<*>
 }

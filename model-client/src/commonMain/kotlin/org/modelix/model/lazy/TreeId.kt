@@ -15,4 +15,6 @@
 
 package org.modelix.model.lazy
 
-expect class TreeId(id: String)
+expect class TreeId(id: String) {
+    fun getBranchKey(branchName: String?): String
+}

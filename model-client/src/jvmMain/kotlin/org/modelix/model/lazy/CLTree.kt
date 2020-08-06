@@ -39,13 +39,13 @@ import java.util.stream.Collectors
 import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
-actual class CLTree : ITree {
+actual open class CLTree : ITree {
     protected var store: IDeserializingKeyValueStore? = null
     protected var data: CPTree? = null
 
-    constructor(hash: String?, store: IDeserializingKeyValueStore) : this(store.get<CPTree>(hash, org.modelix.model.util.Function<String?, CPTree> { serialized: String? -> CPTree.deserialize(serialized!!) }), null, store) {}
+    actual constructor(hash: String?, store: IDeserializingKeyValueStore) : this(store.get<CPTree>(hash, org.modelix.model.util.Function<String?, CPTree> { serialized: String? -> CPTree.deserialize(serialized!!) }), null, store) {}
     constructor(store: IDeserializingKeyValueStore) : this(null as CPTree?, null, store) {}
-    constructor(id: TreeId?, store: IDeserializingKeyValueStore) : this(null, id, store) {}
+    actual constructor(id: TreeId?, store: IDeserializingKeyValueStore) : this(null, id, store) {}
     private constructor(data: CPTree?, treeId: TreeId?, store: IDeserializingKeyValueStore) {
         var treeId = treeId
         if (data == null) {
@@ -77,7 +77,7 @@ actual class CLTree : ITree {
         store!!.prefetch(hash)
     }
 
-    val hash: String
+    actual val hash: String
         get() = sha256(data!!.serialize())
 
     val nodesMap: CLHamtNode<*>?

@@ -42,8 +42,8 @@ actual abstract class VersionChangeDetector actual constructor(private val store
         lastVersionHash = newVersion
     }
 
-    protected abstract fun processVersionChange(oldVersion: String?, newVersion: String?)
-    fun dispose() {
+    protected actual abstract fun processVersionChange(oldVersion: String?, newVersion: String?)
+    actual fun dispose() {
         pollingTask.cancel(false)
         store.removeListener(key, keyListener)
     }

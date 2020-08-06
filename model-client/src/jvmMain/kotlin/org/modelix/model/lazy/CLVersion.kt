@@ -26,14 +26,14 @@ actual class CLVersion {
     var data: CPVersion? = null
         private set
 
-    constructor(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>, store: IDeserializingKeyValueStore) {
+    actual constructor(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>, store: IDeserializingKeyValueStore) {
         this.store = store
-        if (operations.size <= 10) {
-            data = CPVersion(id, time, author, treeHash, previousVersion, operations, null, operations.size)
+        data = if (operations.size <= 10) {
+            CPVersion(id, time, author, treeHash, previousVersion, operations, null, operations.size)
         } else {
             val opsList = CPOperationsList(operations)
             IDeserializingKeyValueStore_extensions.put(store, opsList, opsList.serialize())
-            data = CPVersion(id, time, author, treeHash, previousVersion, null, opsList.hash, operations.size)
+            CPVersion(id, time, author, treeHash, previousVersion, null, opsList.hash, operations.size)
         }
         IDeserializingKeyValueStore_extensions.put(store, data, data!!.serialize())
     }
@@ -56,16 +56,16 @@ actual class CLVersion {
     val time: String
         get() = data!!.time!!
 
-    val hash: String
+    actual val hash: String
         get() = data!!.hash
 
     val previousHash: String
         get() = data!!.previousVersion!!
 
-    val treeHash: String
+    actual val treeHash: String
         get() = data!!.treeHash!!
 
-    val tree: CLTree
+    actual val tree: CLTree
         get() = CLTree(treeHash, store)
 
     val previousVersion: CLVersion?
@@ -91,9 +91,9 @@ actual class CLVersion {
         return data!!.operations != null
     }
 
-    companion object {
+    actual companion object {
         @JvmStatic
-        fun loadFromHash(hash: String?, store: IDeserializingKeyValueStore): CLVersion? {
+        actual fun loadFromHash(hash: String?, store: IDeserializingKeyValueStore): CLVersion? {
             val data = store.get(hash, org.modelix.model.util.Function { input: String? -> CPVersion.deserialize(input!!) })
             return data?.let { CLVersion(it, store) }
         }

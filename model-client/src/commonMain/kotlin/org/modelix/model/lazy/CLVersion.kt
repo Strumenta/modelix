@@ -15,4 +15,16 @@
 
 package org.modelix.model.lazy
 
-expect class CLVersion
+import org.modelix.model.operations.IOperation
+
+expect class CLVersion {
+    val hash: String
+    val tree: CLTree
+    val treeHash: String
+
+    constructor(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>, store: IDeserializingKeyValueStore)
+
+    companion object {
+        fun loadFromHash(hash: String?, store: IDeserializingKeyValueStore): CLVersion?
+    }
+}

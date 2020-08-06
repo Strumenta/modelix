@@ -23,7 +23,7 @@ actual class TreeId actual constructor(val id: String) {
     val masterBranchKey: String
         get() = getBranchKey(null)
 
-    fun getBranchKey(branchName: String?): String {
+    actual fun getBranchKey(branchName: String?): String {
         var branchName = branchName
         if (branchName == null || branchName.isEmpty()) {
             branchName = "master"

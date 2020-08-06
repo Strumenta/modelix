@@ -40,7 +40,7 @@ actual object SharedExecutors {
         FIXED.shutdown()
     }
 
-    fun fixDelay(milliSeconds: Int, r: Runnable): org.modelix.model.util.ScheduledFuture<*> {
+    actual fun fixDelay(milliSeconds: Int, r: Runnable): org.modelix.model.util.ScheduledFuture<*> {
         return SCHEDULED.scheduleWithFixedDelay( Runnable
             {
                 try {

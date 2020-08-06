@@ -35,9 +35,9 @@ import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
-actual class VersionMerger(private val storeCache: IDeserializingKeyValueStore, private val idGenerator: IIdGenerator) {
+actual class VersionMerger actual constructor(private val storeCache: IDeserializingKeyValueStore, private val idGenerator: IIdGenerator) {
     private val mergeLock = Any()
-    fun mergeChange(lastMergedVersion: CLVersion, newVersion: CLVersion): CLVersion {
+    actual fun mergeChange(lastMergedVersion: CLVersion, newVersion: CLVersion): CLVersion {
         var lastMergedVersion = lastMergedVersion
         synchronized(mergeLock) {
             return if (lastMergedVersion == null) {

@@ -17,4 +17,7 @@ package org.modelix.model.client
 
 import org.modelix.model.IKeyValueStore
 
-expect abstract class VersionChangeDetector(store: IKeyValueStore, key: String)
+expect abstract class VersionChangeDetector(store: IKeyValueStore, key: String) {
+    fun dispose()
+    protected abstract fun processVersionChange(oldVersion: String?, newVersion: String?)
+}

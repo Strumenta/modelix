@@ -18,5 +18,9 @@ package org.modelix.model.lazy
 import org.modelix.model.api.ITree
 
 expect class CLTree : ITree {
+    val hash: String
     fun resolveElement(id: Long): CLNode?
+
+    constructor(id: TreeId?, store: IDeserializingKeyValueStore)
+    constructor(hash: String?, store: IDeserializingKeyValueStore)
 }
