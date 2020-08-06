@@ -39,8 +39,7 @@ actual object HashUtil {
         return sha256(input.toByteArray(UTF8))
     }
 
-    @JvmStatic
-    fun isSha256(value: String?): Boolean {
+    actual fun isSha256(value: String?): Boolean {
         if (value == null) {
             return false
         }
@@ -49,7 +48,7 @@ actual object HashUtil {
         } else HASH_PATTERN.matcher(value).matches()
     }
 
-    fun extractSha256(input: String?): Iterable<String> {
+    actual fun extractSha256(input: String?): Iterable<String> {
         return object : Iterable<String> {
             override fun iterator(): Iterator<String> {
                 return object : Iterator<String> {

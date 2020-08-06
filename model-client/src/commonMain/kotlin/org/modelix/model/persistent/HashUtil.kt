@@ -17,4 +17,6 @@ package org.modelix.model.persistent
 
 expect object HashUtil {
     fun sha256(input: String): String
+    fun extractSha256(input: String?): Iterable<String>
+    fun isSha256(value: String?): Boolean
 }
