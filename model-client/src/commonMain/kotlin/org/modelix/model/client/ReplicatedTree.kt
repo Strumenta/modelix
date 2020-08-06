@@ -15,4 +15,13 @@
 
 package org.modelix.model.client
 
-expect class ReplicatedTree
+import org.modelix.model.api.IBranch
+import org.modelix.model.lazy.CLVersion
+import org.modelix.model.lazy.TreeId
+import org.modelix.model.util.Supplier
+
+expect class ReplicatedTree(client: IModelClient, treeId: TreeId, branchName: String, user: Supplier<String>) {
+    val branch: IBranch
+    var version: CLVersion?
+    fun dispose()
+}

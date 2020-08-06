@@ -38,14 +38,14 @@ import java.time.LocalDateTime
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.atomic.AtomicBoolean
 
-actual class ReplicatedTree(private val client: IModelClient, private val treeId: TreeId, private val branchName: String, private val user: Supplier<String>) {
+actual class ReplicatedTree actual constructor(private val client: IModelClient, private val treeId: TreeId, private val branchName: String, private val user: Supplier<String>) {
     private val localBranch: IBranch
     private val localOTBranch: OTBranch
     private val mergeLock = Any()
     private val merger: VersionMerger
 
     @Volatile
-    var version: CLVersion?
+    actual var version: CLVersion?
         private set
 
     @Volatile
@@ -55,7 +55,7 @@ actual class ReplicatedTree(private val client: IModelClient, private val treeId
     private var disposed = false
     private var divergenceTime = 0
     private val convergenceWatchdog: ScheduledFuture<*>
-    val branch: IBranch
+    actual val branch: IBranch
         get() {
             checkDisposed()
             return localOTBranch
@@ -206,7 +206,7 @@ actual class ReplicatedTree(private val client: IModelClient, private val treeId
         return CLVersion(client.idGenerator!!.generate(), time, user.get(), tree.hash, previousVersion, operations!!, client.storeCache!!)
     }
 
-    fun dispose() {
+    actual fun dispose() {
         checkDisposed()
         disposed = true
         versionChangeDetector.dispose()
