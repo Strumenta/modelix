@@ -21,6 +21,8 @@ actual class AtomicBoolean actual constructor(value: Boolean) {
         wrapped.set(newValue)
     }
 
+    actual fun get(): Boolean = wrapped.get()
+
 }
 
 actual fun random() : Double = Math.random()

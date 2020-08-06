@@ -30,13 +30,9 @@ import org.modelix.model.lazy.TreeId
 import org.modelix.model.operations.IAppliedOperation
 import org.modelix.model.operations.IOperation
 import org.modelix.model.operations.OTBranch
-import org.modelix.model.util.Level
-import org.modelix.model.util.LogManager
-import org.modelix.model.util.Runnable
-import org.modelix.model.util.Supplier
+import org.modelix.model.util.*
 import java.time.LocalDateTime
 import java.util.concurrent.ScheduledFuture
-import java.util.concurrent.atomic.AtomicBoolean
 
 actual class ReplicatedTree actual constructor(private val client: IModelClient, private val treeId: TreeId, private val branchName: String, private val user: Supplier<String>) {
     private val localBranch: IBranch

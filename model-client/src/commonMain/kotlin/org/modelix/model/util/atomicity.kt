@@ -8,6 +8,7 @@ expect class AtomicBoolean(value: Boolean) {
     constructor()
     fun compareAndSet(expectedValue: Boolean, newValue: Boolean): Boolean
     fun set(newValue: Boolean)
+    fun get() : Boolean
 }
 
 expect fun random() : Double
