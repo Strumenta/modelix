@@ -17,11 +17,8 @@ package org.modelix.model.lazy
 
 import io.vavr.Tuple
 import io.vavr.Tuple3
+import org.modelix.model.util.Consumer
 import org.modelix.model.util.MutableInt
-import java.util.*
-import java.util.function.Consumer
-import java.util.stream.Collectors
-import java.util.stream.StreamSupport
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -76,10 +73,9 @@ actual class BulkQuery actual constructor(private val store: IDeserializingKeyVa
                     deserializers[request._1()] = request._2()
                 }
                 val entries = executeBulkQuery(
-                    currentRequests.stream()
+                    currentRequests
                         .map { obj: Tuple3<String, org.modelix.model.util.Function<String?, *>, Consumer<Any?>> -> obj._1() }
-                        .distinct()
-                        .collect(Collectors.toList()),
+                        .distinct().toList(),
                     deserializers.toMap()
                 )
                 for (request in currentRequests) {
@@ -92,7 +88,7 @@ actual class BulkQuery actual constructor(private val store: IDeserializingKeyVa
     }
 
     override fun <I, O> map(input_: Iterable<I>?, f: org.modelix.model.util.Function<I, IBulkQuery.Value<O>?>?): IBulkQuery.Value<List<O>?>? {
-        val input = StreamSupport.stream(input_!!.spliterator(), false).collect(Collectors.toList())
+        val input =input_!!.toList()
         if (input.isEmpty()) {
             return constant(emptyList())
         }
@@ -110,7 +106,7 @@ actual class BulkQuery actual constructor(private val store: IDeserializingKeyVa
                     done[i_] = true
                     remaining.decrement()
                     if (remaining.toInt() == 0) {
-                        result.success(Arrays.stream(output).map { e: Any? -> e as O }.collect(Collectors.toList()))
+                        result.success(output.map { e: Any? -> e as O }.toList())
                     }
                 }
             )
