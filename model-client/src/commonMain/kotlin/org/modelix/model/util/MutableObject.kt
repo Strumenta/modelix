@@ -85,3 +85,11 @@ class MutableObject<T> {
         return if (value == null) "null" else value.toString()
     }
 }
+
+class MutableInt(var value: Int) {
+    fun decrement() {
+        value--
+    }
+
+    fun toInt(): Int = value
+}

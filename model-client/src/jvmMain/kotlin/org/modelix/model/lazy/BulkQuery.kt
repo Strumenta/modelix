@@ -17,7 +17,7 @@ package org.modelix.model.lazy
 
 import io.vavr.Tuple
 import io.vavr.Tuple3
-import org.apache.commons.lang3.mutable.MutableInt
+import org.modelix.model.util.MutableInt
 import java.util.*
 import java.util.function.Consumer
 import java.util.stream.Collectors
