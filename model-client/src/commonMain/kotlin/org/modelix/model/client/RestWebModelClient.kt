@@ -21,35 +21,31 @@ import org.modelix.model.lazy.IDeserializingKeyValueStore
 import kotlin.jvm.Synchronized
 
 expect class RestWebModelClient constructor(baseUrl: String? = null) : IModelClient {
-    companion object {
-        val modelUrlFromEnv: String?
-        val defaultUrl: String
-    }
-
     override var clientId: Int
     override val asyncStore: IKeyValueStore
 
     @get:Synchronized
     override var idGenerator: IdGenerator?
 
+    val email: String
+    override val storeCache: IDeserializingKeyValueStore
+
     fun dispose()
 
     override fun get(key: String?): String?
-
     override fun getAll(keys: Iterable<String?>?): Map<String?, String?>?
 
     fun setAuthToken(token: String?)
 
-    val email: String
-
     override fun listen(key: String?, keyListener: IKeyListener?)
-
     override fun removeListener(key: String?, listener: IKeyListener?)
 
     override fun put(key: String?, value: String?)
-
     override fun putAll(entries: Map<String?, String?>?)
     override fun prefetch(key: String?)
 
-    override val storeCache: IDeserializingKeyValueStore
+    companion object {
+        val modelUrlFromEnv: String?
+        val defaultUrl: String
+    }
 }
