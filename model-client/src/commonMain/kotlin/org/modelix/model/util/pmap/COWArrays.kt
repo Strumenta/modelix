@@ -21,4 +21,9 @@ expect object COWArrays {
     fun <T> remove(array: Array<T>, value: T): Array<T>
     operator fun <T> set(array: Array<T>, index: Int, value: T): Array<T>
     fun <T> removeAt(array: Array<T>, index: Int): Array<T>
+    fun <T> indexOf(array: Array<T>, value: T): Int
+    operator fun set(array: LongArray, index: Int, value: Long): LongArray
+    fun <T> add(array: Array<T>, value: T): Array<T>
+    fun add(array: LongArray, value: Long): LongArray
+    fun add(array: LongArray, values: LongArray): LongArray
 }

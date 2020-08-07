@@ -86,25 +86,25 @@ actual object COWArrays {
         return newArray
     }
 
-    operator fun set(array: LongArray, index: Int, value: Long): LongArray {
+    actual operator fun set(array: LongArray, index: Int, value: Long): LongArray {
         val newArray = Arrays.copyOf(array, array.size)
         newArray[index] = value
         return newArray
     }
 
-    fun <T> add(array: Array<T>, value: T): Array<T> {
+    actual fun <T> add(array: Array<T>, value: T): Array<T> {
         val newArray = Arrays.copyOf(array, array.size + 1)
         newArray[newArray.size - 1] = value
         return newArray
     }
 
-    fun add(array: LongArray, value: Long): LongArray {
+    actual fun add(array: LongArray, value: Long): LongArray {
         val newArray = Arrays.copyOf(array, array.size + 1)
         newArray[newArray.size - 1] = value
         return newArray
     }
 
-    fun add(array: LongArray, values: LongArray): LongArray {
+    actual fun add(array: LongArray, values: LongArray): LongArray {
         val newArray = Arrays.copyOf(array, array.size + values.size)
         System.arraycopy(values, 0, newArray, array.size, values.size)
         return newArray
@@ -123,7 +123,7 @@ actual object COWArrays {
         return if (indexOf(array, value) == -1) add(array, value) else array
     }
 
-    fun <T> indexOf(array: Array<T>, value: T): Int {
+    actual fun <T> indexOf(array: Array<T>, value: T): Int {
         for (i in array.indices) {
             if (array[i] == value) {
                 return i
