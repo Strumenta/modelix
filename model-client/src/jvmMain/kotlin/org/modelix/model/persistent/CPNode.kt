@@ -214,12 +214,11 @@ actual class CPNode protected constructor(id1: Long, actual val concept: String?
                         .filter { cs: String? -> !cs.isNullOrEmpty() }
                         .mapToLong { obj: String -> SerializationUtil.longFromHex(obj) }
                         .toArray(),
-                    properties.stream().map { it: Array<String> -> unescape(it[0])!! }.collect(Collectors.toList()).toTypedArray(),
-                    properties.stream().map { it: Array<String> -> unescape(it[1])!! }.collect(Collectors.toList()).toTypedArray(),
-                    references.stream().map { it: Array<String> -> unescape(it[0])!! }.collect(Collectors.toList()).toTypedArray(),
-                    references.stream()
-                        .map { it: Array<String> -> fromString(unescape(it[1])!!) }
-                        .collect(Collectors.toList()).toTypedArray()
+                    properties.map { it: Array<String> -> unescape(it[0])!! }.toTypedArray(),
+                    properties.map { it: Array<String> -> unescape(it[1])!! }.toTypedArray(),
+                    references.map { it: Array<String> -> unescape(it[0])!! }.toTypedArray(),
+                    references.map { it: Array<String> -> fromString(unescape(it[1])!!) }
+                        .toTypedArray()
                 )
             } catch (ex: Exception) {
                 throw RuntimeException("Failed to deserialize $input", ex)
