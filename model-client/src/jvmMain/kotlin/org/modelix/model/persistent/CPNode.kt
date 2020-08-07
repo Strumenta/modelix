@@ -20,14 +20,13 @@ import org.modelix.model.persistent.SerializationUtil.escape
 import org.modelix.model.persistent.SerializationUtil.longFromHex
 import org.modelix.model.persistent.SerializationUtil.longToHex
 import org.modelix.model.persistent.SerializationUtil.unescape
+import org.modelix.model.util.Function
 import org.modelix.model.util.LogManager
 import org.modelix.model.util.pmap.COWArrays.copy
 import org.modelix.model.util.pmap.COWArrays.insert
 import org.modelix.model.util.pmap.COWArrays.removeAt
 import org.modelix.model.util.pmap.COWArrays.set
 import java.util.*
-import java.util.function.Function
-import java.util.stream.Collectors
 
 actual class CPNode protected constructor(id1: Long, actual val concept: String?, parentId1: Long, roleInParent1: String?, private val childrenIds: LongArray, val propertyRoles: Array<String>, val propertyValues: Array<String>, val referenceRoles: Array<String>, val referenceTargets: Array<CPElementRef>) : CPElement(id1, parentId1, roleInParent1) {
     @ExperimentalStdlibApi
@@ -82,7 +81,7 @@ actual class CPNode protected constructor(id1: Long, actual val concept: String?
     }
 
     actual fun getChildrenIds(): Iterable<Long> {
-        return Iterable { Arrays.stream(childrenIds).iterator() }
+        return Iterable { childrenIds.iterator() }
     }
 
     val childrenIdArray: LongArray
@@ -198,14 +197,14 @@ actual class CPNode protected constructor(id1: Long, actual val concept: String?
         actual fun deserialize(input: String): CPNode {
             return try {
                 val parts = input.split("/").dropLastWhile { it.isEmpty() }.toTypedArray()
-                val properties = Arrays.stream(parts[5].split(",").toTypedArray())
+                val properties = parts[5].split(",").toTypedArray()
                     .filter { cs: String? -> !cs.isNullOrEmpty() }
                     .map { it: String -> it.split("=").dropLastWhile { it.isEmpty() }.toTypedArray() }
-                    .collect(Collectors.toList())
-                val references = Arrays.stream(parts[6].split(",").toTypedArray())
+                    .toList()
+                val references = parts[6].split(",").toTypedArray()
                     .filter { cs: String? -> !cs.isNullOrEmpty() }
                     .map { it: String -> it.split("=").dropLastWhile { it.isEmpty() }.toTypedArray() }
-                    .collect(Collectors.toList())
+                    .toList()
                 CPNode(
                     longFromHex(parts[0]),
                     unescape(parts[1]),
