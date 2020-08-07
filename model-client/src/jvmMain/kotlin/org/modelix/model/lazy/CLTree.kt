@@ -17,7 +17,7 @@ package org.modelix.model.lazy
 
 import com.google.common.collect.MultimapBuilder
 import org.modelix.model.api.*
-import org.modelix.model.lazy.CLHamtNode.Companion.create
+import org.modelix.model.lazy.CLHamtNodeCompanion.create
 import org.modelix.model.lazy.IDeserializingKeyValueStore_extensions.put
 import org.modelix.model.lazy.TreeId.Companion.random
 import org.modelix.model.persistent.*

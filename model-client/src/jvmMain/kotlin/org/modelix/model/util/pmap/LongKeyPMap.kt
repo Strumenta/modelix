@@ -301,17 +301,17 @@ actual class LongKeyPMap<V> protected actual constructor(root: INode<V?>?) {
         }
     }
 
-    companion object {
+    actual companion object {
         private const val BITS_PER_LEVEL = 5
         private const val ENTRIES_PER_LEVEL = 1 shl BITS_PER_LEVEL
         private const val LEVEL_MASK = -0x1 ushr 32 - BITS_PER_LEVEL
         private const val MAX_BITS = 64
         private const val MAX_SHIFT = MAX_BITS - BITS_PER_LEVEL
-        fun logicalToPhysicalIndex(bitmap: Int, logicalIndex: Int): Int {
+        actual fun logicalToPhysicalIndex(bitmap: Int, logicalIndex: Int): Int {
             return Integer.bitCount(bitmap and (1 shl logicalIndex) - 1)
         }
 
-        fun isBitNotSet(bitmap: Int, logicalIndex: Int): Boolean {
+        actual fun isBitNotSet(bitmap: Int, logicalIndex: Int): Boolean {
             return bitmap and (1 shl logicalIndex) == 0
         }
     }

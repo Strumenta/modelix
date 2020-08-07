@@ -21,12 +21,13 @@ import org.modelix.model.persistent.CPHamtLeaf
 import org.modelix.model.persistent.CPHamtNode
 import org.modelix.model.util.BiPredicate
 
-actual abstract class CLHamtNode<E : CPHamtNode?> actual constructor(protected var store: IDeserializingKeyValueStore) {
+actual abstract class CLHamtNode<E : CPHamtNode?> actual constructor(store_: IDeserializingKeyValueStore) {
+    protected actual var store: IDeserializingKeyValueStore = store_
     protected fun createEmptyNode(): CLHamtNode<*> {
-        return create(CPHamtInternal(0, arrayOfNulls(0)), store)!!
+        return CLHamtNodeCompanion.create(CPHamtInternal(0, arrayOfNulls(0)), store)!!
     }
 
-    abstract fun getData(): CPHamtNode?
+    actual abstract fun getData(): CPHamtNode?
 
     operator fun get(key: Long): String? {
         val bulkQuery: IBulkQuery = NonBulkQuery(store)
@@ -58,43 +59,16 @@ actual abstract class CLHamtNode<E : CPHamtNode?> actual constructor(protected v
         return remove(element.id)
     }
 
-    abstract operator fun get(key: Long, shift: Int, bulkQuery: IBulkQuery?): IBulkQuery.Value<String?>?
-    abstract fun put(key: Long, value: String?, shift: Int): CLHamtNode<*>?
-    abstract fun remove(key: Long, shift: Int): CLHamtNode<*>?
-    abstract fun visitEntries(visitor: BiPredicate<Long?, String?>?): Boolean
-    abstract fun visitChanges(oldNode: CLHamtNode<*>?, visitor: IChangeVisitor?)
-    interface IChangeVisitor {
-        fun entryAdded(key: Long, value: String?)
-        fun entryRemoved(key: Long, value: String?)
-        fun entryChanged(key: Long, oldValue: String?, newValue: String?)
+    actual abstract operator fun get(key: Long, shift: Int, bulkQuery: IBulkQuery?): IBulkQuery.Value<String?>?
+    actual abstract fun put(key: Long, value: String?, shift: Int): CLHamtNode<*>?
+    actual abstract fun remove(key: Long, shift: Int): CLHamtNode<*>?
+    actual abstract fun visitEntries(visitor: BiPredicate<Long?, String?>?): Boolean
+    actual abstract fun visitChanges(oldNode: CLHamtNode<*>?, visitor: IChangeVisitor?)
+    actual interface IChangeVisitor {
+        actual fun entryAdded(key: Long, value: String?)
+        actual fun entryRemoved(key: Long, value: String?)
+        actual fun entryChanged(key: Long, oldValue: String?, newValue: String?)
     }
 
-    companion object {
-        const val BITS_PER_LEVEL = 5
-        const val ENTRIES_PER_LEVEL = 1 shl BITS_PER_LEVEL
-        const val LEVEL_MASK = -0x1 ushr 32 - BITS_PER_LEVEL
-        const val MAX_BITS = 64
-        const val MAX_SHIFT = MAX_BITS - BITS_PER_LEVEL
-        @JvmStatic
-        fun create(data: CPHamtNode?, store: IDeserializingKeyValueStore?): CLHamtNode<*>? {
-            if (data == null) {
-                return null
-            }
-            return if (data is CPHamtLeaf) {
-                CLHamtLeaf((data as CPHamtLeaf?)!!, store)
-            } else if (data is CPHamtInternal) {
-                CLHamtInternal((data as CPHamtInternal?)!!, store)
-            } else {
-                throw RuntimeException("Unknown type: " + data.javaClass.name)
-            }
-        }
-
-        fun logicalToPhysicalIndex(bitmap: Int, logicalIndex: Int): Int {
-            return Integer.bitCount(bitmap and (1 shl logicalIndex) - 1)
-        }
-
-        fun isBitNotSet(bitmap: Int, logicalIndex: Int): Boolean {
-            return bitmap and (1 shl logicalIndex) == 0
-        }
-    }
 }
+

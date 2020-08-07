@@ -17,4 +17,13 @@ package org.modelix.model.lazy
 
 import org.modelix.model.persistent.CPHamtLeaf
 
-expect class CLHamtLeaf : CLHamtNode<CPHamtLeaf?>
+expect class CLHamtLeaf : CLHamtNode<CPHamtLeaf?> {
+    constructor(data: CPHamtLeaf, store: IDeserializingKeyValueStore?)
+
+    val key: Long
+    val value: String
+
+    companion object {
+        fun create(key: Long, value: String?, store: IDeserializingKeyValueStore): CLHamtLeaf?
+    }
+}

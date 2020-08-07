@@ -19,4 +19,9 @@ import org.modelix.model.api.INode
 
 expect class LongKeyPMap<V> protected constructor(root: INode<V?>?) {
     interface INode<V>
+
+    companion object {
+        fun logicalToPhysicalIndex(bitmap: Int, logicalIndex: Int): Int
+        fun isBitNotSet(bitmap: Int, logicalIndex: Int): Boolean
+    }
 }

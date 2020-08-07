@@ -18,7 +18,7 @@ package org.modelix.model.util.pmap
 import java.util.Arrays
 
 actual object COWArrays {
-    fun <T> insert(array: Array<T>, index: Int, element: T): Array<T> {
+    actual fun <T> insert(array: Array<T>, index: Int, element: T): Array<T> {
         val newArray = java.lang.reflect.Array.newInstance(array.javaClass.componentType, array.size + 1) as Array<T>
         System.arraycopy(array, 0, newArray, 0, index)
         newArray[index] = element
@@ -42,7 +42,7 @@ actual object COWArrays {
         return newArray
     }
 
-    fun <T> removeAt(array: Array<T>, index: Int): Array<T> {
+    actual fun <T> removeAt(array: Array<T>, index: Int): Array<T> {
         val newArray = java.lang.reflect.Array.newInstance(array.javaClass.componentType, array.size - 1) as Array<T>
         System.arraycopy(array, 0, newArray, 0, index)
         System.arraycopy(array, index + 1, newArray, index, array.size - index - 1)
@@ -80,7 +80,7 @@ actual object COWArrays {
         return Arrays.copyOf(filtered, cursor)
     }
 
-    operator fun <T> set(array: Array<T>, index: Int, value: T): Array<T> {
+    actual operator fun <T> set(array: Array<T>, index: Int, value: T): Array<T> {
         val newArray = Arrays.copyOf(array, array.size)
         newArray[index] = value
         return newArray

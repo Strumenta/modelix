@@ -24,7 +24,7 @@ import org.modelix.model.util.BiPredicate
 actual class CLHamtLeaf : CLHamtNode<CPHamtLeaf?> {
     private val data: CPHamtLeaf
 
-    constructor(data: CPHamtLeaf, store: IDeserializingKeyValueStore?) : super(store!!) {
+    actual constructor(data: CPHamtLeaf, store: IDeserializingKeyValueStore?) : super(store!!) {
         this.data = data
     }
 
@@ -38,10 +38,10 @@ actual class CLHamtLeaf : CLHamtNode<CPHamtLeaf?> {
         return data
     }
 
-    val key: Long
+    actual val key: Long
         get() = data.key
 
-    val value: String
+    actual val value: String
         get() = data.value
 
     override fun put(key: Long, value: String?, shift: Int): CLHamtNode<*>? {
@@ -52,8 +52,8 @@ actual class CLHamtLeaf : CLHamtNode<CPHamtLeaf?> {
                 create(key, value, store)
             }
         } else {
-            if (shift > MAX_SHIFT) {
-                throw RuntimeException("$shift > $MAX_SHIFT")
+            if (shift > CLHamtNodeCompanion.MAX_SHIFT) {
+                throw RuntimeException("$shift > ${CLHamtNodeCompanion.MAX_SHIFT}")
             }
             var result: CLHamtNode<*>? = createEmptyNode()
             result = result!!.put(data.key, data.value, shift)
@@ -102,8 +102,8 @@ actual class CLHamtLeaf : CLHamtNode<CPHamtLeaf?> {
         }
     }
 
-    companion object {
-        fun create(key: Long, value: String?, store: IDeserializingKeyValueStore): CLHamtLeaf? {
+    actual companion object {
+        actual fun create(key: Long, value: String?, store: IDeserializingKeyValueStore): CLHamtLeaf? {
             return value?.let { CLHamtLeaf(key, it, store) }
         }
     }

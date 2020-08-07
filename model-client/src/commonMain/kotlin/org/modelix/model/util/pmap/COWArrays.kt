@@ -16,6 +16,9 @@
 package org.modelix.model.util.pmap
 
 expect object COWArrays {
+    fun <T> insert(array: Array<T>, index: Int, element: T): Array<T>
     fun <T> addIfAbsent(array: Array<T>, value: T): Array<T>
     fun <T> remove(array: Array<T>, value: T): Array<T>
+    operator fun <T> set(array: Array<T>, index: Int, value: T): Array<T>
+    fun <T> removeAt(array: Array<T>, index: Int): Array<T>
 }
