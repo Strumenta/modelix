@@ -20,13 +20,10 @@ import org.modelix.model.util.random
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-class DefaultIdGenerator private constructor() : IIdGenerator {
-    protected val ID_SEQUENCE = AtomicLong((abs(random()) * 1000000000.0).roundToInt() * 1000000000L)
+object DefaultIdGenerator : IIdGenerator {
+    private val ID_SEQUENCE = AtomicLong((abs(random()) * 1000000000.0).roundToInt() * 1000000000L)
+
     override fun generate(): Long {
         return ID_SEQUENCE.incrementAndGet()
-    }
-
-    companion object {
-        val instance = DefaultIdGenerator()
     }
 }

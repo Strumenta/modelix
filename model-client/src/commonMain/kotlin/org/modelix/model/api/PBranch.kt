@@ -19,7 +19,7 @@ import org.modelix.model.util.*
 import org.modelix.model.util.pmap.COWArrays
 import kotlin.jvm.Volatile
 
-class PBranch(@field:Volatile private var tree: ITree?, private val idGenerator: IIdGenerator? = DefaultIdGenerator.instance) : IBranch {
+class PBranch(@field:Volatile private var tree: ITree?, private val idGenerator: IIdGenerator? = DefaultIdGenerator) : IBranch {
     private val writeLock = Any()
     private val contextTransactions = ContextValue<Transaction?>()
     private var listeners = arrayOfNulls<IBranchListener>(0)

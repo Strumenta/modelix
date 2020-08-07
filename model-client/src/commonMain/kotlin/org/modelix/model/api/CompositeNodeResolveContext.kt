@@ -23,7 +23,7 @@ class CompositeNodeResolveContext(contexts: Iterable<INodeResolveContext?>) : IN
     constructor(vararg contexts: INodeResolveContext?) : this(contexts.toList()) {}
 
     override fun resolve(ref: INodeReference?): INode? {
-        return contexts.map { it?.resolve(ref) }.filterNotNull().firstOrNull()
+        return contexts.mapNotNull { it?.resolve(ref) }.firstOrNull()
     }
 
     companion object {
