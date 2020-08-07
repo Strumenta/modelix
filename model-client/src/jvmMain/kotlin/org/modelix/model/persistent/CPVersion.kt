@@ -32,19 +32,19 @@ import java.util.stream.Collectors
 import java.util.stream.Stream
 
 actual class CPVersion actual constructor(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>?, operationsHash: String?, numberOfOperations: Int) {
-    val id: Long
-    val time: String?
-    val author: String?
+    actual val id: Long
+    actual val time: String?
+    actual val author: String?
 
     /**
      * SHA to CPTree
      */
-    val treeHash: String?
-    val previousVersion: String?
-    val operations: Array<IOperation?>?
-    val operationsHash: String?
-    val numberOfOperations: Int
-    fun serialize(): String {
+    actual val treeHash: String?
+    actual val previousVersion: String?
+    actual val operations: Array<IOperation?>?
+    actual val operationsHash: String?
+    actual val numberOfOperations: Int
+    actual fun serialize(): String {
         val opsPart = operationsHash
             ?: operations!!.toList().stream()
                 .map(Function<IOperation?, String> { op: IOperation? -> OperationSerializer.INSTANCE.serialize(op!!) })
@@ -62,12 +62,12 @@ actual class CPVersion actual constructor(id: Long, time: String?, author: Strin
         return serialized
     }
 
-    val hash: String
+    actual val hash: String
         get() = sha256(serialize())
 
-    companion object {
+    actual companion object {
         private val LOG = LogManager.getLogger(CPVersion::class)
-        fun deserialize(input: String): CPVersion {
+        actual fun deserialize(input: String): CPVersion {
             val parts = input.split("/").dropLastWhile { it.isEmpty() }.toTypedArray()
             var opsHash: String? = null
             var ops: Array<IOperation?>? = null

@@ -16,5 +16,27 @@
 package org.modelix.model.persistent
 
 import org.modelix.model.operations.IOperation
+import org.modelix.model.util.LogManager
+import org.modelix.model.util.Logger
 
-expect class CPVersion(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>?, operationsHash: String?, numberOfOperations: Int)
+expect class CPVersion(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>?, operationsHash: String?, numberOfOperations: Int) {
+    val id: Long
+    val time: String?
+    val author: String?
+    /**
+     * SHA to CPTree
+     */
+    val treeHash: String?
+    val previousVersion: String?
+    val operations: Array<IOperation?>?
+    val operationsHash: String?
+    val numberOfOperations: Int
+
+    val hash: String
+
+    fun serialize(): String
+
+    companion object {
+        fun deserialize(input: String): CPVersion
+    }
+}
