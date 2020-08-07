@@ -15,10 +15,10 @@
 
 package org.modelix.model.lazy
 
-import io.vavr.Tuple
-import io.vavr.Tuple3
 import org.modelix.model.util.Consumer
 import org.modelix.model.util.MutableInt
+import org.modelix.model.util.Tuple
+import org.modelix.model.util.Tuple3
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -70,16 +70,16 @@ actual class BulkQuery actual constructor(private val store: IDeserializingKeyVa
                 queue = ArrayList()
                 val deserializers: MutableMap<String, org.modelix.model.util.Function<String?, *>> = HashMap()
                 for (request in currentRequests) {
-                    deserializers[request._1()] = request._2()
+                    deserializers[request._1] = request._2
                 }
                 val entries = executeBulkQuery(
                     currentRequests
-                        .map { obj: Tuple3<String, org.modelix.model.util.Function<String?, *>, Consumer<Any?>> -> obj._1() }
+                        .map { obj: Tuple3<String, org.modelix.model.util.Function<String?, *>, Consumer<Any?>> -> obj._1 }
                         .distinct().toList(),
                     deserializers.toMap()
                 )
                 for (request in currentRequests) {
-                    request._3().accept(entries[request._1()])
+                    request._3.accept(entries[request._1])
                 }
             }
         } finally {

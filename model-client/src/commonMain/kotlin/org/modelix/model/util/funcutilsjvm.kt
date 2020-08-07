@@ -65,11 +65,27 @@ interface Tuple {
                     get() = t2
             }
         }
+        fun <T1, T2, T3> of(t1: T1, t2: T2, t3: T3): Tuple3<T1, T2, T3> {
+            return object : Tuple3<T1, T2, T3> {
+                override val _1: T1
+                    get() = t1
+                override val _2: T2
+                    get() = t2
+                override val _3: T3
+                    get() = t3
+            }
+        }
     }
 }
 interface Tuple2<T1, T2> : Tuple {
     val _1: T1
     val _2: T2
+}
+
+interface Tuple3<T1, T2, T3> : Tuple {
+    val _1: T1
+    val _2: T2
+    val _3: T3
 }
 
 expect fun Long.toHexString(): String
