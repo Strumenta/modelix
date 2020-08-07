@@ -40,10 +40,7 @@ actual class VersionMerger actual constructor(private val storeCache: IDeseriali
     actual fun mergeChange(lastMergedVersion: CLVersion, newVersion: CLVersion): CLVersion {
         var lastMergedVersion = lastMergedVersion
         synchronized(mergeLock) {
-            return if (lastMergedVersion == null) {
-                lastMergedVersion = newVersion
-                newVersion
-            } else {
+            return run {
                 if (newVersion.hash == lastMergedVersion.hash) {
                     return lastMergedVersion
                 }
@@ -68,9 +65,6 @@ actual class VersionMerger actual constructor(private val storeCache: IDeseriali
         val rightHistory = getHistory(rightVersionHash, commonBase)
         val mergedVersion = MutableObject<CLVersion>()
         var tree = getVersion(commonBase)!!.tree
-        if (tree == null) {
-            tree = CLTree(storeCache)
-        }
         val branch: IBranch = PBranch(tree)
         if (rightHistory.isEmpty() || leftHistory.isEmpty()) {
             val fastForwardHistory = if (leftHistory.isEmpty()) rightHistory else leftHistory
@@ -151,9 +145,6 @@ actual class VersionMerger actual constructor(private val storeCache: IDeseriali
                 break
             }
             history.add(version)
-            if (version.previousHash == null) {
-                break
-            }
             if (version.previousHash == toVersionExclusive) {
                 break
             }

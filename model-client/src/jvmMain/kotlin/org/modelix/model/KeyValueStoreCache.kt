@@ -23,7 +23,6 @@ import org.modelix.model.util.StreamUtils.toStream
 import java.util.Arrays
 import java.util.Collections
 import java.util.concurrent.locks.ReentrantLock
-import java.util.stream.Collectors
 
 actual class KeyValueStoreCache actual constructor(private val store: IKeyValueStore) : IKeyValueStore {
     private val cache = Collections.synchronizedMap(LRUMap<String?, String?>(300000))
@@ -61,7 +60,7 @@ actual class KeyValueStoreCache actual constructor(private val store: IKeyValueS
     }
 
     actual override fun getAll(keys_: Iterable<String?>?): Map<String?, String?>? {
-        val remainingKeys = toStream(keys_!!).collect(Collectors.toList())
+        val remainingKeys = keys_!!.toMutableList()
         val result: MutableMap<String?, String?> = LinkedHashMap(16, 0.75.toFloat(), false)
         synchronized(cache) {
             val itr = remainingKeys.iterator()
