@@ -31,12 +31,7 @@ import org.modelix.model.util.pmap.COWArrays.insert
 import org.modelix.model.util.pmap.COWArrays.remove
 import org.modelix.model.util.skip
 import org.modelix.model.util.toLongStream
-import org.modelix.model.util.toSequence
-import java.util.*
-import java.util.function.Consumer
-import java.util.stream.Collectors
-import java.util.stream.Stream
-import java.util.stream.StreamSupport
+
 
 actual open class CLTree : ITree {
     protected var store: IDeserializingKeyValueStore? = null
@@ -240,7 +235,7 @@ actual open class CLTree : ITree {
 
     override fun getAllChildren(parentId: Long): Sequence<Long>? {
         val children = resolveElement(parentId)!!.getChildren(BulkQuery(store!!))!!.execute()
-        return StreamSupport.stream(children!!.spliterator(), false).mapToLong(CLElement::id).toSequence()
+        return children!!.map { it.id }.asSequence()
     }
 
     fun getDescendants(root: Long, includeSelf: Boolean): Iterable<CLNode> {
@@ -251,18 +246,14 @@ actual open class CLTree : ITree {
     override fun getChildren(parentId: Long, role: String?): Sequence<Long>? {
         val parent = resolveElement(parentId)
         val children = parent!!.getChildren(BulkQuery(store!!))!!.execute()
-        return StreamSupport.stream(children!!.spliterator(), false)
-            .filter { it: CLNode -> it.roleInParent == role }
-            .mapToLong(CLNode::id).toSequence()
+        return children!!.asSequence()
+            .filter { it: CLNode -> it.roleInParent == role }.map { it.id }
     }
 
     override fun getChildRoles(sourceId: Long): Iterable<String?>? {
         val parent = resolveElement(sourceId)
         val children = parent!!.getChildren(BulkQuery(store!!))!!.execute()
-        return Iterable {
-            StreamSupport.stream(children!!.spliterator(), false)
-                .map<String>(CLNode::roleInParent).distinct().iterator()
-        }
+        return children!!.map { it.roleInParent }.distinct()
     }
 
     override fun getConcept(nodeId: Long): IConcept? {
@@ -282,12 +273,12 @@ actual open class CLTree : ITree {
 
     override fun getPropertyRoles(sourceId: Long): Iterable<String?>? {
         val node = resolveElement(sourceId)
-        return Arrays.asList(*node!!.getData()!!.propertyRoles)
+        return node!!.getData()!!.propertyRoles.toList()
     }
 
     override fun getReferenceRoles(sourceId: Long): Iterable<String?>? {
         val node = resolveElement(sourceId)
-        return Arrays.asList(*node!!.getData()!!.referenceRoles)
+        return return node!!.getData()!!.referenceRoles.toList()
     }
 
     override fun getReferenceTarget(sourceId: Long, role: String?): INodeReference? {
@@ -351,10 +342,7 @@ actual open class CLTree : ITree {
                     }
                     val oldNode = oldElement
                     val newNode = newElement
-                    Stream.concat(
-                        Arrays.stream(oldNode!!.getData()!!.propertyRoles),
-                        Arrays.stream(newNode!!.getData()!!.propertyRoles)
-                    )
+                    oldNode!!.getData()!!.propertyRoles.asSequence() + newNode!!.getData()!!.propertyRoles.asSequence()
                         .distinct()
                         .forEach { role: String? ->
                             if (oldNode!!.getData()!!.getPropertyValue(role) != newNode.getData()!!.getPropertyValue(role)) {
@@ -363,16 +351,16 @@ actual open class CLTree : ITree {
                         }
                     val oldChildren = MultimapBuilder.hashKeys().arrayListValues().build<String, CLNode>()
                     val newChildren = MultimapBuilder.hashKeys().arrayListValues().build<String, CLNode>()
-                    oldNode!!.getChildren(BulkQuery(store!!))!!.execute()!!.forEach(Consumer { it: CLNode -> oldChildren.put(it.roleInParent, it) })
-                    newNode.getChildren(BulkQuery(store!!))!!.execute()!!.forEach(Consumer { it: CLNode -> newChildren.put(it.roleInParent, it) })
+                    oldNode!!.getChildren(BulkQuery(store!!))!!.execute()!!.forEach { oldChildren.put(it.roleInParent, it) }
+                    newNode.getChildren(BulkQuery(store!!))!!.execute()!!.forEach { newChildren.put(it.roleInParent, it) }
                     val roles: MutableSet<String> = HashSet()
                     roles.addAll(oldChildren.keySet())
                     roles.addAll(newChildren.keySet())
                     for (role in roles) {
                         val oldChildrenInRole = oldChildren[role]
                         val newChildrenInRole = newChildren[role]
-                        val oldValues = oldChildrenInRole.stream().map(CLNode::id).collect(Collectors.toList())
-                        val newValues = newChildrenInRole.stream().map(CLNode::id).collect(Collectors.toList())
+                        val oldValues = oldChildrenInRole.map(CLNode::id).toList()
+                        val newValues = newChildrenInRole.map(CLNode::id).toList()
                         if (oldValues != newValues) {
                             visitor!!.childrenChanged(newNode.id, role)
                         }
