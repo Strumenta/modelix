@@ -27,9 +27,6 @@ import org.modelix.model.persistent.SerializationUtil.nullAsEmptyString
 import org.modelix.model.persistent.SerializationUtil.unescape
 import org.modelix.model.util.Level
 import org.modelix.model.util.LogManager
-import java.util.function.Function
-import java.util.stream.Collectors
-import java.util.stream.Stream
 
 actual class CPVersion actual constructor(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>?, operationsHash: String?, numberOfOperations: Int) {
     actual val id: Long
@@ -45,11 +42,11 @@ actual class CPVersion actual constructor(id: Long, time: String?, author: Strin
     actual val operationsHash: String?
     actual val numberOfOperations: Int
     actual fun serialize(): String {
+        val opsPartTemp = operations!!.toList()
+                .map { op: IOperation? -> OperationSerializer.INSTANCE.serialize(op!!) }
         val opsPart = operationsHash
-            ?: operations!!.toList().stream()
-                .map(Function<IOperation?, String> { op: IOperation? -> OperationSerializer.INSTANCE.serialize(op!!) })
-                .reduce { a: String, b: String -> "$a,$b" }
-                .orElse("")
+                ?: if (opsPartTemp.isNotEmpty())
+                    opsPartTemp.reduce { a: String, b: String -> "$a,$b" } else ""
         var serialized = longToHex(id) +
             "/" + escape(time) +
             "/" + escape(author) +
@@ -74,10 +71,10 @@ actual class CPVersion actual constructor(id: Long, time: String?, author: Strin
             if (isSha256(parts[5])) {
                 opsHash = parts[5]
             } else {
-                ops = Stream.of(*parts[5].split(",").toTypedArray())
+                ops = parts[5].split(",").toTypedArray()
                     .filter { cs: String? -> StringUtils.isNotEmpty(cs) }
                     .map { serialized: String? -> OperationSerializer.INSTANCE.deserialize(serialized!!) }
-                    .collect(Collectors.toList()).toTypedArray()
+                    .toTypedArray()
             }
             val numOps = if (parts.size >= 7) parts[6].toInt() else -1
             return CPVersion(
