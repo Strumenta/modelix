@@ -25,6 +25,7 @@ import org.modelix.model.persistent.SerializationUtil.longToHex
 import org.modelix.model.persistent.SerializationUtil.unescape
 import java.lang.IllegalArgumentException
 import java.util.*
+import kotlin.reflect.KClass
 
 actual class OperationSerializer private actual constructor() {
     actual companion object {
@@ -53,7 +54,7 @@ actual class OperationSerializer private actual constructor() {
         }
 
         fun deserializeReference(serialized: String?): INodeReference? {
-            if (serialized == null || serialized.length == 0) {
+            if (serialized == null || serialized.isEmpty()) {
                 return null
             }
             if (serialized.matches(Regex("[a-fA-F0-9]+"))) {
@@ -64,7 +65,7 @@ actual class OperationSerializer private actual constructor() {
 
         init {
             INSTANCE.registerSerializer(
-                AddNewChildOp::class.java,
+                AddNewChildOp::class,
                 object : Serializer<AddNewChildOp> {
                     override fun serialize(op: AddNewChildOp): String {
                         return longToHex(op.parentId) + SEPARATOR + escape(op.role) + SEPARATOR + op.index + SEPARATOR + longToHex(op.childId) + SEPARATOR + serializeConcept(op.concept)
@@ -77,7 +78,7 @@ actual class OperationSerializer private actual constructor() {
                 }
             )
             INSTANCE.registerSerializer(
-                DeleteNodeOp::class.java,
+                DeleteNodeOp::class,
                 object : Serializer<DeleteNodeOp> {
                     override fun serialize(op: DeleteNodeOp): String {
                         return longToHex(op.parentId) + SEPARATOR + escape(op.role) + SEPARATOR + op.index + SEPARATOR + longToHex(op.childId)
@@ -90,7 +91,7 @@ actual class OperationSerializer private actual constructor() {
                 }
             )
             INSTANCE.registerSerializer(
-                MoveNodeOp::class.java,
+                MoveNodeOp::class,
                 object : Serializer<MoveNodeOp> {
                     override fun serialize(op: MoveNodeOp): String {
                         return longToHex(op.childId) + SEPARATOR + longToHex(op.sourceParentId) + SEPARATOR + escape(op.sourceRole) + SEPARATOR + op.sourceIndex + SEPARATOR + longToHex(op.targetParentId) + SEPARATOR + escape(op.targetRole) + SEPARATOR + op.targetIndex
@@ -103,7 +104,7 @@ actual class OperationSerializer private actual constructor() {
                 }
             )
             INSTANCE.registerSerializer<NoOp>(
-                NoOp::class.java,
+                NoOp::class,
                 object : Serializer<NoOp> {
                     override fun serialize(op: NoOp): String {
                         return ""
@@ -115,7 +116,7 @@ actual class OperationSerializer private actual constructor() {
                 }
             )
             INSTANCE.registerSerializer(
-                SetPropertyOp::class.java,
+                SetPropertyOp::class,
                 object : Serializer<SetPropertyOp> {
                     override fun serialize(op: SetPropertyOp): String {
                         return longToHex(op.nodeId) + SEPARATOR + escape(op.role) + SEPARATOR + escape(op.value)
@@ -128,7 +129,7 @@ actual class OperationSerializer private actual constructor() {
                 }
             )
             INSTANCE.registerSerializer(
-                SetReferenceOp::class.java,
+                SetReferenceOp::class,
                 object : Serializer<SetReferenceOp> {
                     override fun serialize(op: SetReferenceOp): String {
                         return longToHex(op.sourceId) + SEPARATOR + escape(op.role) + SEPARATOR + serializeReference(op.target)
@@ -143,15 +144,15 @@ actual class OperationSerializer private actual constructor() {
         }
     }
 
-    private val serializers: MutableMap<Class<out IOperation>, Serializer<*>> = HashMap()
+    private val serializers: MutableMap<KClass<out IOperation>, Serializer<*>> = HashMap()
     private val deserializers: MutableMap<String, Serializer<*>> = HashMap()
-    fun <T : IOperation> registerSerializer(type: Class<T>, serializer: Serializer<T>) {
+    fun <T : IOperation> registerSerializer(type: KClass<T>, serializer: Serializer<T>) {
         serializers[type] = serializer
-        deserializers[type.simpleName] = serializer
+        deserializers[type.simpleName!!] = serializer
     }
 
     actual fun serialize(op: IOperation): String {
-        val serializer: Serializer<*> = serializers[op.javaClass]
+        val serializer: Serializer<*> = serializers[op.javaClass.kotlin]
             ?: throw RuntimeException("Unknown operation type: " + op.javaClass.simpleName)
         return op.javaClass.simpleName + SEPARATOR + serializer.genericSerialize(op)
     }
