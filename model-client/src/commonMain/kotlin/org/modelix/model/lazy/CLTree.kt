@@ -16,6 +16,7 @@
 package org.modelix.model.lazy
 
 import org.modelix.model.api.ITree
+import org.modelix.model.persistent.CPTree
 
 expect class CLTree : ITree {
     val hash: String
@@ -25,4 +26,8 @@ expect class CLTree : ITree {
     constructor(hash: String?, store: IDeserializingKeyValueStore)
 
     fun resolveElements(ids: Iterable<Long?>?, bulkQuery: IBulkQuery): IBulkQuery.Value<List<CLNode?>?>?
+    protected var store: IDeserializingKeyValueStore?
+    protected var data: CPTree?
+
+    constructor(store: IDeserializingKeyValueStore)
 }

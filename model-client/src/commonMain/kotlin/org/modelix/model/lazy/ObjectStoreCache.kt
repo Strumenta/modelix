@@ -16,5 +16,14 @@
 package org.modelix.model.lazy
 
 import org.modelix.model.IKeyValueStore
+import org.modelix.model.util.BiFunction
+import org.modelix.model.util.Function
 
-expect class ObjectStoreCache(keyValueStore: IKeyValueStore) : IDeserializingKeyValueStore
+expect class ObjectStoreCache(keyValueStore: IKeyValueStore) : IDeserializingKeyValueStore {
+    override fun prefetch(hash: String?)
+    fun clearCache()
+    override fun put(hash: String?, deserialized: Any?, serialized: String?)
+    override fun <T> get(hash: String?, deserializer: Function<String?, T>?): T?
+    override fun <T> getAll(hashes_: Iterable<String?>?, deserializer: BiFunction<String?, String?, T>?): Iterable<T>?
+    override val keyValueStore: IKeyValueStore
+}

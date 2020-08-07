@@ -21,10 +21,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-actual class ObjectStoreCache actual constructor(override val keyValueStore: IKeyValueStore) : IDeserializingKeyValueStore {
+actual class ObjectStoreCache actual constructor(actual override val keyValueStore: IKeyValueStore) : IDeserializingKeyValueStore {
     private val cache = Collections.synchronizedMap(LRUMap<String?, Any>(100000))
 
-    override fun <T> getAll(hashes_: Iterable<String?>?, deserializer: org.modelix.model.util.BiFunction<String?, String?, T>?): Iterable<T>? {
+    actual override fun <T> getAll(hashes_: Iterable<String?>?, deserializer: org.modelix.model.util.BiFunction<String?, String?, T>?): Iterable<T>? {
         val hashes = hashes_!!.toList()
         val result: MutableMap<String?, T?> = HashMap()
         val nonCachedHashes: MutableList<String?> = ArrayList(hashes.size)
@@ -50,7 +50,7 @@ actual class ObjectStoreCache actual constructor(override val keyValueStore: IKe
         return Iterable<T> { hashes.stream().map { key: String? -> result[key] }.iterator() as Iterator<T> }
     }
 
-    override fun <T> get(hash: String?, deserializer: org.modelix.model.util.Function<String?, T>?): T? {
+    actual override fun <T> get(hash: String?, deserializer: org.modelix.model.util.Function<String?, T>?): T? {
         if (hash == null) {
             return null
         }
@@ -63,16 +63,16 @@ actual class ObjectStoreCache actual constructor(override val keyValueStore: IKe
         return if (deserialized === NULL) null else deserialized
     }
 
-    override fun put(hash: String?, deserialized: Any?, serialized: String?) {
+    actual override fun put(hash: String?, deserialized: Any?, serialized: String?) {
         keyValueStore.put(hash, serialized)
         cache[hash] = deserialized ?: NULL
     }
 
-    fun clearCache() {
+    actual fun clearCache() {
         cache.clear()
     }
 
-    override fun prefetch(hash: String?) {
+    actual override fun prefetch(hash: String?) {
         keyValueStore.prefetch(hash)
     }
 

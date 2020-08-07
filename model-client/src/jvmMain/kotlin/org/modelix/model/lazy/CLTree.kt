@@ -34,11 +34,11 @@ import org.modelix.model.util.toLongStream
 
 
 actual open class CLTree : ITree {
-    protected var store: IDeserializingKeyValueStore? = null
-    protected var data: CPTree? = null
+    actual protected var store: IDeserializingKeyValueStore? = null
+    actual protected var data: CPTree? = null
 
     actual constructor(hash: String?, store: IDeserializingKeyValueStore) : this(store.get<CPTree>(hash, org.modelix.model.util.Function<String?, CPTree> { serialized: String? -> CPTree.deserialize(serialized!!) }), null, store) {}
-    constructor(store: IDeserializingKeyValueStore) : this(null as CPTree?, null, store) {}
+    actual constructor(store: IDeserializingKeyValueStore) : this(null as CPTree?, null, store) {}
     actual constructor(id: TreeId?, store: IDeserializingKeyValueStore) : this(null, id, store) {}
     private constructor(data: CPTree?, treeId: TreeId?, store: IDeserializingKeyValueStore) {
         var treeId = treeId
