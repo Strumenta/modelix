@@ -15,7 +15,6 @@
 
 package org.modelix.model.persistent
 
-import org.apache.commons.lang3.StringUtils
 import org.modelix.model.persistent.CPElementRef.Companion.fromString
 import org.modelix.model.persistent.SerializationUtil.escape
 import org.modelix.model.persistent.SerializationUtil.longFromHex
@@ -199,11 +198,11 @@ actual class CPNode protected constructor(id1: Long, actual val concept: String?
             return try {
                 val parts = input.split("/").dropLastWhile { it.isEmpty() }.toTypedArray()
                 val properties = Arrays.stream(parts[5].split(",").toTypedArray())
-                    .filter { cs: String? -> StringUtils.isNotEmpty(cs) }
+                    .filter { cs: String? -> !cs.isNullOrEmpty() }
                     .map { it: String -> it.split("=").dropLastWhile { it.isEmpty() }.toTypedArray() }
                     .collect(Collectors.toList())
                 val references = Arrays.stream(parts[6].split(",").toTypedArray())
-                    .filter { cs: String? -> StringUtils.isNotEmpty(cs) }
+                    .filter { cs: String? -> !cs.isNullOrEmpty() }
                     .map { it: String -> it.split("=").dropLastWhile { it.isEmpty() }.toTypedArray() }
                     .collect(Collectors.toList())
                 CPNode(
@@ -212,7 +211,7 @@ actual class CPNode protected constructor(id1: Long, actual val concept: String?
                     longFromHex(parts[2]),
                     unescape(parts[3]),
                     Arrays.stream(parts[4].split(",").toTypedArray())
-                        .filter { cs: String? -> StringUtils.isNotEmpty(cs) }
+                        .filter { cs: String? -> !cs.isNullOrEmpty() }
                         .mapToLong { obj: String -> SerializationUtil.longFromHex(obj) }
                         .toArray(),
                     properties.stream().map { it: Array<String> -> unescape(it[0])!! }.collect(Collectors.toList()).toTypedArray(),

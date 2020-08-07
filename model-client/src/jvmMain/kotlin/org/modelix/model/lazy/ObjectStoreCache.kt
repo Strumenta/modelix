@@ -17,15 +17,15 @@ package org.modelix.model.lazy
 
 import org.apache.commons.collections4.map.LRUMap
 import org.modelix.model.IKeyValueStore
-import org.modelix.model.util.StreamUtils.toStream
 import java.util.*
-import java.util.stream.Collectors
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 actual class ObjectStoreCache actual constructor(override val keyValueStore: IKeyValueStore) : IDeserializingKeyValueStore {
     private val cache = Collections.synchronizedMap(LRUMap<String?, Any>(100000))
 
     override fun <T> getAll(hashes_: Iterable<String?>?, deserializer: org.modelix.model.util.BiFunction<String?, String?, T>?): Iterable<T>? {
-        val hashes = toStream(hashes_!!).collect(Collectors.toList())
+        val hashes = hashes_!!.toList()
         val result: MutableMap<String?, T?> = HashMap()
         val nonCachedHashes: MutableList<String?> = ArrayList(hashes.size)
         for (hash in hashes) {
