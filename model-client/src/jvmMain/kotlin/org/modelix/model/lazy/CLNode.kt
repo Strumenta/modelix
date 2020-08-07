@@ -51,9 +51,12 @@ actual class CLNode actual constructor(tree: CLTree?, data: CPNode?) : CLElement
         } else {
             getChildren(bulkQuery)!!.mapBulk(
                 org.modelix.model.util.Function { children: Iterable<CLNode>? ->
-                    val d = bulkQuery
+                    val f : org.modelix.model.util.Function<List<Iterable<CLNode>>?, Iterable<CLNode>> = org.modelix.model.util.Function { it: List<Iterable<CLNode>>? ->
+                        it!!.flatten()
+                    }
+                    val d: IBulkQuery.Value<Iterable<CLNode>>? = bulkQuery
                         .map(children, org.modelix.model.util.Function { child: CLNode -> child.getDescendants(bulkQuery, true) })!!
-                        .map(org.modelix.model.util.Function { it: List<Iterable<CLNode>>? -> Iterable<CLNode> { it!!.stream().flatMap { n: Iterable<CLNode> -> StreamSupport.stream(n.spliterator(), false) }.iterator() } })
+                        .map(f)
                     d
                 }
             )
