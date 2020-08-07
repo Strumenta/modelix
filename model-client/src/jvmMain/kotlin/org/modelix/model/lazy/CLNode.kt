@@ -44,7 +44,7 @@ actual class CLNode actual constructor(tree: CLTree?, data: CPNode?) : CLElement
             getDescendants(bulkQuery, false)!!
                 .map(
                     org.modelix.model.util.Function { descendants: Iterable<CLNode> ->
-                        val res : Iterable<CLNode> = (sequenceOf(this) + descendants.asSequence()).toList()
+                        val res: Iterable<CLNode> = (sequenceOf(this) + descendants.asSequence()).toList()
                         res
                     }
                 )

@@ -60,13 +60,13 @@ class CLHamtInternal : CLHamtNode<CPHamtInternal?> {
         val childIndex = (key ushr shift and CLHamtNodeCompanion.LEVEL_MASK.toLong()).toInt()
         // getChild(logicalIndex: Int, bulkQuery: IBulkQuery): IBulkQuery.Value<CLHamtNode<*>?> {
         return getChild(childIndex, bulkQuery!!).mapBulk<String?>(
-                org.modelix.model.util.Function { child: CLHamtNode<*>? ->
-                    if (child == null) {
-                        bulkQuery!!.constant<String?>(null)
-                    } else {
-                        child[key, shift + CLHamtNodeCompanion.BITS_PER_LEVEL, bulkQuery]
-                    }
+            org.modelix.model.util.Function { child: CLHamtNode<*>? ->
+                if (child == null) {
+                    bulkQuery!!.constant<String?>(null)
+                } else {
+                    child[key, shift + CLHamtNodeCompanion.BITS_PER_LEVEL, bulkQuery]
                 }
+            }
         )
     }
 
@@ -152,19 +152,19 @@ class CLHamtInternal : CLHamtNode<CPHamtInternal?> {
                             // no change
                         } else {
                             oldChild.visitEntries(
-                                    BiPredicate { key, value ->
-                                        visitor!!.entryRemoved(key!!, value)
-                                        true
-                                    }
+                                BiPredicate { key, value ->
+                                    visitor!!.entryRemoved(key!!, value)
+                                    true
+                                }
                             )
                         }
                     } else {
                         if (oldChild == null) {
                             child.visitEntries(
-                                    BiPredicate { key, value ->
-                                        visitor!!.entryAdded(key!!, value)
-                                        true
-                                    }
+                                BiPredicate { key, value ->
+                                    visitor!!.entryAdded(key!!, value)
+                                    true
+                                }
                             )
                         } else {
                             child.visitChanges(oldChild, visitor)
@@ -175,17 +175,17 @@ class CLHamtInternal : CLHamtNode<CPHamtInternal?> {
         } else if (oldNode is CLHamtLeaf) {
             val oldLeafNode = oldNode
             visitEntries(
-                    BiPredicate<Long?, String?> { k, v ->
-                        if (k == oldLeafNode.key) {
-                            val oldValue = oldLeafNode.value
-                            if (v != oldValue) {
-                                visitor!!.entryChanged(k, oldValue, v)
-                            }
-                        } else {
-                            visitor!!.entryAdded(k!!, v)
+                BiPredicate<Long?, String?> { k, v ->
+                    if (k == oldLeafNode.key) {
+                        val oldValue = oldLeafNode.value
+                        if (v != oldValue) {
+                            visitor!!.entryChanged(k, oldValue, v)
                         }
-                        true
+                    } else {
+                        visitor!!.entryAdded(k!!, v)
                     }
+                    true
+                }
             )
         } else {
             throw RuntimeException("Unknown type: $oldNode")
@@ -196,4 +196,3 @@ class CLHamtInternal : CLHamtNode<CPHamtInternal?> {
         return data_
     }
 }
-

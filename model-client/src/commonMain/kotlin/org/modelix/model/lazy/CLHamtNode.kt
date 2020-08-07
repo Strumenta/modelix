@@ -69,10 +69,7 @@ abstract class CLHamtNode<E : CPHamtNode?> constructor(store_: IDeserializingKey
         fun entryRemoved(key: Long, value: String?)
         fun entryChanged(key: Long, oldValue: String?, newValue: String?)
     }
-
 }
-
-
 
 object CLHamtNodeCompanion {
     const val BITS_PER_LEVEL = 5

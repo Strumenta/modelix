@@ -16,8 +16,6 @@
 package org.modelix.model.persistent
 
 import org.modelix.model.operations.IOperation
-import org.modelix.model.util.LogManager
-import org.modelix.model.util.Logger
 
 expect class CPVersion(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>?, operationsHash: String?, numberOfOperations: Int) {
     val id: Long

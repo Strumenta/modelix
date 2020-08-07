@@ -73,7 +73,7 @@ class CLVersion {
                 return null
             }
             val previousVersion = store.get(data!!.previousVersion, org.modelix.model.util.Function { input: String? -> CPVersion.deserialize(input!!) })
-                    ?: return null
+                ?: return null
             return CLVersion(previousVersion, store)
         }
 
@@ -98,4 +98,3 @@ class CLVersion {
         }
     }
 }
-
