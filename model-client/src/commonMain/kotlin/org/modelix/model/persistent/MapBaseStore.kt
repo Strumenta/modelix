@@ -53,4 +53,3 @@ class MapBaseStore : IKeyValueStore {
         throw UnsupportedOperationException()
     }
 }
-

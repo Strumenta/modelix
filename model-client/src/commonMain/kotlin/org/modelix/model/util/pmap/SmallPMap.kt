@@ -132,10 +132,9 @@ abstract class SmallPMap<K, V> : CustomPMap<K, V> {
 
         fun <K, V> createS(keys: Iterable<K>?, values: Iterable<V>?): SmallPMap<K, V> {
             return create<K, V>(
-                    keys!!.toList().toTypedArray(),
-                    values!!.toList().toTypedArray()
+                keys!!.toList().toTypedArray(),
+                values!!.toList().toTypedArray()
             ) as SmallPMap<K, V>
         }
     }
 }
-

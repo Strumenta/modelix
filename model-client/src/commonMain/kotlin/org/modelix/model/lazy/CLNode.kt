@@ -20,14 +20,14 @@ import org.modelix.model.persistent.CPNode
 
 class CLNode(tree: CLTree?, data: CPNode?) : CLElement(tree!!, data!!) {
     constructor(tree: CLTree?, id: Long, concept: String?, parentId: Long, roleInParent: String?, childrenIds: LongArray?, propertyRoles: Array<String?>?, propertyValues: Array<String?>?, referenceRoles: Array<String?>?, referenceTargets: Array<CPElementRef?>?) :
-            this(
-                    tree,
-                    CPNode.create(
-                            id, concept, parentId, roleInParent, childrenIds!!,
-                            propertyRoles as Array<String?>, propertyValues as Array<String?>,
-                            referenceRoles as Array<String?>, referenceTargets as Array<CPElementRef?>
-                    )
-            ) {}
+        this(
+            tree,
+            CPNode.create(
+                id, concept, parentId, roleInParent, childrenIds!!,
+                propertyRoles as Array<String?>, propertyValues as Array<String?>,
+                referenceRoles as Array<String?>, referenceTargets as Array<CPElementRef?>
+            )
+        ) {}
 
     override fun getData(): CPNode? {
         return super.getData() as CPNode?
@@ -35,29 +35,29 @@ class CLNode(tree: CLTree?, data: CPNode?) : CLElement(tree!!, data!!) {
 
     fun getChildren(bulkQuery: IBulkQuery?): IBulkQuery.Value<Iterable<CLNode>?>? {
         return (getTree() as CLTree).resolveElements(getData()!!.getChildrenIds().toList(), bulkQuery!!)!!
-                .map(org.modelix.model.util.Function<List<CLNode?>?, Iterable<CLNode>?> { elements: List<CLNode?>? -> elements as Iterable<CLNode> })
+            .map(org.modelix.model.util.Function<List<CLNode?>?, Iterable<CLNode>?> { elements: List<CLNode?>? -> elements as Iterable<CLNode> })
     }
 
     fun getDescendants(bulkQuery: IBulkQuery, includeSelf: Boolean): IBulkQuery.Value<Iterable<CLNode>>? {
         return if (includeSelf) {
             getDescendants(bulkQuery, false)!!
-                    .map(
-                            org.modelix.model.util.Function { descendants: Iterable<CLNode> ->
-                                val res: Iterable<CLNode> = (sequenceOf(this) + descendants.asSequence()).toList()
-                                res
-                            }
-                    )
+                .map(
+                    org.modelix.model.util.Function { descendants: Iterable<CLNode> ->
+                        val res: Iterable<CLNode> = (sequenceOf(this) + descendants.asSequence()).toList()
+                        res
+                    }
+                )
         } else {
             getChildren(bulkQuery)!!.mapBulk(
-                    org.modelix.model.util.Function { children: Iterable<CLNode>? ->
-                        val f: org.modelix.model.util.Function<List<Iterable<CLNode>>?, Iterable<CLNode>> = org.modelix.model.util.Function { it: List<Iterable<CLNode>>? ->
-                            it!!.flatten()
-                        }
-                        val d: IBulkQuery.Value<Iterable<CLNode>>? = bulkQuery
-                                .map(children, org.modelix.model.util.Function { child: CLNode -> child.getDescendants(bulkQuery, true) })!!
-                                .map(f)
-                        d
+                org.modelix.model.util.Function { children: Iterable<CLNode>? ->
+                    val f: org.modelix.model.util.Function<List<Iterable<CLNode>>?, Iterable<CLNode>> = org.modelix.model.util.Function { it: List<Iterable<CLNode>>? ->
+                        it!!.flatten()
                     }
+                    val d: IBulkQuery.Value<Iterable<CLNode>>? = bulkQuery
+                        .map(children, org.modelix.model.util.Function { child: CLNode -> child.getDescendants(bulkQuery, true) })!!
+                        .map(f)
+                    d
+                }
             )
         }
     }
@@ -65,4 +65,3 @@ class CLNode(tree: CLTree?, data: CPNode?) : CLElement(tree!!, data!!) {
     val concept: String?
         get() = getData()!!.concept
 }
-

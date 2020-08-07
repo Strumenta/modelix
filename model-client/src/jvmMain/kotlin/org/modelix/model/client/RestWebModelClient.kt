@@ -177,7 +177,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
             result
         } else {
             throw RuntimeException(
-                    "Request for ${keys.spliterator().exactSizeIfKnown} keys failed (${toStream(keys).findFirst().orElse(null)}, ...): ${response.statusInfo}"
+                "Request for ${keys.spliterator().exactSizeIfKnown} keys failed (${toStream(keys).findFirst().orElse(null)}, ...): ${response.statusInfo}"
             )
         }
     }
@@ -225,7 +225,8 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
             val response = client.target(baseUrl + "putAll").request(MediaType.APPLICATION_JSON).put(Entity.text(json.toString()))
             if (response.statusInfo.family != Response.Status.Family.SUCCESSFUL) {
                 throw RuntimeException(
-                        "Failed to store ${entries!!.size} entries (${response.statusInfo}) ${entries.entries.stream().map { e: Map.Entry<String?, String?> -> e.key.toString() + " = " + e.value + ", ..." }.findFirst().orElse("")}")
+                    "Failed to store ${entries!!.size} entries (${response.statusInfo}) ${entries.entries.stream().map { e: Map.Entry<String?, String?> -> e.key.toString() + " = " + e.value + ", ..." }.findFirst().orElse("")}"
+                )
             }
         }
         if (LOG.isDebugEnabled) {
