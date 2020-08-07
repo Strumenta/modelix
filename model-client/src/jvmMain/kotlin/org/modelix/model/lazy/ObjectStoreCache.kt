@@ -19,8 +19,6 @@ import org.apache.commons.collections4.map.LRUMap
 import org.modelix.model.IKeyValueStore
 import org.modelix.model.util.StreamUtils.toStream
 import java.util.*
-import java.util.function.BiFunction
-import java.util.function.Function
 import java.util.stream.Collectors
 
 actual class ObjectStoreCache actual constructor(override val keyValueStore: IKeyValueStore) : IDeserializingKeyValueStore {
@@ -38,7 +36,7 @@ actual class ObjectStoreCache actual constructor(override val keyValueStore: IKe
                 result[hash] = if (deserialized === NULL) null else deserialized
             }
         }
-        if (!nonCachedHashes.isEmpty()) {
+        if (nonCachedHashes.isNotEmpty()) {
             for ((hash, serialized) in keyValueStore.getAll(nonCachedHashes)!!) {
                 if (serialized == null) {
                     result[hash] = null
