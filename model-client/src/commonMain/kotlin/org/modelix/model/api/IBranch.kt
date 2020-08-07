@@ -19,15 +19,16 @@ import org.modelix.model.util.Runnable
 import org.modelix.model.util.Supplier
 
 interface IBranch {
+    val transaction: ITransaction?
+    val readTransaction: IReadTransaction?
+    val writeTransaction: IWriteTransaction?
+
     fun runRead(runnable: Runnable?)
     fun <T> computeRead(computable: Supplier<T>?): T
     fun runWrite(runnable: Runnable?)
     fun <T> computeWrite(computable: Supplier<T>?): T
     fun canRead(): Boolean
     fun canWrite(): Boolean
-    val transaction: ITransaction?
-    val readTransaction: IReadTransaction?
-    val writeTransaction: IWriteTransaction?
     fun addListener(l: IBranchListener?)
     fun removeListener(l: IBranchListener?)
 }
