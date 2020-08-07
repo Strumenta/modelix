@@ -20,8 +20,6 @@ import org.modelix.model.util.pmap.COWArrays.add
 import org.modelix.model.util.pmap.COWArrays.indexOf
 import org.modelix.model.util.pmap.COWArrays.removeAt
 import org.modelix.model.util.pmap.COWArrays.set
-import java.util.stream.Collectors
-import java.util.stream.Stream
 
 actual abstract class SmallPMap<K, V> : CustomPMap<K, V> {
     abstract override fun get(key: K): V
@@ -106,11 +104,11 @@ actual abstract class SmallPMap<K, V> : CustomPMap<K, V> {
         }
 
         override fun keys(): Iterable<K>? {
-            return Stream.of<Any>(*keys).map { it: Any -> it as K }.collect(Collectors.toList())
+            return keys.map<Any?, K> { it as K }.toList()
         }
 
         override fun values(): Iterable<V?>? {
-            return Stream.of<Any>(*values).map { it: Any -> it as V }.collect(Collectors.toList())
+            return values.map<Any?, V?> { it as V? }.toList()
         }
 
         override fun containsKey(key: K): Boolean {
@@ -130,7 +128,7 @@ actual abstract class SmallPMap<K, V> : CustomPMap<K, V> {
         }
 
         private fun <K, V> create(keys: Array<Any?>, values: Array<Any?>): SmallPMap<K?, V?> {
-            if (keys.size == 0) {
+            if (keys.isEmpty()) {
                 return empty()
             }
             return if (keys.size == 1) {
@@ -140,8 +138,8 @@ actual abstract class SmallPMap<K, V> : CustomPMap<K, V> {
 
         fun <K, V> createS(keys: Iterable<K>?, values: Iterable<V>?): SmallPMap<K, V> {
             return create<K, V>(
-                toStream(keys!!).collect(Collectors.toList()).toTypedArray(),
-                toStream(values!!).collect(Collectors.toList()).toTypedArray()
+                keys!!.toList().toTypedArray(),
+                values!!.toList().toTypedArray()
             ) as SmallPMap<K, V>
         }
     }
