@@ -44,8 +44,8 @@ actual class CPNode protected constructor(id1: Long, actual val concept: String?
         sb.append("/")
         var first = true
         run {
-            val role_it = Arrays.stream(propertyRoles).iterator()
-            val value_it = Arrays.stream(propertyValues).iterator()
+            val role_it = propertyRoles.iterator()
+            val value_it = propertyValues.iterator()
             var role_var: String?
             var value_var: String?
             while (role_it.hasNext() && value_it.hasNext()) {
@@ -62,8 +62,8 @@ actual class CPNode protected constructor(id1: Long, actual val concept: String?
         sb.append("/")
         first = true
         run {
-            val role_it = Arrays.stream(referenceRoles).iterator()
-            val value_it = Arrays.stream(referenceTargets).iterator()
+            val role_it = referenceRoles.iterator()
+            val value_it = referenceTargets.iterator()
             var role_var: String?
             var value_var: CPElementRef
             while (role_it.hasNext() && value_it.hasNext()) {
