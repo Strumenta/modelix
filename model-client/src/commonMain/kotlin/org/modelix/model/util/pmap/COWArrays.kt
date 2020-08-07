@@ -26,4 +26,6 @@ expect object COWArrays {
     fun <T> add(array: Array<T>, value: T): Array<T>
     fun add(array: LongArray, value: Long): LongArray
     fun add(array: LongArray, values: LongArray): LongArray
+
+    fun copy(array: LongArray): LongArray
 }

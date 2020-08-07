@@ -115,7 +115,7 @@ actual object COWArrays {
     }
 
     @JvmStatic
-    fun copy(array: LongArray): LongArray {
+    actual fun copy(array: LongArray): LongArray {
         return Arrays.copyOf(array, array.size)
     }
 
