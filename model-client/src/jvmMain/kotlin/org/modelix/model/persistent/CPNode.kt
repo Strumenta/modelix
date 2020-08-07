@@ -30,6 +30,7 @@ import java.util.function.Function
 import java.util.stream.Collectors
 
 actual class CPNode protected constructor(id1: Long, actual val concept: String?, parentId1: Long, roleInParent1: String?, private val childrenIds: LongArray, val propertyRoles: Array<String>, val propertyValues: Array<String>, val referenceRoles: Array<String>, val referenceTargets: Array<CPElementRef>) : CPElement(id1, parentId1, roleInParent1) {
+    @ExperimentalStdlibApi
     override fun serialize(): String? {
         val sb = StringBuilder()
         sb.append(longToHex(id))
@@ -40,7 +41,7 @@ actual class CPNode protected constructor(id1: Long, actual val concept: String?
         sb.append("/")
         sb.append(escape(roleInParent))
         sb.append("/")
-        sb.append(Arrays.stream(childrenIds).mapToObj<String> { obj: Long -> SerializationUtil.longToHex(obj) }.reduce { a: String, b: String -> "$a, $b" })
+        sb.append(childrenIds.map { obj: Long -> SerializationUtil.longToHex(obj) }.reduceRightOrNull { a: String, b: String -> "$a, $b" })
         sb.append("/")
         var first = true
         run {
