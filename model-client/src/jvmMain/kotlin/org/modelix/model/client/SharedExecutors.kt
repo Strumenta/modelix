@@ -34,8 +34,8 @@ actual object SharedExecutors {
         }
     }
 
-    val SCHEDULED: org.modelix.model.util.ScheduledExecutorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1).toModelix()
-    fun shutdownAll() {
+    actual val SCHEDULED: org.modelix.model.util.ScheduledExecutorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1).toModelix()
+    actual fun shutdownAll() {
         SCHEDULED.shutdown()
         FIXED.shutdown()
     }
