@@ -30,7 +30,7 @@ import java.util.*
 import java.util.function.Function
 import java.util.stream.Collectors
 
-actual class CPNode protected constructor(id1: Long, val concept: String?, parentId1: Long, roleInParent1: String?, private val childrenIds: LongArray, val propertyRoles: Array<String>, val propertyValues: Array<String>, val referenceRoles: Array<String>, val referenceTargets: Array<CPElementRef>) : CPElement(id1, parentId1, roleInParent1) {
+actual class CPNode protected constructor(id1: Long, actual val concept: String?, parentId1: Long, roleInParent1: String?, private val childrenIds: LongArray, val propertyRoles: Array<String>, val propertyValues: Array<String>, val referenceRoles: Array<String>, val referenceTargets: Array<CPElementRef>) : CPElement(id1, parentId1, roleInParent1) {
     override fun serialize(): String? {
         val sb = StringBuilder()
         sb.append(longToHex(id))
@@ -81,7 +81,7 @@ actual class CPNode protected constructor(id1: Long, val concept: String?, paren
         return sb.toString()
     }
 
-    fun getChildrenIds(): Iterable<Long> {
+    actual fun getChildrenIds(): Iterable<Long> {
         return Iterable { Arrays.stream(childrenIds).iterator() }
     }
 
@@ -172,7 +172,7 @@ actual class CPNode protected constructor(id1: Long, val concept: String?, paren
         private val EMPTY_LONG_ARRAY = LongArray(0)
         val DESERIALIZER = Function { s: String -> deserialize(s) }
         @JvmStatic
-        fun create(id: Long, concept: String?, parentId: Long, roleInParent: String?, childrenIds: LongArray, propertyRoles: Array<String?>, propertyValues: Array<String?>, referenceRoles: Array<String?>, referenceTargets: Array<CPElementRef?>): CPNode {
+        actual fun create(id: Long, concept: String?, parentId: Long, roleInParent: String?, childrenIds: LongArray, propertyRoles: Array<String?>, propertyValues: Array<String?>, referenceRoles: Array<String?>, referenceTargets: Array<CPElementRef?>): CPNode {
             checkForDuplicates(childrenIds)
             require(propertyRoles.size == propertyValues.size) { propertyRoles.size.toString() + " != " + propertyValues.size }
             require(referenceRoles.size == referenceTargets.size) { referenceRoles.size.toString() + " != " + referenceTargets.size }

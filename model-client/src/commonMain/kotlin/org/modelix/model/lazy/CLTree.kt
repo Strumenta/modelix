@@ -23,4 +23,6 @@ expect class CLTree : ITree {
 
     constructor(id: TreeId?, store: IDeserializingKeyValueStore)
     constructor(hash: String?, store: IDeserializingKeyValueStore)
+
+    fun resolveElements(ids: Iterable<Long?>?, bulkQuery: IBulkQuery): IBulkQuery.Value<List<CLNode?>?>?
 }

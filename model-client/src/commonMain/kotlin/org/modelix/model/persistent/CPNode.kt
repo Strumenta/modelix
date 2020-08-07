@@ -16,7 +16,11 @@
 package org.modelix.model.persistent
 
 expect class CPNode : CPElement {
+    val concept: String?
     companion object {
         fun deserialize(input: String): CPNode
+        fun create(id: Long, concept: String?, parentId: Long, roleInParent: String?, childrenIds: LongArray, propertyRoles: Array<String?>, propertyValues: Array<String?>, referenceRoles: Array<String?>, referenceTargets: Array<CPElementRef?>): CPNode
     }
+
+    fun getChildrenIds(): Iterable<Long>
 }

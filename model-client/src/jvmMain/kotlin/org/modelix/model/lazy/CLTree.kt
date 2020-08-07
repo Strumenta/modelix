@@ -424,7 +424,7 @@ actual open class CLTree : ITree {
         return createElement(hash, NonBulkQuery(store!!))!!.execute()
     }
 
-    fun resolveElements(ids: Iterable<Long?>?, bulkQuery: IBulkQuery): IBulkQuery.Value<List<CLNode?>?>? {
+    actual fun resolveElements(ids: Iterable<Long?>?, bulkQuery: IBulkQuery): IBulkQuery.Value<List<CLNode?>?>? {
         val a = nodesMap!!.getAll(ids as Iterable<Long>, bulkQuery)
         return a!!.mapBulk(org.modelix.model.util.Function { hashes: List<String?>? -> createElements(hashes, bulkQuery) })
     }
