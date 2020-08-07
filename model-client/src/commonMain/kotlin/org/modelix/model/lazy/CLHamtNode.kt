@@ -31,6 +31,8 @@ expect abstract class CLHamtNode<E : CPHamtNode?>(store_: IDeserializingKeyValue
 
     abstract fun getData(): CPHamtNode?
 
+    protected fun createEmptyNode(): CLHamtNode<*>
+
     interface IChangeVisitor {
         fun entryAdded(key: Long, value: String?)
         fun entryRemoved(key: Long, value: String?)

@@ -17,13 +17,12 @@ package org.modelix.model.lazy
 
 import org.modelix.model.persistent.CPElement
 import org.modelix.model.persistent.CPHamtInternal
-import org.modelix.model.persistent.CPHamtLeaf
 import org.modelix.model.persistent.CPHamtNode
 import org.modelix.model.util.BiPredicate
 
 actual abstract class CLHamtNode<E : CPHamtNode?> actual constructor(store_: IDeserializingKeyValueStore) {
     protected actual var store: IDeserializingKeyValueStore = store_
-    protected fun createEmptyNode(): CLHamtNode<*> {
+    protected actual fun createEmptyNode(): CLHamtNode<*> {
         return CLHamtNodeCompanion.create(CPHamtInternal(0, arrayOfNulls(0)), store)!!
     }
 
