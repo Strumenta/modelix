@@ -33,18 +33,13 @@ import java.io.File
 import java.io.IOException
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
-import java.util.Objects
-import java.util.concurrent.ScheduledFuture
+import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
 import java.util.function.Predicate
 import java.util.function.ToLongFunction
 import java.util.stream.Stream
-import javax.ws.rs.client.Client
-import javax.ws.rs.client.ClientBuilder
-import javax.ws.rs.client.ClientRequestContext
-import javax.ws.rs.client.ClientRequestFilter
-import javax.ws.rs.client.Entity
+import javax.ws.rs.client.*
 import javax.ws.rs.core.HttpHeaders
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
@@ -54,11 +49,11 @@ import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 
 actual class RestWebModelClient actual constructor(var baseUrl: String?) : IModelClient {
-    companion object {
+    actual companion object {
         private val LOG = LogManager.getLogger(RestWebModelClient::class)
         const val MODEL_URI_VAR_NAME = "MODEL_URI"
         private var defaultToken: String? = null
-        val modelUrlFromEnv: String?
+        actual val modelUrlFromEnv: String?
             get() {
                 var url = System.getProperty(MODEL_URI_VAR_NAME)
                 if (url == null || url.length == 0) {
@@ -67,7 +62,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
                 return url
             }
 
-        val defaultUrl: String
+        actual val defaultUrl: String
             get() {
                 val urlFromEnv = modelUrlFromEnv
                 return if ((urlFromEnv != null && urlFromEnv.length > 0)) {
@@ -95,7 +90,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
         }
     }
 
-    override var clientId = 0
+    actual override var clientId = 0
         get() {
             if (field == 0) {
                 val response = client.target(baseUrl + "counter/clientId").request().post(Entity.text(""))
@@ -107,11 +102,11 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
         private set
     private val client: Client
     private val listeners: MutableList<SseListener> = ArrayList()
-    override val asyncStore: IKeyValueStore = GarbageFilteringStore(AsyncStore(this))
+    actual override val asyncStore: IKeyValueStore = GarbageFilteringStore(AsyncStore(this))
     private val cache = ObjectStoreCache(KeyValueStoreCache(asyncStore))
 
     @get:Synchronized
-    override var idGenerator: IdGenerator? = null
+    actual override var idGenerator: IdGenerator? = null
         get() {
             if (field == null) {
                 field = IdGenerator(clientId)
@@ -122,7 +117,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
     private val watchDogTask: org.modelix.model.util.ScheduledFuture<*>
     private var authToken = defaultToken
 
-    fun dispose() {
+    actual fun dispose() {
         watchDogTask.cancel(false)
         synchronized(listeners) {
             listeners.forEach(Consumer { obj: SseListener -> obj.dispose() })
@@ -130,7 +125,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
         }
     }
 
-    override fun get(key: String?): String? {
+    actual override fun get(key: String?): String? {
         val isHash = HashUtil.isSha256(key)
         if (isHash) {
             if (LOG.isDebugEnabled) {
@@ -155,7 +150,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
         }
     }
 
-    override fun getAll(keys: Iterable<String?>?): Map<String?, String?>? {
+    actual override fun getAll(keys: Iterable<String?>?): Map<String?, String?>? {
         if (!keys!!.iterator().hasNext()) {
             return HashMap()
         }
@@ -188,11 +183,11 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
         }
     }
 
-    fun setAuthToken(token: String?) {
+    actual fun setAuthToken(token: String?) {
         authToken = token
     }
 
-    val email: String
+    actual val email: String
         get() {
             val response = client.target(baseUrl + "getEmail").request().buildGet().invoke()
             return if (response.status == Response.Status.OK.statusCode) {
@@ -202,16 +197,16 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
             }
         }
 
-    override fun listen(key: String?, keyListener: IKeyListener?) {
+    actual override fun listen(key: String?, keyListener: IKeyListener?) {
         val sseListener = SseListener(key, keyListener)
         synchronized(listeners) { listeners.add(sseListener) }
     }
 
-    override fun removeListener(key: String?, listener: IKeyListener?) {
+    actual override fun removeListener(key: String?, listener: IKeyListener?) {
         synchronized(listeners) { listeners.removeIf({ it: SseListener -> Objects.equals(it.key, key) && it.keyListener === listener }) }
     }
 
-    override fun put(key: String?, value: String?) {
+    actual override fun put(key: String?, value: String?) {
         if (!key!!.matches(Regex("[a-zA-Z0-9-_]{43}"))) {
             if (LOG.isDebugEnabled) {
                 LOG.debug("PUT $key = $value")
@@ -223,7 +218,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
         }
     }
 
-    override fun putAll(entries: Map<String?, String?>?) {
+    actual override fun putAll(entries: Map<String?, String?>?) {
         val sendBatch = Consumer<JSONArray> { json ->
             if (LOG.isDebugEnabled) {
                 LOG.debug("PUT batch of " + json.length() + " entries")
@@ -268,9 +263,9 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
         }
     }
 
-    override fun prefetch(key: String?) {}
+    actual override fun prefetch(key: String?) {}
 
-    override val storeCache: IDeserializingKeyValueStore
+    actual override val storeCache: IDeserializingKeyValueStore
         get() = cache
 
     inner class SseListener(val key: String?, val keyListener: IKeyListener?) {
