@@ -15,30 +15,64 @@
 
 package org.modelix.model.lazy
 
+import org.modelix.model.persistent.CPElement
 import org.modelix.model.persistent.CPHamtInternal
 import org.modelix.model.persistent.CPHamtLeaf
 import org.modelix.model.persistent.CPHamtNode
 import org.modelix.model.util.BiPredicate
 
-expect abstract class CLHamtNode<E : CPHamtNode?>(store_: IDeserializingKeyValueStore) {
-    protected var store: IDeserializingKeyValueStore
+abstract class CLHamtNode<E : CPHamtNode?> constructor(store_: IDeserializingKeyValueStore) {
+    protected var store: IDeserializingKeyValueStore = store_
+    protected fun createEmptyNode(): CLHamtNode<*> {
+        return CLHamtNodeCompanion.create(CPHamtInternal(0, arrayOfNulls(0)), store)!!
+    }
+
+    abstract fun getData(): CPHamtNode?
+
+    operator fun get(key: Long): String? {
+        val bulkQuery: IBulkQuery = NonBulkQuery(store)
+        return get(key, 0, bulkQuery)!!.execute()
+    }
+
+    fun getAll(keys: Iterable<Long>?, bulkQuery: IBulkQuery): IBulkQuery.Value<List<String?>?>? {
+        val f: org.modelix.model.util.Function<Long, IBulkQuery.Value<String?>?>? = org.modelix.model.util.Function { key: Long -> get(key, 0, bulkQuery) }
+        return bulkQuery.map(keys, f)
+    }
+
+    fun put(key: Long, value: String?): CLHamtNode<*>? {
+        return put(key, value, 0)
+    }
+
+    fun put(element: CLElement): CLHamtNode<*>? {
+        return put(element.id, element.getData()!!.hash)
+    }
+
+    fun put(data: CPElement): CLHamtNode<*>? {
+        return put(data.id, data.hash)
+    }
+
+    fun remove(key: Long): CLHamtNode<*>? {
+        return remove(key, 0)
+    }
+
+    fun remove(element: CLElement): CLHamtNode<*>? {
+        return remove(element.id)
+    }
 
     abstract operator fun get(key: Long, shift: Int, bulkQuery: IBulkQuery?): IBulkQuery.Value<String?>?
     abstract fun put(key: Long, value: String?, shift: Int): CLHamtNode<*>?
     abstract fun remove(key: Long, shift: Int): CLHamtNode<*>?
     abstract fun visitEntries(visitor: BiPredicate<Long?, String?>?): Boolean
     abstract fun visitChanges(oldNode: CLHamtNode<*>?, visitor: IChangeVisitor?)
-
-    abstract fun getData(): CPHamtNode?
-
-    protected fun createEmptyNode(): CLHamtNode<*>
-
     interface IChangeVisitor {
         fun entryAdded(key: Long, value: String?)
         fun entryRemoved(key: Long, value: String?)
         fun entryChanged(key: Long, oldValue: String?, newValue: String?)
     }
+
 }
+
+
 
 object CLHamtNodeCompanion {
     const val BITS_PER_LEVEL = 5
