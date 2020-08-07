@@ -15,6 +15,46 @@
 
 package org.modelix.model.lazy
 
-expect class TreeId(id: String) {
-    fun getBranchKey(branchName: String?): String
+import org.modelix.model.util.randomUUID
+
+class TreeId(val id: String) {
+
+    @get:Deprecated("")
+    val masterBranchKey: String
+        get() = getBranchKey(null)
+
+    fun getBranchKey(branchName: String?): String {
+        var branchName = branchName
+        if (branchName == null || branchName.isEmpty()) {
+            branchName = "master"
+        }
+        return "branch_" + id + "_" + branchName
+    }
+
+    override fun equals(o: Any?): Boolean {
+        if (this === o) {
+            return true
+        }
+        if (o == null || o !is TreeId) {
+            return false
+        }
+        return id as Any == o.id
+    }
+
+    override fun hashCode(): Int {
+        var result = 0
+        result = 31 * result + (id.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String {
+        return id
+    }
+
+    companion object {
+
+        fun random(): TreeId {
+            return TreeId(randomUUID().toString())
+        }
+    }
 }
