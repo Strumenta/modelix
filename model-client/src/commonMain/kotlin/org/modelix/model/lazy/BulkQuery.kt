@@ -69,10 +69,10 @@ class BulkQuery(private val store: IDeserializingKeyValueStore) : IBulkQuery {
                     deserializers[request._1] = request._2
                 }
                 val entries = executeBulkQuery(
-                        currentRequests
-                                .map { obj: Tuple3<String, org.modelix.model.util.Function<String?, *>, Consumer<Any?>> -> obj._1 }
-                                .distinct().toList(),
-                        deserializers.toMap()
+                    currentRequests
+                        .map { obj: Tuple3<String, org.modelix.model.util.Function<String?, *>, Consumer<Any?>> -> obj._1 }
+                        .distinct().toList(),
+                    deserializers.toMap()
                 )
                 for (request in currentRequests) {
                     request._3.accept(entries[request._1])
@@ -84,7 +84,7 @@ class BulkQuery(private val store: IDeserializingKeyValueStore) : IBulkQuery {
     }
 
     override fun <I, O> map(input_: Iterable<I>?, f: org.modelix.model.util.Function<I, IBulkQuery.Value<O>?>?): IBulkQuery.Value<List<O>?>? {
-        val input =input_!!.toList()
+        val input = input_!!.toList()
         if (input.isEmpty()) {
             return constant(emptyList())
         }
@@ -94,17 +94,17 @@ class BulkQuery(private val store: IDeserializingKeyValueStore) : IBulkQuery {
         val result = Value<List<O>?>()
         for (i_ in input.indices) {
             f!!.apply(input[i_])!!.onSuccess(
-                    org.modelix.model.util.Consumer { value ->
-                        if (done[i_]) {
-                            return@Consumer
-                        }
-                        output[i_] = value
-                        done[i_] = true
-                        remaining.decrement()
-                        if (remaining.toInt() == 0) {
-                            result.success(output.map { e: Any? -> e as O }.toList())
-                        }
+                org.modelix.model.util.Consumer { value ->
+                    if (done[i_]) {
+                        return@Consumer
                     }
+                    output[i_] = value
+                    done[i_] = true
+                    remaining.decrement()
+                    if (remaining.toInt() == 0) {
+                        result.success(output.map { e: Any? -> e as O }.toList())
+                    }
+                }
             )
         }
         return result
@@ -162,4 +162,3 @@ class BulkQuery(private val store: IDeserializingKeyValueStore) : IBulkQuery {
         }
     }
 }
-

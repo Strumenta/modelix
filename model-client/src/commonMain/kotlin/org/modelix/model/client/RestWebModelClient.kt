@@ -26,7 +26,7 @@ expect class RestWebModelClient constructor(baseUrl: String? = null) : IModelCli
         val defaultUrl: String
     }
 
-    override var clientId : Int
+    override var clientId: Int
     override val asyncStore: IKeyValueStore
 
     @get:Synchronized
@@ -52,5 +52,4 @@ expect class RestWebModelClient constructor(baseUrl: String? = null) : IModelCli
     override fun prefetch(key: String?)
 
     override val storeCache: IDeserializingKeyValueStore
-
 }

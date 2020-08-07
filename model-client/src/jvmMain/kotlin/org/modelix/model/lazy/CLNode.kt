@@ -17,7 +17,6 @@ package org.modelix.model.lazy
 
 import org.modelix.model.persistent.CPElementRef
 import org.modelix.model.persistent.CPNode
-import java.util.stream.StreamSupport
 
 actual class CLNode actual constructor(tree: CLTree?, data: CPNode?) : CLElement(tree!!, data!!) {
     constructor(tree: CLTree?, id: Long, concept: String?, parentId: Long, roleInParent: String?, childrenIds: LongArray?, propertyRoles: Array<String?>?, propertyValues: Array<String?>?, referenceRoles: Array<String?>?, referenceTargets: Array<CPElementRef?>?) :
@@ -51,7 +50,7 @@ actual class CLNode actual constructor(tree: CLTree?, data: CPNode?) : CLElement
         } else {
             getChildren(bulkQuery)!!.mapBulk(
                 org.modelix.model.util.Function { children: Iterable<CLNode>? ->
-                    val f : org.modelix.model.util.Function<List<Iterable<CLNode>>?, Iterable<CLNode>> = org.modelix.model.util.Function { it: List<Iterable<CLNode>>? ->
+                    val f: org.modelix.model.util.Function<List<Iterable<CLNode>>?, Iterable<CLNode>> = org.modelix.model.util.Function { it: List<Iterable<CLNode>>? ->
                         it!!.flatten()
                     }
                     val d: IBulkQuery.Value<Iterable<CLNode>>? = bulkQuery

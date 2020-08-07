@@ -152,19 +152,19 @@ class LongKeyPMap<V> protected constructor(root: INode<V?>?) {
                                 // no change
                             } else {
                                 oldChild.visitEntries(
-                                        BiPredicate { key: Long?, value: V? ->
-                                            visitor.entryRemoved(key!!, value)
-                                            true
-                                        }
+                                    BiPredicate { key: Long?, value: V? ->
+                                        visitor.entryRemoved(key!!, value)
+                                        true
+                                    }
                                 )
                             }
                         } else {
                             if (oldChild == null) {
                                 child.visitEntries(
-                                        BiPredicate { key: Long?, value: V? ->
-                                            visitor.entryAdded(key!!, value)
-                                            true
-                                        }
+                                    BiPredicate { key: Long?, value: V? ->
+                                        visitor.entryAdded(key!!, value)
+                                        true
+                                    }
                                 )
                             } else {
                                 child.visitChanges(oldChild, visitor)
@@ -174,16 +174,16 @@ class LongKeyPMap<V> protected constructor(root: INode<V?>?) {
                 }
             } else if (oldNode is LeafNode<*>) {
                 visitEntries(
-                        BiPredicate { k: Long, v: V? ->
-                            if (k == (oldNode as LeafNode<V?>).key) {
-                                if (v !== oldNode.value) {
-                                    visitor.entryChanged(k, oldNode.value, v)
-                                }
-                            } else {
-                                visitor.entryAdded(k, v)
+                    BiPredicate { k: Long, v: V? ->
+                        if (k == (oldNode as LeafNode<V?>).key) {
+                            if (v !== oldNode.value) {
+                                visitor.entryChanged(k, oldNode.value, v)
                             }
-                            true
+                        } else {
+                            visitor.entryAdded(k, v)
                         }
+                        true
+                    }
                 )
             } else {
                 throw RuntimeException("Unknown type: $oldNode")
@@ -247,14 +247,14 @@ class LongKeyPMap<V> protected constructor(root: INode<V?>?) {
             }
             val oldValue = MutableObject<V?>()
             oldNode.visitEntries(
-                    BiPredicate { k: Long, v: V? ->
-                        if (k == key) {
-                            oldValue.setValue(v)
-                        } else {
-                            visitor.entryRemoved(k, v)
-                        }
-                        true
+                BiPredicate { k: Long, v: V? ->
+                    if (k == key) {
+                        oldValue.setValue(v)
+                    } else {
+                        visitor.entryRemoved(k, v)
                     }
+                    true
+                }
             )
             if (oldValue.getValue() == null) {
                 visitor.entryAdded(key, value)
@@ -292,10 +292,10 @@ class LongKeyPMap<V> protected constructor(root: INode<V?>?) {
                 return
             }
             oldNode.visitEntries(
-                    BiPredicate { k: Long?, v: V? ->
-                        visitor.entryRemoved(k!!, v)
-                        true
-                    }
+                BiPredicate { k: Long?, v: V? ->
+                    visitor.entryRemoved(k!!, v)
+                    true
+                }
             )
         }
     }
@@ -319,4 +319,3 @@ class LongKeyPMap<V> protected constructor(root: INode<V?>?) {
         this.root = root ?: EmptyNode<V?>()
     }
 }
-
