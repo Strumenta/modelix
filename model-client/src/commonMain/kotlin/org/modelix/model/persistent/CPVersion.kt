@@ -16,11 +16,14 @@
 package org.modelix.model.persistent
 
 import org.modelix.model.operations.IOperation
+import org.modelix.model.util.Level
+import org.modelix.model.util.LogManager
 
-expect class CPVersion(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>?, operationsHash: String?, numberOfOperations: Int) {
+class CPVersion constructor(id: Long, time: String?, author: String?, treeHash: String?, previousVersion: String?, operations: Array<IOperation?>?, operationsHash: String?, numberOfOperations: Int) {
     val id: Long
     val time: String?
     val author: String?
+
     /**
      * SHA to CPTree
      */
@@ -29,12 +32,72 @@ expect class CPVersion(id: Long, time: String?, author: String?, treeHash: Strin
     val operations: Array<IOperation?>?
     val operationsHash: String?
     val numberOfOperations: Int
+    fun serialize(): String {
+        val opsPartTemp = operations!!.toList()
+                .map { op: IOperation? -> OperationSerializer.INSTANCE.serialize(op!!) }
+        val opsPart = operationsHash
+                ?: if (opsPartTemp.isNotEmpty())
+                    opsPartTemp.reduce { a: String, b: String -> "$a,$b" } else ""
+        var serialized = SerializationUtil.longToHex(id) +
+                "/" + SerializationUtil.escape(time) +
+                "/" + SerializationUtil.escape(author) +
+                "/" + SerializationUtil.nullAsEmptyString(treeHash) +
+                "/" + SerializationUtil.nullAsEmptyString(previousVersion) +
+                "/" + opsPart
+        if (numberOfOperations >= 0) {
+            serialized += "/$numberOfOperations"
+        }
+        return serialized
+    }
 
     val hash: String
-
-    fun serialize(): String
+        get() = HashUtil.sha256(serialize())
 
     companion object {
-        fun deserialize(input: String): CPVersion
+        private val LOG = LogManager.getLogger(CPVersion::class)
+        fun deserialize(input: String): CPVersion {
+            val parts = input.split("/").dropLastWhile { it.isEmpty() }.toTypedArray()
+            var opsHash: String? = null
+            var ops: Array<IOperation?>? = null
+            if (HashUtil.isSha256(parts[5])) {
+                opsHash = parts[5]
+            } else {
+                ops = parts[5].split(",").toTypedArray()
+                        .filter { cs: String? -> !cs.isNullOrEmpty() }
+                        .map { serialized: String? -> OperationSerializer.INSTANCE.deserialize(serialized!!) }
+                        .toTypedArray()
+            }
+            val numOps = if (parts.size >= 7) parts[6].toInt() else -1
+            return CPVersion(
+                    SerializationUtil.longFromHex(parts[0]),
+                    SerializationUtil.unescape(parts[1]),
+                    SerializationUtil.unescape(parts[2]),
+                    SerializationUtil.emptyStringAsNull(parts[3]),
+                    SerializationUtil.emptyStringAsNull(parts[4]),
+                    ops,
+                    opsHash,
+                    numOps
+            )
+        }
+    }
+
+    init {
+        if (treeHash == null || treeHash.length == 0) {
+            if (LOG.isEnabledFor(Level.WARN)) {
+                LOG.warn("No tree hash provided", Exception())
+            }
+        }
+        if (operations == null == (operationsHash == null)) {
+            throw RuntimeException("Only one of 'operations' and 'operationsHash' can be provided")
+        }
+        this.id = id
+        this.author = author
+        this.previousVersion = previousVersion
+        this.time = time
+        this.treeHash = treeHash
+        this.operations = operations
+        this.operationsHash = operationsHash
+        this.numberOfOperations = operations?.size ?: numberOfOperations
     }
 }
+

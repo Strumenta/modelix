@@ -21,14 +21,14 @@ import java.nio.charset.StandardCharsets
 
 actual object SerializationUtil {
     @JvmStatic
-    fun escape(value: String?): String {
+    actual fun escape(value: String?): String {
         return if (value == null) {
             "%00"
         } else URLEncoder.encode(value, StandardCharsets.UTF_8)
     }
 
     @JvmStatic
-    fun unescape(value: String?): String? {
+    actual fun unescape(value: String?): String? {
         if (value == null) {
             return null
         }
@@ -57,7 +57,7 @@ actual object SerializationUtil {
     }
 
     @JvmStatic
-    fun nullAsEmptyString(str: String?): String {
+    actual fun nullAsEmptyString(str: String?): String {
         if (str == null) {
             return ""
         }
@@ -68,7 +68,7 @@ actual object SerializationUtil {
     }
 
     @JvmStatic
-    fun emptyStringAsNull(str: String?): String? {
+    actual fun emptyStringAsNull(str: String?): String? {
         return if (str == null || str.isEmpty()) null else str
     }
 }

@@ -20,4 +20,8 @@ expect object SerializationUtil {
     fun longToHex(value: Long): String
     fun longFromHex(hex: String?): Long
     fun intFromHex(hex: String?): Int
+    fun escape(value: String?): String
+    fun unescape(value: String?): String?
+    fun nullAsEmptyString(str: String?): String
+    fun emptyStringAsNull(str: String?): String?
 }
