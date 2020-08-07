@@ -17,8 +17,6 @@ package org.modelix.model.lazy
 
 import org.modelix.model.persistent.CPElementRef
 import org.modelix.model.persistent.CPNode
-import java.util.function.Function
-import java.util.stream.Stream
 import java.util.stream.StreamSupport
 
 actual class CLNode actual constructor(tree: CLTree?, data: CPNode?) : CLElement(tree!!, data!!) {
@@ -46,12 +44,8 @@ actual class CLNode actual constructor(tree: CLTree?, data: CPNode?) : CLElement
             getDescendants(bulkQuery, false)!!
                 .map(
                     org.modelix.model.util.Function { descendants: Iterable<CLNode> ->
-                        Iterable<CLNode> {
-                            Stream.concat(
-                                Stream.of(this),
-                                StreamSupport.stream(descendants.spliterator(), false)
-                            ).iterator()
-                        }
+                        val res : Iterable<CLNode> = (sequenceOf(this) + descendants.asSequence()).toList()
+                        res
                     }
                 )
         } else {
