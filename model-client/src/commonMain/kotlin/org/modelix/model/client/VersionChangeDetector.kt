@@ -15,9 +15,65 @@
 
 package org.modelix.model.client
 
+import org.modelix.model.IKeyListener
 import org.modelix.model.IKeyValueStore
+import org.modelix.model.util.Level
+import org.modelix.model.util.LogManager
+import org.modelix.model.util.Runnable
 
-expect abstract class VersionChangeDetector(store: IKeyValueStore, key: String) {
-    fun dispose()
+abstract class VersionChangeDetector(private val store: IKeyValueStore, private val key: String) {
+    private val keyListener: IKeyListener
+    var lastVersionHash: String? = null
+        private set
+    private val pollingTask: org.modelix.model.util.ScheduledFuture<*>
+    private fun versionChanged(newVersion: String?) {
+        if (newVersion == lastVersionHash) {
+            return
+        }
+        try {
+            processVersionChange(lastVersionHash, newVersion)
+        } catch (ex: Exception) {
+            if (LOG.isEnabledFor(Level.ERROR)) {
+                LOG.error("", ex)
+            }
+        }
+        lastVersionHash = newVersion
+    }
+
     protected abstract fun processVersionChange(oldVersion: String?, newVersion: String?)
+    fun dispose() {
+        pollingTask.cancel(false)
+        store.removeListener(key, keyListener)
+    }
+
+    companion object {
+        private val LOG = LogManager.getLogger(VersionChangeDetector::class)
+    }
+
+    init {
+        keyListener = object : IKeyListener {
+            override fun changed(key: String?, versionHash: String?) {
+                if (LOG.isDebugEnabled) {
+                    LOG.debug("Listener received new version $versionHash")
+                }
+                versionChanged(versionHash)
+            }
+        }
+        SharedExecutors.FIXED.execute(Runnable { store.listen(key, keyListener) })
+        pollingTask = SharedExecutors.fixDelay(
+                3000,
+                object : Runnable {
+                    override fun run() {
+                        val version = store[key]
+                        if (version == lastVersionHash) {
+                            return
+                        }
+                        if (LOG.isDebugEnabled) {
+                            LOG.debug("New version detected by polling: $version")
+                        }
+                        versionChanged(version)
+                    }
+                }
+        )
+    }
 }
