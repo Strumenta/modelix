@@ -56,7 +56,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
         actual val modelUrlFromEnv: String?
             get() {
                 var url = System.getProperty(MODEL_URI_VAR_NAME)
-                if (url == null || url.length == 0) {
+                if (url == null || url.isEmpty()) {
                     url = System.getenv(MODEL_URI_VAR_NAME)
                 }
                 return url
@@ -65,7 +65,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
         actual val defaultUrl: String
             get() {
                 val urlFromEnv = modelUrlFromEnv
-                return if ((urlFromEnv != null && urlFromEnv.length > 0)) {
+                return if ((urlFromEnv != null && urlFromEnv.isNotEmpty())) {
                     urlFromEnv
                 } else {
                     "http://modelix.q60.de:80/model/"
@@ -73,7 +73,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
             }
 
         private fun isEmptyString(str: String?): Boolean {
-            return str == null || str.length == 0
+            return str == null || str.isEmpty()
         }
 
         init {
@@ -134,19 +134,23 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
         }
         val start = System.currentTimeMillis()
         val response = client.target(baseUrl + "get/" + URLEncoder.encode(key, StandardCharsets.UTF_8)).request().buildGet().invoke()
-        return if (response.status == Response.Status.OK.statusCode) {
-            val value = response.readEntity(String::class.java)
-            val end = System.currentTimeMillis()
-            if (isHash) {
-                if (LOG.isDebugEnabled) {
-                    LOG.debug("GET " + key + " took " + (end - start) + " ms: " + value)
+        return when (response.status) {
+            Response.Status.OK.statusCode -> {
+                val value = response.readEntity(String::class.java)
+                val end = System.currentTimeMillis()
+                if (isHash) {
+                    if (LOG.isDebugEnabled) {
+                        LOG.debug("GET " + key + " took " + (end - start) + " ms: " + value)
+                    }
                 }
+                value
             }
-            value
-        } else if (response.status == Response.Status.NOT_FOUND.statusCode) {
-            null
-        } else {
-            throw RuntimeException("Request for key '" + key + "' failed: " + response.statusInfo)
+            Response.Status.NOT_FOUND.statusCode -> {
+                null
+            }
+            else -> {
+                throw RuntimeException("Request for key '" + key + "' failed: " + response.statusInfo)
+            }
         }
     }
 
@@ -173,12 +177,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
             result
         } else {
             throw RuntimeException(
-                String.format(
-                    "Request for %d keys failed (%s, ...): %s",
-                    keys.spliterator().exactSizeIfKnown,
-                    toStream(keys).findFirst().orElse(null),
-                    response.statusInfo
-                )
+                    "Request for ${keys.spliterator().exactSizeIfKnown} keys failed (${toStream(keys).findFirst().orElse(null)}, ...): ${response.statusInfo}"
             )
         }
     }
@@ -203,7 +202,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
     }
 
     actual override fun removeListener(key: String?, listener: IKeyListener?) {
-        synchronized(listeners) { listeners.removeIf({ it: SseListener -> Objects.equals(it.key, key) && it.keyListener === listener }) }
+        synchronized(listeners) { listeners.removeIf { it: SseListener -> Objects.equals(it.key, key) && it.keyListener === listener } }
     }
 
     actual override fun put(key: String?, value: String?) {
@@ -226,13 +225,7 @@ actual class RestWebModelClient actual constructor(var baseUrl: String?) : IMode
             val response = client.target(baseUrl + "putAll").request(MediaType.APPLICATION_JSON).put(Entity.text(json.toString()))
             if (response.statusInfo.family != Response.Status.Family.SUCCESSFUL) {
                 throw RuntimeException(
-                    String.format(
-                        "Failed to store %d entries (%s) %s",
-                        entries!!.size,
-                        response.statusInfo,
-                        entries.entries.stream().map { e: Map.Entry<String?, String?> -> e.key.toString() + " = " + e.value + ", ..." }.findFirst().orElse("")
-                    )
-                )
+                        "Failed to store ${entries!!.size} entries (${response.statusInfo}) ${entries.entries.stream().map { e: Map.Entry<String?, String?> -> e.key.toString() + " = " + e.value + ", ..." }.findFirst().orElse("")}")
             }
         }
         if (LOG.isDebugEnabled) {
