@@ -1833,6 +1833,11 @@
             <ref role="3bR37D" to="ffeo:1TaHNgiIbIZ" resolve="MPS.Editor" />
           </node>
         </node>
+        <node concept="1SiIV0" id="5DalWIBdgxF" role="3bR37C">
+          <node concept="3bR9La" id="5DalWIBdgxG" role="1SiIV1">
+            <ref role="3bR37D" to="ffeo:3qkjbZn808a" resolve="jetbrains.mps.lang.constraints.rules.runtime" />
+          </node>
+        </node>
       </node>
       <node concept="1E1JtA" id="1_iojA26Pac" role="2G$12L">
         <property role="BnDLt" value="true" />
@@ -5811,6 +5816,11 @@
         <node concept="1SiIV0" id="3PyXc8TKhFm" role="3bR37C">
           <node concept="3bR9La" id="3PyXc8TKhFn" role="1SiIV1">
             <ref role="3bR37D" node="7Hbm57D_FL9" resolve="org.modelix.model.client" />
+          </node>
+        </node>
+        <node concept="1SiIV0" id="3uJG7SjbjUH" role="3bR37C">
+          <node concept="3bR9La" id="3uJG7SjbjUI" role="1SiIV1">
+            <ref role="3bR37D" to="ffeo:rD7wKO5Iy" resolve="MPS.TextGen" />
           </node>
         </node>
       </node>
